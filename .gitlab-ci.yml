@@ -45,7 +45,7 @@ autoDeploy:
   script:
     - cd Backend/carbon_counter
     - mvn package
-    - sudo mv target/*.jar /target/web-demo.jar 
+    - sudo mv target/*.jar target/web-demo.jar 
     #FIXME: is this service still available?
     - sudo systemctl stop systemd-web-demo
     - sudo systemctl start systemd-web-demo
