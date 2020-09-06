@@ -1,2 +1,0 @@
-include ':app'
-rootProject.name = "carbon_counter_front_end"
