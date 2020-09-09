@@ -45,10 +45,10 @@ autoDeploy:
   script:
     - cd Backend/carbon_counter
     - mvn package
-    - sudo mv target/*.jar target/web-demo.jar 
-    #FIXME: is this service still available?
-    - sudo systemctl stop systemd-web-demo
-    - sudo systemctl start systemd-web-demo
+    - sudo mv target/*.jar ~/bin/carbon_counter_backend.jar
+    # restart the service to deploy new backend
+    - sudo systemctl stop carbon_counter.service
+    - sudo systemctl start carbon_counter.service
 
     
 # To build android projects
@@ -60,7 +60,7 @@ android-build:
   stage: androidBuild
   before_script:
     - export GRADLE_USER_HOME=`pwd`/.gradle
-    - chmod +x ./Android_test/gradlew
+    - chmod +x ./Frontend/carbon_counter_front_end/gradlew
   tags:
    - android_runner_tag
   script:
@@ -76,7 +76,7 @@ unitTests:
   stage: androidTest
   before_script:
     - export GRADLE_USER_HOME=`pwd`/.gradle
-    - chmod +x ./Android_test/gradlew
+    - chmod +x ./Frontend/carbon_counter_front_end/gradlew
   tags:
    - android_runner_tag
   script:
