@@ -12,23 +12,32 @@
 	<artifactId>carbon_counter</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 	<name>carbon_counter</name>
-	<description>Demo project for Spring Boot</description>
+	<description>Carbon Counter project</description>
 
 	<properties>
 		<java.version>11</java.version>	
 	</properties>
 
 	<dependencies>
+		<!--data base dependency JPA-->
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-data-jpa</artifactId>
-		</dependency>	
+		</dependency>
+		
+		<!--web application dependency-->
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-web</artifactId>
+		</dependency>
 
+		<!-- MySql dependency-->
 		<dependency>
 			<groupId>mysql</groupId>
 			<artifactId>mysql-connector-java</artifactId>
 	   </dependency>
 
+	   <!-- testing dependency-->
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-test</artifactId>
