@@ -10,14 +10,18 @@ import com.android.volley.toolbox.JsonObjectRequest;
 import com.example.carbon_counter_front_end.app.AppController;
 import android.media.MediaCodec;
 import android.os.Bundle;
+import android.os.TestLooperManager;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
+import android.content.Intent;
+
 
 import com.android.volley.toolbox.StringRequest;
 import com.example.carbon_counter_front_end.net_utils.Const;
 
+import org.json.JSONException;
 import org.json.JSONObject;
 
 public class LoginActivity extends AppCompatActivity {
@@ -33,6 +37,7 @@ public class LoginActivity extends AppCompatActivity {
         final TextView username = (TextView) findViewById(R.id.username);
         final TextView password = (TextView) findViewById(R.id.password);
         Button loginButton= (Button) findViewById(R.id.buttonLogin);
+        Button registerButton = (Button) findViewById(R.id.buttonRegister);
 
         loginButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -40,10 +45,21 @@ public class LoginActivity extends AppCompatActivity {
                 authenticateUser(username.getText().toString(), password.getText().toString());
             }
         });
+
+        registerButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                //Intent i = new Intent(LoginActivity.this, RegistrationActivity.class);
+            }
+        });
+
     }
 
-    private void authenticateUser(String username, String password){
+    private void authenticateUser(final String username, final String password){
         System.out.println(username + " " + password);
+
+        final TextView failedLogin = (TextView) findViewById(R.id.failedLogin);
+        final TextView failedLogin2 = (TextView) findViewById(R.id.failedLogin2);
 
         String url = "http://10.24.227.38:8080/user/1";
 
@@ -56,31 +72,35 @@ public class LoginActivity extends AppCompatActivity {
                     @Override
                     public void onResponse(JSONObject response) {
                         Log.d(TAG, response.toString());
-                        System.out.println(response.toString());
-                        System.out.println("success");
+                        try {
+                            if (response.get("password").equals(password)) {
+                                //clear failed login fields
+                                failedLogin.setText("");
+                                failedLogin2.setText("");
+
+                                //intent to main page
+                                Intent i = new Intent(LoginActivity.this, MainActivity.class);
+                                i.putExtra("username",username);
+                                startActivity(i);
+
+                            } else {
+                                //Label stating failed username or password
+                                failedLogin.setText("Invalid username or password!");
+                                failedLogin2.setText("Please register or try again!");
+
+
+                            }
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
                     }
                 }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
                 VolleyLog.d(TAG, "Error: " + error.getMessage());
-                System.out.println("error" + error.getMessage());
             }
         });
 
-/*
-        StringRequest strReq = new StringRequest(Request.Method.GET, url, new Response.Listener<String>() {
-            @Override
-            public void onResponse(String response) {
-                Log.d(TAG, response.toString());
-                System.out.println(response.toString());
-            }
-        }, new Response.ErrorListener() {
-            @Override
-            public void onErrorResponse(VolleyError error) {
-                VolleyLog.d(TAG, "Error: " + error.getMessage());
-            }
-        });
-*/
         // Adding request to request queue
         AppController.getInstance().addToRequestQueue(jsonObjReq, tag_json_req);
     }
