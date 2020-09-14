@@ -6,6 +6,7 @@ import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.VolleyLog;
+import com.android.volley.toolbox.JsonObjectRequest;
 import com.example.carbon_counter_front_end.app.AppController;
 import android.media.MediaCodec;
 import android.os.Bundle;
@@ -17,9 +18,11 @@ import android.widget.TextView;
 import com.android.volley.toolbox.StringRequest;
 import com.example.carbon_counter_front_end.net_utils.Const;
 
+import org.json.JSONObject;
+
 public class LoginActivity extends AppCompatActivity {
     private String TAG = LoginActivity.class.getSimpleName();
-    private String tag_string_req = "string_req";
+    private String tag_json_req = "json_obj_req";
 
 
     @Override
@@ -41,8 +44,30 @@ public class LoginActivity extends AppCompatActivity {
 
     private void authenticateUser(String username, String password){
         System.out.println(username + " " + password);
-        String url = "https://b4dde97f-934b-4684-a6f4-5ef4b947e65f.mock.pstmn.io/users";
 
+        String url = "http://10.24.227.38:8080/user/1";
+
+        //url += "/" + username;
+
+        JsonObjectRequest jsonObjReq = new JsonObjectRequest(Request.Method.GET,
+                url, null, // IF YOU WANT TO SEND A JSONOBJECT WITH POST THEN PASS IT HERE
+                new Response.Listener<JSONObject>() {
+
+                    @Override
+                    public void onResponse(JSONObject response) {
+                        Log.d(TAG, response.toString());
+                        System.out.println(response.toString());
+                        System.out.println("success");
+                    }
+                }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                VolleyLog.d(TAG, "Error: " + error.getMessage());
+                System.out.println("error" + error.getMessage());
+            }
+        });
+
+/*
         StringRequest strReq = new StringRequest(Request.Method.GET, url, new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
@@ -55,12 +80,8 @@ public class LoginActivity extends AppCompatActivity {
                 VolleyLog.d(TAG, "Error: " + error.getMessage());
             }
         });
-
+*/
         // Adding request to request queue
-        AppController.getInstance().addToRequestQueue(strReq, tag_string_req);
-
-        //Next, Send HTTP Request to server with the username and password in the body as JSON
-        //This request will return either an empty array or the user we are looking for
-        //We can use this information to tell user what to do next or to switch activities
+        AppController.getInstance().addToRequestQueue(jsonObjReq, tag_json_req);
     }
 }
