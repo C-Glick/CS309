@@ -2,4 +2,6 @@
     <string name="app_name">carbon_counter_front_end</string>
     <string name="login">Login</string>
     <string name="register">Register</string>
+    <string name="view_my_stats">View My Stats</string>
+    <string name="update_my_stats">Update My Stats</string>
 </resources>
