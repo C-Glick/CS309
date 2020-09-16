@@ -20,18 +20,10 @@ public class UserController {
         this.database = database;
     }
 
-    @GetMapping("/user/{username}")
-    public User getUserInfo(@PathVariable String username){
-        //need to change to find username
-        if(database.findAll().indexOf(username) == -1){
-            throw new UserNotFoundException(username);
-        }else{
-            return database.findAll().get(database.findAll().indexOf(username));
-        }
-        //return 
-        //orElseThrow(() -> new UserNotFoundException(username));
-        
-        //
+    @GetMapping("/user/{id}")
+    public User getUserInfo(@PathVariable Long id){
+        return database.findById(id).
+        orElseThrow(() -> new UserNotFoundException(id));
     }
 
     @PostMapping("/addUser")
