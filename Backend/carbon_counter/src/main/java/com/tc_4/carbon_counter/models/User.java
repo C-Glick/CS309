@@ -8,6 +8,12 @@ import javax.persistence.Id;
 
 @Entity
 public class User {
+    enum Role{
+        USER,
+        CREATOR,
+        ADMIN,
+        DEV
+    } 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     Long id;
@@ -20,6 +26,9 @@ public class User {
 
     @Column(name="password")
     String password;
+
+    @Column(name="role")
+    Role role;
 
     public Long getId(){
         return id;
@@ -35,6 +44,13 @@ public class User {
 
     public String getPassword(){
         return password;
+    }
+    public Role getRole(){
+        return role;
+    }
+    public boolean checkPermission(Role permission){
+        //need to test
+        return role.compareTo(permission)>=0;
     }
 
 }
