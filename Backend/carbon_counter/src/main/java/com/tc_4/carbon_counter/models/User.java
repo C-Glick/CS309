@@ -48,6 +48,18 @@ public class User {
     public Role getRole(){
         return role;
     }
+    public void setUsername(String name){
+        userName = name;
+    }
+    public void setEmail(String newEmail){
+        email = newEmail;
+    }
+    public void setPassword(String newPass){
+        password = newPass;
+    }
+    public void setRole(Role newRole){
+        role = newRole;
+    }
     public boolean checkPermission(Role permission){
         //need to test
         return role.compareTo(permission)>=0;
