@@ -16,9 +16,9 @@ class CarbonCounterApplicationTests {
 	@Test
 	void contextLoads() {
 	}
-	@LocalServerPort
+	/*@LocalServerPort
     private int port;
-	/*
+	
     @Autowired
     private TestRestTemplate restTemplate;
 	@Test
