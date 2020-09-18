@@ -4,11 +4,12 @@ import com.tc_4.carbon_counter.databases.UserDatabase;
 import com.tc_4.carbon_counter.models.User;
 import com.tc_4.carbon_counter.exceptions.UserNotFoundException;
 
-
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
@@ -30,5 +31,18 @@ public class UserController {
     public User addUser(@RequestBody User user){
         database.save(user);
         return user;
+    }
+    @RequestMapping("/user/{userName}/setPassword")
+    public String setUserPassword(@PathVariable String userName, @RequestParam("password") String password,
+    @RequestParam("oldPassword") String oldPassword)
+    {
+        //must have the original password which is oldPassword to change password to password with this setup
+        if(database.findByUserName(userName).get().getPassword().equals(oldPassword)){
+            database.findByUserName(userName).get().setPassword(password);
+            database.save(database.findByUserName(userName).get());
+        }
+        //also just posts the new password could set method to void to stop this or whatever
+        return "The password is now" + password;
+            
     }
 }
