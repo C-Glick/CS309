@@ -33,16 +33,18 @@ public class UserController {
         return user;
     }
     @RequestMapping("/user/{userName}/setPassword")
-    public String setUserPassword(@PathVariable String userName, @RequestParam("password") String password,
+    public String setUserPassword(@PathVariable String userName, @RequestParam("newPassword") String newPassword,
     @RequestParam("oldPassword") String oldPassword)
     {
         //must have the original password which is oldPassword to change password to password with this setup
         if(database.findByUserName(userName).get().getPassword().equals(oldPassword)){
-            database.findByUserName(userName).get().setPassword(password);
+            database.findByUserName(userName).get().setPassword(newPassword);
             database.save(database.findByUserName(userName).get());
+            return "The password is now " + newPassword;
         }
+        return "The password you entered is incorrect";
         //also just posts the new password could set method to void to stop this or whatever
-        return "The password is now" + password;
+        
             
     }
 }
