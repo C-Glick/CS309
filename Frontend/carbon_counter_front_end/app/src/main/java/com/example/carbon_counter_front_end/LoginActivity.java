@@ -42,9 +42,7 @@ public class LoginActivity extends AppCompatActivity {
         loginButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent i = new Intent(LoginActivity.this, MainActivity.class);
-                startActivity(i);
-                //authenticateUser(username.getText().toString(), password.getText().toString());
+                authenticateUser(username.getText().toString(), password.getText().toString());
             }
         });
 
@@ -64,9 +62,9 @@ public class LoginActivity extends AppCompatActivity {
         final TextView failedLogin = (TextView) findViewById(R.id.failedLogin);
         final TextView failedLogin2 = (TextView) findViewById(R.id.failedLogin2);
 
-        String url = "http://10.24.227.38:8080/user/1";
+        String url = "http://10.24.227.38:8080/user";
 
-        //url += "/" + username;
+        url += "/" + username;
 
         JsonObjectRequest jsonObjReq = new JsonObjectRequest(Request.Method.GET,
                 url, null, // IF YOU WANT TO SEND A JSONOBJECT WITH POST THEN PASS IT HERE
