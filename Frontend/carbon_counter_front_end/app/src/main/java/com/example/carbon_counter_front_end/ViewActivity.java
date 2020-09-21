@@ -39,7 +39,7 @@ public class ViewActivity extends AppCompatActivity {
      //  final TextView failedUsername = (TextView) findViewById(R.id.failedLogin);
 
 
-        String url = "http://10.24.227.38:8080/stats";
+        String url = "http://10.24.227.38:8080/stats/daily";
 
         url += "/" + username;
 
