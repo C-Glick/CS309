@@ -70,7 +70,6 @@ public class UpdateActivity extends AppCompatActivity {
             double milesDriven = parseDouble(text.toString());
             String url = "http://10.24.227.38:8080/stats/addDaily";
 
-            //url += "/" + username;
 //        "water": "test6@iastate.edu"
 //        "power": "test123"
 //        "milesDriven": "USER"
