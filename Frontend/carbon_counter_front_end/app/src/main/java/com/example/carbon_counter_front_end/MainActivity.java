@@ -18,7 +18,7 @@ public class MainActivity extends AppCompatActivity {
 
         final String Username = temp.getStringExtra("username");
 
-        
+
         Button viewStats = (Button) findViewById(R.id.buttonView);
         Button updateStats = (Button) findViewById(R.id.buttonUpdate);
 
