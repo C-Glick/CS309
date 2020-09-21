@@ -83,7 +83,7 @@ public class UpdateActivity extends AppCompatActivity {
 //        "meat":
 //        "garbage": 34.6 (double)
             final JSONObject userUpdate = new JSONObject();
-            userUpdate.put("userName", "yeetboi");
+            userUpdate.put("userName", username);
             userUpdate.put("water", 0.0);
             userUpdate.put("power", 0.0);
             userUpdate.put("milesDriven", milesDriven);
