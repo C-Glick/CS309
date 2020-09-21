@@ -28,10 +28,15 @@ public class UpdateActivity extends AppCompatActivity {
 
     private String TAG = UpdateActivity.class.getSimpleName();
     private String tag_json_POST= "json_obj_POST";
+    private String username;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_update);
+
+        Intent intent = getIntent();
+        username = intent.getStringExtra("username");
 
         Button backButton = (Button) findViewById(R.id.buttonBack);
         Button viewButton = (Button) findViewById(R.id.buttonView2);
@@ -50,6 +55,7 @@ public class UpdateActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 Intent i = new Intent(UpdateActivity.this, ViewActivity.class);
+                i.putExtra("username",username);
                 startActivity(i);
             }
         });
