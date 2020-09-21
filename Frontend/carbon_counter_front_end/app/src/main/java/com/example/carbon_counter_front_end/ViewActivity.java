@@ -22,14 +22,16 @@ public class ViewActivity extends AppCompatActivity {
     private String TAG = ViewActivity.class.getSimpleName();
     private String tag_json_get= "json_obj_get";
     private String milesDriven;
-    private String user = "testyboi";
+    private String username;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_view);
-        getMiles(user);
-
+        Intent intent = getIntent();
+        username = intent.getStringExtra("username");
+        getMiles(username);
     }
 
 
@@ -39,7 +41,7 @@ public class ViewActivity extends AppCompatActivity {
 
         String url = "http://10.24.227.38:8080/stats/addDaily";
 
-        //url += "/" + username;
+        url += "/" + username;
 
         JsonObjectRequest jsonObjReq = new JsonObjectRequest(Request.Method.GET,
                 url, null, // IF YOU WANT TO SEND A JSONOBJECT WITH POST THEN PASS IT HERE
