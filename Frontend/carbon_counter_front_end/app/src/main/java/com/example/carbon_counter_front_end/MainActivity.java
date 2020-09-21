@@ -9,12 +9,13 @@ import android.widget.Button;
 import android.widget.TextView;
 
 public class MainActivity extends AppCompatActivity {
+    Intent temp = getIntent();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
+        final String Username = temp.getStringExtra("username");
         Button viewStats = (Button) findViewById(R.id.buttonView);
         Button updateStats = (Button) findViewById(R.id.buttonUpdate);
 
@@ -23,6 +24,7 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View view) {
                 //new intent to view stats page
                 Intent i = new Intent(MainActivity.this, ViewActivity.class);
+                i.putExtra("username",Username);
                 startActivity(i);
             }
         });
@@ -32,6 +34,7 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View view) {
                 //New intent to update stats page
                 Intent i = new Intent(MainActivity.this, UpdateActivity.class);
+                i.putExtra("username",Username);
                 startActivity(i);
             }
         });
