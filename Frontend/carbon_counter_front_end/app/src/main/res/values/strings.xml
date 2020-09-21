@@ -1,7 +1,20 @@
 <resources>
     <string name="app_name">carbon_counter_front_end</string>
     <string name="login">Login</string>
-    <string name="register">Register</string>
+    <string name="register">Create Account</string>
     <string name="view_my_stats">View My Stats</string>
     <string name="update_my_stats">Update My Stats</string>
+    <string name="title_activity_create_user">CreateUser</string>
+    <string name="prompt_email">Email</string>
+    <string name="prompt_password">Password</string>
+    <string name="action_sign_in">Sign in or register</string>
+    <string name="action_sign_in_short">Sign in</string>
+    <string name="welcome">"Welcome !"</string>
+    <string name="invalid_username">Not a valid username</string>
+    <string name="invalid_password">Password must be >5 characters</string>
+    <string name="login_failed">"Login failed"</string>
+    <string name="your_name">Your Name</string>
+    <string name="e_mail" >email</string>
+    <string name="password">password</string>
+    <string name="re_type_password">re type password</string>
 </resources>

@@ -1,4 +1,4 @@
-package  com.example.carbon_counter_front_end.ui.login;
+package com.example.carbon_counter_front_end.ui.login;
 
 /**
  * Class exposing authenticated user details to the UI.

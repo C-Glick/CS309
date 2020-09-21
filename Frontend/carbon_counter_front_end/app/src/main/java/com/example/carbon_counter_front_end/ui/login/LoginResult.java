@@ -1,4 +1,4 @@
-package  com.example.carbon_counter_front_end.ui.login;
+package com.example.carbon_counter_front_end.ui.login;
 
 import androidx.annotation.Nullable;
 
