@@ -15,7 +15,10 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
         final String Username = temp.getStringExtra("username");
+
+        
         Button viewStats = (Button) findViewById(R.id.buttonView);
         Button updateStats = (Button) findViewById(R.id.buttonUpdate);
 
