@@ -16,16 +16,20 @@ import com.example.carbon_counter_front_end.app.AppController;
 
 import org.json.JSONException;
 import org.json.JSONObject;
+import org.w3c.dom.Text;
 
 public class ViewActivity extends AppCompatActivity {
     private String TAG = ViewActivity.class.getSimpleName();
     private String tag_json_get= "json_obj_get";
-    private double milesDriven =0;
+    private String milesDriven;
+    private String user = "testyboi";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_view);
+        getMiles(user);
+
     }
 
 
@@ -46,8 +50,9 @@ public class ViewActivity extends AppCompatActivity {
                         Log.d(TAG, response.toString());
                         try {
                             if (response.get("userName").equals(username)) {
-                                milesDriven = (double) response.get("milesDriven");
-
+                                milesDriven = (String) response.get("milesDriven");
+                                TextView mDriven = (TextView) findViewById(R.id.milesDriven);
+                                mDriven.setText(milesDriven);
                             } else {
                                 //Label stating failed username or password
                                // failedUsername.setText("Invalid username ");

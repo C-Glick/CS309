@@ -72,7 +72,7 @@ public class UpdateActivity extends AppCompatActivity {
 
 //        "water": "test6@iastate.edu"
 //        "power": "test123"
-//        "milesDriven": "USER"
+//        "milesDriven": 55.6
 //        "meat":
 //        "garbage": 34.6 (double)
             final JSONObject userUpdate = new JSONObject();
