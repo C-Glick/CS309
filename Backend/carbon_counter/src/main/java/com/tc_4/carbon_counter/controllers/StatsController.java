@@ -1,7 +1,6 @@
 package com.tc_4.carbon_counter.controllers;
 
-import java.sql.Date;
-import java.util.Calendar;
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -66,7 +65,7 @@ public class StatsController {
     public Optional<DailyStats> getUserDailyStatsByDate(@PathVariable String userName, @RequestBody Map<String, String> datePayload){
         //Using a Map to get the date as a String(returns the whole JSON otherwise), and using Date.valueOf()
         //to convert to a date object
-        return database.findTopByUserNameAndDateOrderByIdDesc(userName, Date.valueOf(datePayload.get("date")));
+        return database.findTopByUserNameAndDateOrderByIdDesc(userName, LocalDate.parse(datePayload.get("date")));
     }
 
 
@@ -84,11 +83,7 @@ public class StatsController {
      */
     @GetMapping("/stats/lastMonth/{userName}")
     public List<DailyStats> getLastMonthUserDailyStats(@PathVariable String userName){
-        //Using a Map to get the date as a String(returns the whole JSON otherwise), and using Date.valueOf()
-        //to convert to a date object
-        Calendar calOneMonthAgo = Calendar.getInstance();
-        calOneMonthAgo.add(Calendar.MONTH, -1);
-        Date oneMonthAgo = new Date(calOneMonthAgo.getTimeInMillis());
+        LocalDate oneMonthAgo = LocalDate.now().minusMonths(1);
         System.out.println(oneMonthAgo);
         
         return database.findByUserNameAndDateGreaterThanOrderByDateAsc(userName, oneMonthAgo);
@@ -107,6 +102,7 @@ public class StatsController {
      */
     @PostMapping("/stats/addDaily")
     public DailyStats addDailyStats(@RequestBody DailyStats dailyStats){
+        //TODO: if an entry already exists with this date and username, overwrite it
         database.save(dailyStats);
         return dailyStats;
     }

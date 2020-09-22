@@ -1,6 +1,6 @@
 package com.tc_4.carbon_counter.models;
 
-import java.sql.Date;
+import java.time.LocalDate;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -27,7 +27,7 @@ public class DailyStats {
     @Column(name="date")
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")    
     @UpdateTimestamp
-    Date date;
+    LocalDate date;
 
     @Column(name="water")
     double water;
@@ -54,7 +54,7 @@ public class DailyStats {
         return userName;
     }
 
-    public Date getDate(){
+    public LocalDate getDate(){
         return date;
     }
 
@@ -84,7 +84,7 @@ public class DailyStats {
         this.userName = userName;
     }
 
-    public void setDate(Date date){
+    public void setDate(LocalDate date){
         this.date = date;
     }
 
