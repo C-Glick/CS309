@@ -11,5 +11,8 @@ import org.springframework.data.jpa.repository.JpaRepository;
 public interface DailyStatsDatabase extends JpaRepository<DailyStats, Long> {
     List<DailyStats> findByUserName(String userName);
 
-    Optional<DailyStats> findByUserNameAndDate(String userName, Date date);
+    Optional<DailyStats> findTopByUserNameAndDateOrderByIdDesc(String userName, Date date);
+
+    List<DailyStats> findByUserNameAndDateGreaterThanOrderByDateAsc(String userName, Date date);
+
 }
