@@ -37,14 +37,11 @@ public class StatsController {
     }
 
     /**
-     * {@code GET request}
-     * URL Mapping: <pre> /stats/{userName} </pre>
-     * 
      * Returns an array containing the daily stats for the specified user
      * or an empty array if no stats are found for the user
      * 
      * @param userName pass as a path variable
-     * @return Array
+     * @return A JSON Array
      */
     @GetMapping("/stats/{userName}")
     public List<DailyStats> getUserDailyStats(@PathVariable String userName){
@@ -52,12 +49,9 @@ public class StatsController {
     }
 
      /**
-     * {@code GET request}
-     * URL Mapping: <pre> /stats/daily/{userName} </pre>
-     * 
      * Returns the daily stats for the specified user on the specified day
      * 
-     * @param userName pass as a path variable
+     * @param userName Pass as a path variable
      * @param datePayload Enter date in the request body json in the format "date":"yyyy-mm-dd"
      * @return The most recent Daily stats entry for that day or null if none exists
      */
@@ -70,16 +64,13 @@ public class StatsController {
 
 
     /**
-     * {@code GET request}
-     * URL Mapping: <pre> /stats/lastMonth/{userName} </pre>
-     * 
      * Returns an array of daily stats for dates that are grater than 
      * the current date - 1 month.
      * EX: If today is 2020-10-31, would return everything on 2020-09-30
      * and after
      * 
      * @param userName pass as a path variable
-     * @return An array of the daily stats from the last month
+     * @return A JSON array of the daily stats from the last month
      */
     @GetMapping("/stats/lastMonth/{userName}")
     public List<DailyStats> getLastMonthUserDailyStats(@PathVariable String userName){
@@ -91,9 +82,6 @@ public class StatsController {
 
 
     /**
-     * {@code POST request}
-     * URL Mapping: <pre> /stats/addDaily </pre>
-     * 
      * Add a daily statistic for the specified user in the json body. 
      * 
      * @param dailyStats Pass the statistics via the JSON body, the only required
