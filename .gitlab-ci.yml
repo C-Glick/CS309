@@ -13,22 +13,32 @@ maven-build:
   stage: mavenBuild
   tags:
     - spring_runner_tag
+  only:
+    refs:
+      - master
+  changes:
+    - Backend/**/*
   script:
     - cd Backend/carbon_counter
     - mvn package -B
-  
+  artifacts:
+    paths:
+      - Backend/carbon_counter/target/*.jar
+
 # artifacts are created when job executes successfully, and can be manually downloaded from GitLab GUI.
 # artifacts are not mandatory, but its good practice, in case auto deploy fails, you can manually download the jar.
 maven-test:
   stage: mavenTest
   tags:
     - spring_runner_tag
+  only:
+    refs:
+      - master
+  changes:
+    - Backend/**/*
   script:
     - cd Backend/carbon_counter
     - mvn test
-  artifacts:
-    paths:
-      - Backend/carbon_counter/target/*.jar
 # Below stage builds, deploys and executes the jar as service.
 # Make sure there is /target directory in your server, else script will fail, or use any other folder you like.
 # If you are changing the folder, reflect the change in systemd-web-demo service too.
@@ -58,11 +68,16 @@ autoDeploy:
 android-build:
   image: javiersantos/android-ci:latest
   stage: androidBuild
+  tags:
+   - android_runner_tag
+  only:
+    refs:
+      - master
+  changes:
+    - Frontend/**/*
   before_script:
     - export GRADLE_USER_HOME=`pwd`/.gradle
     - chmod +x ./Frontend/carbon_counter_front_end/gradlew
-  tags:
-   - android_runner_tag
   script:
     - cd Frontend/carbon_counter_front_end
     - ./gradlew assemble
@@ -74,6 +89,11 @@ android-build:
 unitTests:
   image: javiersantos/android-ci:latest
   stage: androidTest
+  only:
+    refs:
+      - master
+  changes:
+    - Frontend/**/*
   before_script:
     - export GRADLE_USER_HOME=`pwd`/.gradle
     - chmod +x ./Frontend/carbon_counter_front_end/gradlew
