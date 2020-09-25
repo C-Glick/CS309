@@ -16,8 +16,8 @@ maven-build:
   only:
     refs:
       - master
-  changes:
-    - Backend/**/*
+    changes:
+      - Backend/**/*
   script:
     - cd Backend/carbon_counter
     - mvn package -B
@@ -34,8 +34,8 @@ maven-test:
   only:
     refs:
       - master
-  changes:
-    - Backend/**/*
+    changes:
+      - Backend/**/*
   script:
     - cd Backend/carbon_counter
     - mvn test
@@ -73,8 +73,8 @@ android-build:
   only:
     refs:
       - master
-  changes:
-    - Frontend/**/*
+    changes:
+      - Frontend/**/*
   before_script:
     - export GRADLE_USER_HOME=`pwd`/.gradle
     - chmod +x ./Frontend/carbon_counter_front_end/gradlew
@@ -92,8 +92,8 @@ unitTests:
   only:
     refs:
       - master
-  changes:
-    - Frontend/**/*
+    changes:
+      - Frontend/**/*
   before_script:
     - export GRADLE_USER_HOME=`pwd`/.gradle
     - chmod +x ./Frontend/carbon_counter_front_end/gradlew
