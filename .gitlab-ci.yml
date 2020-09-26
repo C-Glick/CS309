@@ -68,6 +68,7 @@ updateDocs:
   only: # Will only run if these conditions are met, check documentation for more!
     variables:
       - $CI_COMMIT_MESSAGE =~ /update docs/
+      - $CI_COMMIT_MESSAGE =~ /deploy/
   script:
     - cd Backend/carbon_counter
     - mvn javadoc:javadoc
