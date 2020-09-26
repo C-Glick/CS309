@@ -4,6 +4,7 @@ stages:
   - mavenBuild
   - mavenTest
   - autoDeploy
+  - updateDocs
   - androidBuild
   - androidTest
 
@@ -60,6 +61,21 @@ autoDeploy:
     - sudo systemctl stop carbon_counter.service
     - sudo systemctl start carbon_counter.service
 
+updateDocs:
+  stage: updateDocs
+  tags:
+   - spring_runner_tag
+  only: # Will only run if these conditions are met, check documentation for more!
+    refs:
+      - schedules
+    variables:
+      - $CI_COMMIT_MESSAGE =~ /update docs/
+  script:
+    - cd Backend/carbon_counter
+    - mvn javadoc:javadoc
+    #remove all current doc files and replace with new version
+    - sudo rm -r /var/www/html/*
+    - sudo cp -r target/site/apidocs/* /var/www/html
     
 # To build android projects
 # Notice that we cd into Android_test folder which contains all Android files before building apk.    
