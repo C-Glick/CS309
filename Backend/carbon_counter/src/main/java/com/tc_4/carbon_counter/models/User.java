@@ -8,7 +8,11 @@ import javax.persistence.Id;
 
 @Entity
 public class User {
-    enum Role{
+    /**
+     * Enumeration for the role of each user. Determines 
+     * the permissions that this user has.
+     */
+    public enum Role{
         USER,
         CREATOR,
         ADMIN,

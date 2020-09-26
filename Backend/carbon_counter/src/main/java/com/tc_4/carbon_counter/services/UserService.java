@@ -24,7 +24,7 @@ public class UserService {
     /**
      * Get a user object from the database based on their userName.
      * 
-     * @param userName
+     * @param userName user name of the user to get
      * @return User object 
      * @throws UserNotFoundException
      */
