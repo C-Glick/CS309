@@ -66,8 +66,6 @@ updateDocs:
   tags:
    - spring_runner_tag
   only: # Will only run if these conditions are met, check documentation for more!
-    refs:
-      - schedules
     variables:
       - $CI_COMMIT_MESSAGE =~ /update docs/
   script:
