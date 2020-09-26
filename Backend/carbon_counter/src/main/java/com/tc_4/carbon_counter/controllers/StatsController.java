@@ -17,7 +17,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 /**
  * The statistics controller handles getting and adding 
- * user statistics to and from the database.
+ * user statistics to and from the database. 
  * @author Colton Glick
  * @author Andrew Pester
  */
