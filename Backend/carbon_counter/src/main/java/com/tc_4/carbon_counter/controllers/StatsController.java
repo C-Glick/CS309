@@ -16,8 +16,9 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 /**
- * The statistics controller handles getting and adding 
- * user statistics to and from the database. 
+ * The statistics controller provides an API to handel commands
+ * related to adding, removing, and viewing a user's statistics.
+ * This controller deals with all mappings beginning with /stats/
  * @author Colton Glick
  * @author Andrew Pester
  */

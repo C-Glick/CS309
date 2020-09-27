@@ -22,7 +22,6 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 public class UserController {
 
-
     /**
      * The user service is called by the controller, it is what actually
      * preforms the commands.
