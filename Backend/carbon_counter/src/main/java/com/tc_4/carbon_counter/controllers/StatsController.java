@@ -5,9 +5,10 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
-import com.tc_4.carbon_counter.databases.DailyStatsDatabase;
 import com.tc_4.carbon_counter.models.DailyStats;
+import com.tc_4.carbon_counter.services.StatsService;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -15,26 +16,17 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 /**
- * The statistics controller handles getting and adding 
- * user statistics to and from the database.
+ * The statistics controller provides an API to handel commands
+ * related to adding, removing, and viewing a user's statistics.
+ * This controller deals with all mappings beginning with /stats/
  * @author Colton Glick
  * @author Andrew Pester
  */
 @RestController
 public class StatsController {
 
-    /**
-     * The daily statistics database to query
-     */
-    private final DailyStatsDatabase database;
-
-    /**
-     * Basic constructor, initiate the database
-     * @param database
-     */
-    StatsController(DailyStatsDatabase database){
-        this.database = database;
-    }
+    @Autowired
+    private StatsService statsService;
 
     /**
      * Returns an array containing the daily stats for the specified user
@@ -45,21 +37,21 @@ public class StatsController {
      */
     @GetMapping("/stats/{userName}")
     public List<DailyStats> getUserDailyStats(@PathVariable String userName){
-        return database.findByUserName(userName);
+       return statsService.getUserDailyStats(userName);
     }
 
      /**
      * Returns the daily stats for the specified user on the specified day
      * 
      * @param userName Pass as a path variable
-     * @param datePayload Enter date in the request body json in the format "date":"yyyy-mm-dd"
+     * @param date Enter date in the request body json in the format "date":"yyyy-mm-dd"
      * @return The most recent Daily stats entry for that day or null if none exists
      */
-    @GetMapping("/stats/daily/{userName}")
-    public Optional<DailyStats> getUserDailyStatsByDate(@PathVariable String userName, @RequestBody Map<String, String> datePayload){
+    @GetMapping("/stats/onDate/{userName}")
+    public Optional<DailyStats> getUserDailyStatsByDate(@PathVariable String userName, @RequestBody Map<String, String> date){
         //Using a Map to get the date as a String(returns the whole JSON otherwise), and using Date.valueOf()
         //to convert to a date object
-        return database.findTopByUserNameAndDateOrderByIdDesc(userName, LocalDate.parse(datePayload.get("date")));
+        return statsService.getUserDailyStatsByDate(userName, LocalDate.parse(date.get("date")));
     }
 
 
@@ -73,11 +65,8 @@ public class StatsController {
      * @return A JSON array of the daily stats from the last month
      */
     @GetMapping("/stats/lastMonth/{userName}")
-    public List<DailyStats> getLastMonthUserDailyStats(@PathVariable String userName){
-        LocalDate oneMonthAgo = LocalDate.now().minusMonths(1);
-        System.out.println(oneMonthAgo);
-        
-        return database.findByUserNameAndDateGreaterThanOrderByDateAsc(userName, oneMonthAgo);
+    public List<DailyStats> getLastMonthUserDailyStats(@PathVariable String userName){        
+        return statsService.getLastMonthUserDailyStats(userName);
     }
 
 
@@ -90,9 +79,7 @@ public class StatsController {
      */
     @PostMapping("/stats/addDaily")
     public DailyStats addDailyStats(@RequestBody DailyStats dailyStats){
-        //TODO: if an entry already exists with this date and username, overwrite it
-        database.save(dailyStats);
-        return dailyStats;
+        return statsService.addDailyStats(dailyStats);
     }
     
 }
