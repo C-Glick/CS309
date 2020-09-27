@@ -34,7 +34,7 @@ public class StatsService {
      */
     public List<DailyStats> getUserDailyStats(String userName){
         //check that user exists
-        userService.getUser(userName);
+        userService.doesUserExist(userName);
         return dailyStatsDatabase.findByUserName(userName);
     }
 
@@ -46,17 +46,21 @@ public class StatsService {
      * @return returns 0 or 1 dailyStats entry
      */
     public Optional<DailyStats> getUserDailyStatsByDate(String userName, LocalDate date){
+        //check that user exists
+        userService.doesUserExist(userName);
         return dailyStatsDatabase.findTopByUserNameAndDateOrderByIdDesc(userName, date);
     }
 
     /**
-     * Returns a list of all daily stats form the last month
+     * Returns a list of all daily sta  ts form the last month
      * for the given user.
      * 
      * @param userName user name of user to find stats for.
      * @return A list of DailyStats object
      */
     public List<DailyStats> getLastMonthUserDailyStats(String userName){
+        //check that user exists
+        userService.doesUserExist(userName);
         LocalDate oneMonthAgo = LocalDate.now().minusMonths(1);
         return dailyStatsDatabase.findByUserNameAndDateGreaterThanOrderByDateAsc(userName, oneMonthAgo);
     }
@@ -64,14 +68,28 @@ public class StatsService {
     /**
      * Add stats to the database.
      * Required fields: userName
+     * If an entry already exists for this user today,
+     * it will be overwritten by this new entry.
+     * 
      * @param stats The new stats to add
      * @return the resulting statistics after adding to the database
      * may contain additional details.
      */
     public DailyStats addDailyStats(DailyStats stats){
-        //TODO: if an entry already exists with this date and username, overwrite it
-        dailyStatsDatabase.save(stats);
-        return stats;
+        //check that user exists
+        userService.doesUserExist(stats.getUserName());
+        
+        //check if an entry already exists for this user today
+        Optional<DailyStats> oldEntry = getUserDailyStatsByDate(stats.getUserName(), LocalDate.now());
+        if(oldEntry.isEmpty()){
+            dailyStatsDatabase.save(stats);
+            return stats;
+        }else{
+            DailyStats oldEntryStats = oldEntry.get();
+            oldEntryStats.copyFrom(stats);
+            dailyStatsDatabase.save(oldEntryStats);
+            return oldEntryStats;
+        }
     }
 
 }

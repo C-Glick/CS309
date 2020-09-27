@@ -13,7 +13,7 @@ import com.fasterxml.jackson.annotation.JsonFormat;
 import org.hibernate.annotations.UpdateTimestamp;
 
 /**
- * Statics entry for tracking daily values for each user
+ * Statistics entry for tracking daily values for each user
  */
 @Entity
 public class DailyStats {
@@ -106,6 +106,23 @@ public class DailyStats {
 
     public void setGarbage(double garbage){
         this.garbage = garbage;
+    }
+//other--------------------------------------
+
+    /**
+     * Copy all values (except id) from the provided DailyStats
+     * into this one
+     * 
+     * @param other The stats to copy from
+     */
+    public void copyFrom(DailyStats other){
+        userName = other.userName;
+        date = other.date;
+        water = other.water;
+        power = other.power;
+        milesDriven = other.milesDriven;
+        meat = other.meat;
+        garbage = other.garbage;
     }
 
 }

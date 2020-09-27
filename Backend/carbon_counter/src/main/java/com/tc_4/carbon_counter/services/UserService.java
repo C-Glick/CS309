@@ -53,8 +53,24 @@ public class UserService {
             return true;
         }
         return false;
-        //also just posts the new password could set method to void to stop this or whatever
-        
+        //also just posts the new password could set method to void to stop this or whatever 
     }
-    
+  
+    /**
+     * Checks if the given user name exists in the user
+     * database, if it does, returns true. If not, throws
+     * UserNotFoundException
+     * 
+     * @param userName the user name to test
+     * @return true if the user does exists
+     * 
+     * @throws UserNotFoundException if the user does not exist
+     */
+    public boolean doesUserExist(String userName) throws UserNotFoundException{
+        if (userDatabase.existsByUserName(userName)){
+            return true;
+        }else{
+            throw new UserNotFoundException(userName);
+        }
+    }
 }

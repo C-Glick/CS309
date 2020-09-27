@@ -16,6 +16,9 @@ import org.springframework.web.bind.annotation.RestController;
  * The user controller provides an API to send commands to the back end.
  * The controller provides url mappings to specific logic in the service classes.
  * The user controller deals with all mappings beginning with /user/
+ * 
+ * @see UserService
+ * 
  * @author Colton Glick
  * @author Andrew Pester
  */

@@ -16,9 +16,12 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 /**
- * The statistics controller provides an API to handel commands
+ * The statistics controller provides an API to handle commands
  * related to adding, removing, and viewing a user's statistics.
  * This controller deals with all mappings beginning with /stats/
+ * 
+ * @see StatsService
+ * 
  * @author Colton Glick
  * @author Andrew Pester
  */
@@ -54,6 +57,18 @@ public class StatsController {
         return statsService.getUserDailyStatsByDate(userName, LocalDate.parse(date.get("date")));
     }
 
+    /**
+     * Returns the daily stats that have been entered for today, or 
+     * null if no stats have been entered yet.
+     * 
+     * @param userName Provide as a path variable
+     * @return a JSON object if a stats entry exists, if not returns an empty object
+     */
+    @GetMapping("/stats/today/{userName}")
+    public Optional<DailyStats> getUserDailyStatsToday(@PathVariable String userName){
+        return statsService.getUserDailyStatsByDate(userName, LocalDate.now());
+    }
+
 
     /**
      * Returns an array of daily stats for dates that are grater than 
@@ -71,7 +86,10 @@ public class StatsController {
 
 
     /**
-     * Add a daily statistic for the specified user in the json body. 
+     * Add a daily statistic for the specified user in the json body.
+     * Required fields: userName.
+     * If an entry already exists for this user today,
+     * it will be overwritten by this new entry.
      * 
      * @param dailyStats Pass the statistics via the JSON body, the only required
      *      field is the userName to assign the stats to.
