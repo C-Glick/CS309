@@ -32,8 +32,7 @@ public class ViewActivity extends AppCompatActivity {
     private String tag_json_get= "json_obj_get";
     private String milesDriven;
     private String username;
-    private JSONArray UserInfo = new JSONArray();
-    private JSONObject CurrentData = new JSONObject();
+    private JSONObject UserInfo = new JSONObject();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -56,22 +55,22 @@ public class ViewActivity extends AppCompatActivity {
     private void getMiles(final String username) throws JSONException {
      //  final TextView failedUsername = (TextView) findViewById(R.id.failedLogin);
 
-        String url = "http://10.24.227.38:8080/stats";
+        String url = "http://10.24.227.38:8080/stats/today";
 
         url += "/" + username;
 
-        JsonArrayRequest jsonObjReq = new JsonArrayRequest(Request.Method.GET,
+        JsonObjectRequest jsonObjReq = new JsonObjectRequest(Request.Method.GET,
                 url, null, // IF YOU WANT TO SEND A JSONOBJECT WITH POST THEN PASS IT HERE
-                new Response.Listener<JSONArray>() {
+                new Response.Listener<JSONObject>() {
 
                     @Override
-                    public void onResponse(JSONArray response) {
+                    public void onResponse(JSONObject response) {
                        // Toast.makeText(ViewActivity.this, "We in the response thing", LENGTH_SHORT).show();
                         UserInfo = response;
 
                             try {
-                                CurrentData = UserInfo.getJSONObject(UserInfo.length()-1);
-                                milesDriven = CurrentData.getString("milesDriven");
+                               // CurrentData = UserInfo.getJSONObject(UserInfo.length()-1);
+                                milesDriven = UserInfo.getString("milesDriven");
 
                                 TextView mDriven = findViewById(R.id.milesDriven);
                                 mDriven.setText(milesDriven);
