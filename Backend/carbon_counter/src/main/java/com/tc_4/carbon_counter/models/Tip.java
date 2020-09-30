@@ -7,7 +7,7 @@ import javax.persistence.Id;
 
 @Entity
 public class Tip {
-    enum Catagory{
+    public enum Catagory{
         WATER,
         CARBON
 
@@ -21,8 +21,11 @@ public class Tip {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    Long id;
+    //Long id;
   
+    @Column(name="id")
+    long id;
+
     @Column(name="title")
     String title;
 
@@ -49,7 +52,9 @@ public class Tip {
 
     @Column(name="working_citations")
     String workingCitations;
-
+    public long getId(){
+        return id;
+    }
     public String getTitle(){
         return title;
     }
@@ -104,6 +109,10 @@ public class Tip {
         }
         if(newStatus == Status.DENIED){
             status = newStatus;
+            workingTitle = title;
+            workingBody = body;
+            workingCatagory = catagory;
+            workingCitations = citations;
         }
         
         

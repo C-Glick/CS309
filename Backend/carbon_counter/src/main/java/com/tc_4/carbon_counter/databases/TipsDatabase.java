@@ -8,4 +8,5 @@ public interface TipsDatabase extends JpaRepository<Tip, Long> {
     
     Optional<Tip> findByTitle(String title);
     Optional<Tip> findByWorkingTitle(String workingTitle);
+    Optional<Tip> findById(long id);
 }
