@@ -1,12 +1,18 @@
 package com.tc_4.carbon_counter.services;
 
+import java.net.http.HttpResponse;
 import java.util.Optional;
 
 import com.tc_4.carbon_counter.databases.UserDatabase;
+import com.tc_4.carbon_counter.exceptions.UnauthorizedException;
 import com.tc_4.carbon_counter.exceptions.UserNotFoundException;
 import com.tc_4.carbon_counter.models.User;
+import com.tc_4.carbon_counter.models.User.Role;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.AccessDeniedException;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 /**
@@ -29,8 +35,19 @@ public class UserService {
      * @throws UserNotFoundException
      */
     public User getUser(String userName){
-        return userDatabase.findByUserName(userName).
-        orElseThrow(() -> new UserNotFoundException(userName));
+        if(checkPermission(Role.ADMIN)){
+            return userDatabase.findByUserName(userName).
+            orElseThrow(() -> new UserNotFoundException(userName));
+        }else{
+            Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+
+            if(auth.getName().equals(userName)){
+                return userDatabase.findByUserName(userName).
+                orElseThrow(() -> new UserNotFoundException(userName));
+            }
+            //else unauthorized use
+            throw new UnauthorizedException("You do not have permission to access user '" + userName + "'");
+        }
     }
 
     /**
@@ -72,5 +89,38 @@ public class UserService {
         }else{
             throw new UserNotFoundException(userName);
         }
+    }
+
+    //TODO
+    public User editUser(String userName, User newUser){
+        return new User();
+    }
+
+    /**
+     * Preforms a check to see if the user that created this request 
+     * as the required role or higher
+     * 
+     * @param requiredRole  The minimum role needed to preform this action
+     * @return              True if the user has access, false if they dont
+     */
+    public boolean checkPermission(Role requiredRole){
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        
+        //check all permissions including and above required role
+        for(Role r : Role.values()){
+            //skip lower roles
+            if(r.compareTo(requiredRole) < 0 ){
+                continue;
+            }
+
+            if(auth.getAuthorities().stream().anyMatch(a ->
+            a.getAuthority().equals("ROLE_" + r.toString()))){
+                
+                // user has at least the minimum role
+                return true;
+            }
+        }
+        //user does not have at least the minimum role
+        return false;
     }
 }

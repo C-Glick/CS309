@@ -75,4 +75,17 @@ public class UserController {
     {
         return userService.changePassword(userName, oldPassword, newPassword);
     }
+
+    /**
+     * Edit a user's information. overwrites the user with the userName given
+     * with the user object passed in the request body.
+     * 
+     * @param userName  provide as a path variable. The current username of the user to change
+     * @param user      provide in the request body as a json object. This contains the new values to change to.
+     * @return          The updated user.
+     */
+    @PostMapping("/user/edit/{userName}")
+    public User editUser(@PathVariable String userName, @RequestBody User user){
+        return userService.editUser(userName, user);
+    }
 }

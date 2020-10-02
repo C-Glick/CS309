@@ -1,5 +1,6 @@
 package com.tc_4.carbon_counter.databases;
 
+import java.util.List;
 import java.util.Optional;
 
 import com.tc_4.carbon_counter.models.User;
@@ -10,4 +11,6 @@ public interface UserDatabase extends JpaRepository<User, Long> {
     Optional<User> findByUserName(String userName);
 
     boolean existsByUserName(String userName);
+
+    List<User> findAll();
 }
