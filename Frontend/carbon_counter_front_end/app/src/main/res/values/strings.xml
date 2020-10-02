@@ -14,7 +14,8 @@
     <string name="invalid_password">Password must be >5 characters</string>
     <string name="login_failed">"Login failed"</string>
     <string name="your_name">Your Name</string>
-    <string name="e_mail" >email</string>
+    <string name="e_mail">email</string>
     <string name="password">password</string>
     <string name="re_type_password">re type password</string>
+    <string name="button">Tip Approval</string>
 </resources>
