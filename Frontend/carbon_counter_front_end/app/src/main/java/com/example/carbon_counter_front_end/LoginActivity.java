@@ -2,6 +2,7 @@ package com.example.carbon_counter_front_end;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.android.volley.AuthFailureError;
 import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
@@ -11,11 +12,13 @@ import com.example.carbon_counter_front_end.app.AppController;
 import android.media.MediaCodec;
 import android.os.Bundle;
 import android.os.TestLooperManager;
+import android.util.Base64;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 import android.content.Intent;
+import android.widget.Toast;
 
 
 import com.android.volley.toolbox.StringRequest;
@@ -23,6 +26,11 @@ import com.example.carbon_counter_front_end.net_utils.Const;
 
 import org.json.JSONException;
 import org.json.JSONObject;
+
+import java.util.HashMap;
+import java.util.Map;
+
+import static android.widget.Toast.LENGTH_SHORT;
 
 public class LoginActivity extends AppCompatActivity {
     private String TAG = LoginActivity.class.getSimpleName();
@@ -67,6 +75,7 @@ public class LoginActivity extends AppCompatActivity {
 
         url += "/" + username;
 
+
         JsonObjectRequest jsonObjReq = new JsonObjectRequest(Request.Method.GET,
                 url, null, // IF YOU WANT TO SEND A JSONOBJECT WITH POST THEN PASS IT HERE
                 new Response.Listener<JSONObject>() {
@@ -96,12 +105,29 @@ public class LoginActivity extends AppCompatActivity {
                             e.printStackTrace();
                         }
                     }
-                }, new Response.ErrorListener() {
+                }, new Response.ErrorListener()
+                    {
             @Override
             public void onErrorResponse(VolleyError error) {
                 VolleyLog.d(TAG, "Error: " + error.getMessage());
+                Toast.makeText(LoginActivity.this, "Invalid Username/Password", LENGTH_SHORT).show();
             }
-        });
+
+        }
+
+        ){
+            @Override
+            public Map<String, String> getHeaders() throws AuthFailureError {
+                Map<String, String>  params = new HashMap<String, String>();
+                String credentials = username+":"+password;
+                String auth = "Basic "
+                        + Base64.encodeToString(credentials.getBytes(),
+                        Base64.NO_WRAP);
+                params.put("Authorization", auth);
+
+                return params;
+            }
+        };
 
         // Adding request to request queue
         AppController.getInstance().addToRequestQueue(jsonObjReq, tag_json_req);
