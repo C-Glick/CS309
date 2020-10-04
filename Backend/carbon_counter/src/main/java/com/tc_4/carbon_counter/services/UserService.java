@@ -1,8 +1,5 @@
 package com.tc_4.carbon_counter.services;
 
-import java.net.http.HttpResponse;
-import java.util.Optional;
-
 import com.tc_4.carbon_counter.databases.UserDatabase;
 import com.tc_4.carbon_counter.exceptions.UnauthorizedException;
 import com.tc_4.carbon_counter.exceptions.UserNotFoundException;
@@ -10,7 +7,6 @@ import com.tc_4.carbon_counter.models.User;
 import com.tc_4.carbon_counter.models.User.Role;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
@@ -39,9 +35,7 @@ public class UserService {
             return userDatabase.findByUserName(userName).
             orElseThrow(() -> new UserNotFoundException(userName));
         }else{
-            Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-
-            if(auth.getName().equals(userName)){
+            if(SecurityContextHolder.getContext().getAuthentication().getName().equals(userName)){
                 return userDatabase.findByUserName(userName).
                 orElseThrow(() -> new UserNotFoundException(userName));
             }
@@ -61,15 +55,20 @@ public class UserService {
     }
 
     public boolean changePassword(String userName, String oldPassword, String newPassword){
+        if(!checkPermission(Role.ADMIN) && !SecurityContextHolder.getContext().getAuthentication().getName().equals(userName) ){
+            throw new UnauthorizedException("You do not have permission to change the password of user '" + userName + "'");
+        }
+
         //must have the original password which is oldPassword to change password to password with this setup
         User user = getUser(userName);
 
         if(user.getPassword().equals(oldPassword)){
+            //TODO update in memory authentication
             user.setPassword(newPassword);
             userDatabase.save(user);
             return true;
         }
-        return false;
+        throw new UnauthorizedException("Incorrect old password");
         //also just posts the new password could set method to void to stop this or whatever 
     }
   
