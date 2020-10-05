@@ -21,6 +21,7 @@ public class MainActivity extends AppCompatActivity {
 
         Button viewStats = (Button) findViewById(R.id.buttonView);
         Button updateStats = (Button) findViewById(R.id.buttonUpdate);
+        Button viewTips = (Button) findViewById(R.id.buttonViewTip);
 
         viewStats.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -38,6 +39,15 @@ public class MainActivity extends AppCompatActivity {
                 //New intent to update stats page
                 Intent i = new Intent(MainActivity.this, UpdateActivity.class);
                 i.putExtra("username",Username);
+                startActivity(i);
+            }
+        });
+
+        viewTips.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent i = new Intent(MainActivity.this, TipCategoryActivity.class);
+                i.putExtra("username", Username);
                 startActivity(i);
             }
         });
