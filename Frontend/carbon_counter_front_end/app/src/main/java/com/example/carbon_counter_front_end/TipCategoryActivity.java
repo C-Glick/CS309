@@ -19,6 +19,7 @@ public class TipCategoryActivity extends AppCompatActivity {
 
         //Buttons to activities for their specific type
 
+
         //Add code to pull from server the users stats and but topics in recommended, if any
 
     }

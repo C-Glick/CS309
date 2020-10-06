@@ -13,7 +13,8 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true">
-        <activity android:name=".TipCategoryActivity"></activity>
+        <activity android:name=".viewCategoryResults"></activity>
+        <activity android:name=".TipCategoryActivity" />
         <activity android:name=".CreateUserActivity" />
         <activity android:name=".ViewActivity" />
         <activity android:name=".UpdateActivity" />
