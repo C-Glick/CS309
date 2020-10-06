@@ -17,7 +17,8 @@ public class MainActivity extends AppCompatActivity {
 
         Intent temp = getIntent();
         final String Username = temp.getStringExtra("username");
-
+        final String Password = temp.getStringExtra("Password");
+        final String role = temp.getStringExtra("role");
 
         Button viewStats = (Button) findViewById(R.id.buttonView);
         Button updateStats = (Button) findViewById(R.id.buttonUpdate);
@@ -28,6 +29,7 @@ public class MainActivity extends AppCompatActivity {
                 //new intent to view stats page
                 Intent i = new Intent(MainActivity.this, ViewActivity.class);
                 i.putExtra("username",Username);
+                i.putExtra("password",Password);
                 startActivity(i);
             }
         });
@@ -38,6 +40,8 @@ public class MainActivity extends AppCompatActivity {
                 //New intent to update stats page
                 Intent i = new Intent(MainActivity.this, UpdateActivity.class);
                 i.putExtra("username",Username);
+                i.putExtra("password",Password);
+
                 startActivity(i);
             }
         });

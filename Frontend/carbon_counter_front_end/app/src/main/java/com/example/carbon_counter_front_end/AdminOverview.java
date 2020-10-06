@@ -1,10 +1,10 @@
-package com.example.carbon_counter_front_end.ui.login;
+package com.example.carbon_counter_front_end;
 
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.Bundle;
 
-import com.example.carbon_counter_front_end.R;
+
 
 public class AdminOverview extends AppCompatActivity {
 

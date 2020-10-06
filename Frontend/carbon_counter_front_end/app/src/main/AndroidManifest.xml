@@ -13,7 +13,11 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true">
-        <activity android:name=".ui.login.AdminOverview"></activity>
+        <activity
+            android:name=".AdminTipApprovalActivity"
+            android:label="@string/title_activity_admin_tip_approval"
+            android:theme="@style/AppTheme.NoActionBar"></activity>
+        <activity android:name=".AdminOverview" />
         <activity android:name=".CreateUserActivity" />
         <activity android:name=".ViewActivity" />
         <activity android:name=".UpdateActivity" />

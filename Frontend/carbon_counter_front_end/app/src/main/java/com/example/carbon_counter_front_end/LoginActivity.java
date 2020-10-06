@@ -92,6 +92,7 @@ public class LoginActivity extends AppCompatActivity {
                                 //intent to main page
                                 Intent i = new Intent(LoginActivity.this, MainActivity.class);
                                 i.putExtra("username",username);
+
                                 startActivity(i);
 
                             } else {
