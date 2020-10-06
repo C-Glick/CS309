@@ -9,6 +9,8 @@ import com.tc_4.carbon_counter.models.User.Role;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.provisioning.InMemoryUserDetailsManager;
+import org.springframework.security.provisioning.JdbcUserDetailsManager;
 import org.springframework.stereotype.Service;
 
 /**
@@ -22,6 +24,9 @@ public class UserService {
 
     @Autowired
     private UserDatabase userDatabase;
+
+    @Autowired
+    private JdbcUserDetailsManager userDetailsManager;
 
     /**
      * Get a user object from the database based on their userName.
@@ -64,6 +69,7 @@ public class UserService {
 
         if(user.getPassword().equals(oldPassword)){
             //TODO update in memory authentication
+            userDetailsManager.changePassword(oldPassword, newPassword);
             user.setPassword(newPassword);
             userDatabase.save(user);
             return true;
