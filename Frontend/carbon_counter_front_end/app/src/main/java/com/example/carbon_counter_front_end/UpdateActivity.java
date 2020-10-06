@@ -5,12 +5,14 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.Editable;
+import android.util.Base64;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
+import com.android.volley.AuthFailureError;
 import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
@@ -21,6 +23,9 @@ import com.example.carbon_counter_front_end.app.AppController;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import static java.lang.Double.parseDouble;
 import static java.lang.Integer.parseInt;
 
@@ -29,6 +34,7 @@ public class UpdateActivity extends AppCompatActivity {
     private String TAG = UpdateActivity.class.getSimpleName();
     private String tag_json_POST= "json_obj_POST";
     private String username;
+    private String password;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -37,6 +43,7 @@ public class UpdateActivity extends AppCompatActivity {
 
         Intent intent = getIntent();
         username = intent.getStringExtra("username");
+        password = intent.getStringExtra("password");
 
         Button backButton = (Button) findViewById(R.id.buttonBack);
         Button viewButton = (Button) findViewById(R.id.buttonView2);
@@ -107,7 +114,19 @@ public class UpdateActivity extends AppCompatActivity {
                 public void onErrorResponse(VolleyError error) {
                     VolleyLog.d(TAG, "Error: " + error.getMessage());
                 }
-            });
+            }){
+                @Override
+                public Map<String, String> getHeaders() throws AuthFailureError {
+                    Map<String, String>  params = new HashMap<String, String>();
+                    String credentials = username+":"+password;
+                    String auth = "Basic "
+                            + Base64.encodeToString(credentials.getBytes(),
+                            Base64.NO_WRAP);
+                    params.put("Authorization", auth);
+
+                    return params;
+                }
+            };
             AppController.getInstance().addToRequestQueue(jsonObjReq, tag_json_POST);
     }
 }

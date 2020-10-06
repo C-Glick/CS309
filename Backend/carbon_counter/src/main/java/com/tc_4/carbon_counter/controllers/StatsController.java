@@ -62,7 +62,7 @@ public class StatsController {
      * null if no stats have been entered yet.
      * 
      * @param userName Provide as a path variable
-     * @return a JSON object if a stats entry exists, if not returns an empty object
+     * @return a JSON object if a stats entry exists, if not returns null
      */
     @GetMapping("/stats/today/{userName}")
     public Optional<DailyStats> getUserDailyStatsToday(@PathVariable String userName){

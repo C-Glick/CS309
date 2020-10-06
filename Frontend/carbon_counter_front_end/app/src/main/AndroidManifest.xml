@@ -15,6 +15,11 @@
         android:usesCleartextTraffic="true">
         <activity android:name=".viewCategoryResults"></activity>
         <activity android:name=".TipCategoryActivity" />
+        <activity
+            android:name=".AdminTipApprovalActivity"
+            android:label="@string/title_activity_admin_tip_approval"
+            android:theme="@style/AppTheme.NoActionBar"></activity>
+        <activity android:name=".AdminOverview" />
         <activity android:name=".CreateUserActivity" />
         <activity android:name=".ViewActivity" />
         <activity android:name=".UpdateActivity" />
