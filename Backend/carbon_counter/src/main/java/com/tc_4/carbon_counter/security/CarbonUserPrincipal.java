@@ -10,6 +10,12 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
+/**
+ * Custom authentication class that allows for database backed authentication.
+ * This class defines how to get various details about the user executing functions.
+ * 
+ * @author Colton Glick
+ */
 public class CarbonUserPrincipal implements UserDetails {
     private User user;
     
@@ -53,6 +59,9 @@ public class CarbonUserPrincipal implements UserDetails {
         return true;
     }
 
+    /**
+     * @return the current authenticated user
+     */
     public User getUser(){
         return user;
     }

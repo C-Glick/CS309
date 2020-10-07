@@ -7,7 +7,6 @@ import com.tc_4.carbon_counter.models.User;
 import com.tc_4.carbon_counter.models.User.Role;
 import com.tc_4.carbon_counter.security.CarbonUserPrincipal;
 
-import org.aspectj.weaver.bcel.BcelAccessForInlineMunger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -25,9 +24,7 @@ public class UserService {
     @Autowired
     private UserDatabase userDatabase;
 
-    @Autowired
-    private CarbonUserDetailsService userDetailsManager;
-
+    /** Password encoder used when making a new user or changing a password*/
     private BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
 
     /**
@@ -89,7 +86,6 @@ public class UserService {
             return true;
         }
         throw new UnauthorizedException("Incorrect old password");
-        //also just posts the new password could set method to void to stop this or whatever 
     }
   
     /**
@@ -117,7 +113,7 @@ public class UserService {
 
     /**
      * Preforms a check to see if the user that created this request 
-     * as the required role or higher
+     * has the required role or higher.
      * 
      * @param requiredRole  The minimum role needed to preform this action
      * @return              True if the user has access, false if they dont

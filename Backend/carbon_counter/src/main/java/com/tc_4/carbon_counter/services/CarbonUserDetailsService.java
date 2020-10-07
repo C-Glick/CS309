@@ -12,6 +12,12 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
+/**
+ * Service to allow for database backed authentication. Defines how to retrieve user's
+ * credentials from the user database.
+ * 
+ * @author Colton Glick
+ */
 @Service
 public class CarbonUserDetailsService implements UserDetailsService {
     
