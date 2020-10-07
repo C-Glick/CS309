@@ -4,6 +4,7 @@ import com.tc_4.carbon_counter.models.User;
 import com.tc_4.carbon_counter.services.UserService;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -15,7 +16,15 @@ import org.springframework.web.bind.annotation.RestController;
 /**
  * The user controller provides an API to send commands to the back end.
  * The controller provides url mappings to specific logic in the service classes.
- * The user controller deals with all mappings beginning with /user/
+ * The user controller deals with all mappings beginning with /user/. The server
+ * may respond with a "401 unauthorized" status code if the authentication header
+ * is not correct. It should be a string in the following format "username:password"
+ * and it should be 64 bit encoded. This header must be attached to all requests
+ * except /user/add. 
+ * 
+ * Some functions require elevated permissions to access, these 
+ * are handled by the UnauthorizedException, the response body will contain a json
+ * object with a message parameter with further details. 
  * 
  * @see UserService
  * 
@@ -36,17 +45,18 @@ public class UserController {
     /**
      * Get user info by username.
      * 
-     * @param userName pass as a path variable
+     * @param username pass as a path variable
      * @return The user's info as a JSON object
      */
-    @GetMapping("/user/{userName}")
-    public User getUserInfo(@PathVariable String userName){
-        return userService.getUser(userName);
+    @GetMapping("/user/{username}")
+    public User getUserInfo(@PathVariable String username){
+        return userService.getUser(username);
     }
 
     /**
      * Add a user to the database, required fields: 
-     * userName, email, password, role.
+     * username, email, password, role.
+     * Does not require authentication.
      * 
      * @param user to add, pass as a JSON object in the request body.
      * @return the user that has been added, may include additional
@@ -61,31 +71,44 @@ public class UserController {
     }
 
     /**
-     * Change a user password. Must be authenticated with at least admin
+     * Change a user's password. Must be authenticated with at least admin
      * permissions or authenticated as the user to change
      * 
-     * @param userName      provide as a path variable
-     * @param oldPassword   old password must match current password, provide as a request parameter
+     * @param username      provide as a path variable
      * @param newPassword   new password, provide as a request parameter
      * @return boolean, if the password was set 
      */
-    @RequestMapping("/user/{userName}/setPassword")
-    public boolean setUserPassword(@PathVariable String userName, 
+    @RequestMapping("/user/{username}/setPassword")
+    public boolean setUserPassword(@PathVariable String username, 
         @RequestParam("newPassword") String newPassword)
     {
-        return userService.changePassword(userName, newPassword);
+        return userService.changePassword(username, newPassword);
     }
 
     /**
-     * Edit a user's information. overwrites the user with the userName given
-     * with the user object passed in the request body.
+     * Edit a user's information. Overwrites the user with the username given
+     * with the user object passed in the request body. All user variables are optional
+     * only specified values will be updated. Must be authenticated with at least admin
+     * permissions or authenticated as the user to change.
      * 
-     * @param userName  provide as a path variable. The current username of the user to change
+     * @param username  provide as a path variable. The current username of the user to change
      * @param user      provide in the request body as a json object. This contains the new values to change to.
      * @return          The updated user.
      */
-    @PostMapping("/user/edit/{userName}")
-    public User editUser(@PathVariable String userName, @RequestBody User user){
-        return userService.editUser(userName, user);
+    @PostMapping("/user/edit/{username}")
+    public User editUser(@PathVariable String username, @RequestBody User user){
+        return userService.editUser(username, user);
+    }
+
+    /**
+     * Remove this user from the database. Must be authenticated with at least admin
+     * permissions or authenticated as the user to remove.
+     * 
+     * @param username  provide as a path variable. The current username of the user to remove
+     * @return          boolean, true if the user was successfully removed
+     */
+    @DeleteMapping("/user/remove/{username}")
+    public Boolean removeUser(@PathVariable String username){
+        return userService.removeUser(username);
     }
 }

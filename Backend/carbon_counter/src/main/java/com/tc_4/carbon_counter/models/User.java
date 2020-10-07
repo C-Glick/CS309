@@ -69,4 +69,22 @@ public class User{
         return role.compareTo(permission)>=0;
     }
 
+    /**
+     * Copies the details from the other user into this user.
+     * Skips null variables effectively updating this user with the 
+     * changes from the other user. DOES NOT COPY PASSWORD
+     * 
+     * @param other The other user to copy from
+     */
+    public void copyFrom(User other){
+        if(other.username != null){
+            this.username = other.username;
+        }
+        if(other.email != null){
+            this.email = other.email;
+        }
+        if(other.role != null){
+            this.role = other.role;
+        }
+    }
 }
