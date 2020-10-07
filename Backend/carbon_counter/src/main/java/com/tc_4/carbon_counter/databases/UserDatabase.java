@@ -8,9 +8,9 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface UserDatabase extends JpaRepository<User, Long> {
     
-    Optional<User> findByUserName(String userName);
+    Optional<User> findByUsername(String username);
 
-    boolean existsByUserName(String userName);
+    boolean existsByUsername(String username);
 
     List<User> findAll();
 }

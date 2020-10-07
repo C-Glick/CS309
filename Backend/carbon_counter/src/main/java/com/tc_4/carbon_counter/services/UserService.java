@@ -5,12 +5,12 @@ import com.tc_4.carbon_counter.exceptions.UnauthorizedException;
 import com.tc_4.carbon_counter.exceptions.UserNotFoundException;
 import com.tc_4.carbon_counter.models.User;
 import com.tc_4.carbon_counter.models.User.Role;
+import com.tc_4.carbon_counter.security.CarbonUserPrincipal;
 
+import org.aspectj.weaver.bcel.BcelAccessForInlineMunger;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.provisioning.InMemoryUserDetailsManager;
-import org.springframework.security.provisioning.JdbcUserDetailsManager;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 /**
@@ -26,10 +26,13 @@ public class UserService {
     private UserDatabase userDatabase;
 
     @Autowired
-    private JdbcUserDetailsManager userDetailsManager;
+    private CarbonUserDetailsService userDetailsManager;
+
+    private BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
 
     /**
      * Get a user object from the database based on their userName.
+     * Must have at least admin permissions or authenticated as this user.
      * 
      * @param userName user name of the user to get
      * @return User object 
@@ -37,11 +40,11 @@ public class UserService {
      */
     public User getUser(String userName){
         if(checkPermission(Role.ADMIN)){
-            return userDatabase.findByUserName(userName).
+            return userDatabase.findByUsername(userName).
             orElseThrow(() -> new UserNotFoundException(userName));
         }else{
             if(SecurityContextHolder.getContext().getAuthentication().getName().equals(userName)){
-                return userDatabase.findByUserName(userName).
+                return userDatabase.findByUsername(userName).
                 orElseThrow(() -> new UserNotFoundException(userName));
             }
             //else unauthorized use
@@ -56,10 +59,22 @@ public class UserService {
      * @return the user that was added to the database
      */
     public User addUser(User user){
+        //encrypt password when saving to the database
+        user.setPassword(passwordEncoder.encode(user.getPassword()));
+        
         return userDatabase.save(user);
     }
 
-    public boolean changePassword(String userName, String oldPassword, String newPassword){
+    /**
+     * Change the password of the given user. Must have at least admin permissions or 
+     * be authenticated as the user to change.
+     * 
+     * @param userName      The user name of the user to change
+     * @param newPassword   The new password to use, pass as plain text, will be encrypted before saving 
+     * @return  boolean, true if the password change was successful
+     * @throws UnauthorizedException if you don't have permission to change this user's password
+     */
+    public boolean changePassword(String userName, String newPassword){
         if(!checkPermission(Role.ADMIN) && !SecurityContextHolder.getContext().getAuthentication().getName().equals(userName) ){
             throw new UnauthorizedException("You do not have permission to change the password of user '" + userName + "'");
         }
@@ -67,10 +82,9 @@ public class UserService {
         //must have the original password which is oldPassword to change password to password with this setup
         User user = getUser(userName);
 
-        if(user.getPassword().equals(oldPassword)){
-            //TODO update in memory authentication
-            userDetailsManager.changePassword(oldPassword, newPassword);
-            user.setPassword(newPassword);
+        if(SecurityContextHolder.getContext().getAuthentication().isAuthenticated()){
+            //encrypt new password            
+            user.setPassword(passwordEncoder.encode(newPassword));
             userDatabase.save(user);
             return true;
         }
@@ -89,7 +103,7 @@ public class UserService {
      * @throws UserNotFoundException if the user does not exist
      */
     public boolean doesUserExist(String userName) throws UserNotFoundException{
-        if (userDatabase.existsByUserName(userName)){
+        if (userDatabase.existsByUsername(userName)){
             return true;
         }else{
             throw new UserNotFoundException(userName);
@@ -109,7 +123,7 @@ public class UserService {
      * @return              True if the user has access, false if they dont
      */
     public boolean checkPermission(Role requiredRole){
-        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        CarbonUserPrincipal auth =(CarbonUserPrincipal) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         
         //check all permissions including and above required role
         for(Role r : Role.values()){
@@ -119,7 +133,7 @@ public class UserService {
             }
 
             if(auth.getAuthorities().stream().anyMatch(a ->
-            a.getAuthority().equals("ROLE_" + r.toString()))){
+            a.getAuthority().equals(r.toString()))){
                 
                 // user has at least the minimum role
                 return true;

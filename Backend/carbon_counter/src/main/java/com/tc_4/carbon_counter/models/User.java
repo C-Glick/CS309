@@ -7,7 +7,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 
 @Entity
-public class User {
+public class User{
     /**
      * Enumeration for the role of each user. Determines 
      * the permissions that this user has.
@@ -23,7 +23,7 @@ public class User {
     Long id;
   
     @Column(name="username")
-    String userName;
+    String username;
 
     @Column(name="email")
     String email;
@@ -38,8 +38,8 @@ public class User {
         return id;
     }
 
-    public String getUserName(){
-        return userName;
+    public String getUsername(){
+        return username;
     }
 
     public String getEmail(){
@@ -53,7 +53,7 @@ public class User {
         return role;
     }
     public void setUsername(String name){
-        userName = name;
+        username = name;
     }
     public void setEmail(String newEmail){
         email = newEmail;

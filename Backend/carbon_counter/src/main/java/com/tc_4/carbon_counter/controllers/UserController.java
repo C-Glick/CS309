@@ -61,8 +61,8 @@ public class UserController {
     }
 
     /**
-     * Change a user password, must provide the correct 
-     * old password and a new password as a request parameter.
+     * Change a user password. Must be authenticated with at least admin
+     * permissions or authenticated as the user to change
      * 
      * @param userName      provide as a path variable
      * @param oldPassword   old password must match current password, provide as a request parameter
@@ -70,10 +70,10 @@ public class UserController {
      * @return boolean, if the password was set 
      */
     @RequestMapping("/user/{userName}/setPassword")
-    public boolean setUserPassword(@PathVariable String userName, @RequestParam("oldPassword") String oldPassword, 
-    @RequestParam("newPassword") String newPassword)
+    public boolean setUserPassword(@PathVariable String userName, 
+        @RequestParam("newPassword") String newPassword)
     {
-        return userService.changePassword(userName, oldPassword, newPassword);
+        return userService.changePassword(userName, newPassword);
     }
 
     /**
