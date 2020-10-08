@@ -1,4 +1,4 @@
-package com.example.carbon_counter_front_end;
+package com.example.carbon_counter_front_end.ui.main;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -10,7 +10,6 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.TextView;
 
 import com.android.volley.AuthFailureError;
 import com.android.volley.Request;
@@ -18,6 +17,9 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.VolleyLog;
 import com.android.volley.toolbox.JsonObjectRequest;
+import com.example.carbon_counter_front_end.MainActivity;
+import com.example.carbon_counter_front_end.R;
+import com.example.carbon_counter_front_end.ViewActivity;
 import com.example.carbon_counter_front_end.app.AppController;
 
 import org.json.JSONException;

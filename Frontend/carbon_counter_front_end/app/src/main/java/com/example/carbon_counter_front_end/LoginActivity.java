@@ -83,6 +83,8 @@ public class LoginActivity extends AppCompatActivity {
                     @Override
                     public void onResponse(JSONObject response) {
                         Log.d(TAG, response.toString());
+
+                        //clear failed login fields
                         failedLogin.setText("");
                         failedLogin2.setText("");
 
@@ -91,6 +93,7 @@ public class LoginActivity extends AppCompatActivity {
                         i.putExtra("username",username);
 
                         startActivity(i);
+
                     }
                 }, new Response.ErrorListener()
                     {

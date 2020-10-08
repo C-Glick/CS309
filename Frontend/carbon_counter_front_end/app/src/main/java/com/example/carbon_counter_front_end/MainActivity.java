@@ -6,7 +6,8 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
-import android.widget.TextView;
+
+import com.example.carbon_counter_front_end.ui.main.UpdateActivity;
 
 public class MainActivity extends AppCompatActivity {
 
