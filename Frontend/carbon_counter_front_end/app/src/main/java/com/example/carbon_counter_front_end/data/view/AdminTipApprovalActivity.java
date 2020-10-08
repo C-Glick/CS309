@@ -1,7 +1,8 @@
-package com.example.carbon_counter_front_end;
+package com.example.carbon_counter_front_end.data.view;
 
 import android.os.Bundle;
 
+import com.example.carbon_counter_front_end.R;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.android.material.tabs.TabLayout;

@@ -1,4 +1,4 @@
-package com.example.carbon_counter_front_end;
+package com.example.carbon_counter_front_end.data.view;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 
+import com.example.carbon_counter_front_end.R;
 import com.example.carbon_counter_front_end.ui.main.UpdateActivity;
 
 public class MainActivity extends AppCompatActivity {
