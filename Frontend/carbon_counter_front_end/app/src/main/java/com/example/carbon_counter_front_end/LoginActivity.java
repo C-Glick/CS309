@@ -83,8 +83,6 @@ public class LoginActivity extends AppCompatActivity {
                     @Override
                     public void onResponse(JSONObject response) {
                         Log.d(TAG, response.toString());
-                        try {
-                            if (response.get("password").equals(password)) {
                                 //clear failed login fields
                                 failedLogin.setText("");
                                 failedLogin2.setText("");
@@ -95,16 +93,14 @@ public class LoginActivity extends AppCompatActivity {
 
                                 startActivity(i);
 
-                            } else {
+
                                 //Label stating failed username or password
                                 failedLogin.setText("Invalid username or password!");
                                 failedLogin2.setText("Please register or try again!");
 
 
-                            }
-                        } catch (JSONException e) {
-                            e.printStackTrace();
-                        }
+
+
                     }
                 }, new Response.ErrorListener()
                     {

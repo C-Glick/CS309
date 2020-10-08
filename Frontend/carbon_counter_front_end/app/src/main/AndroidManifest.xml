@@ -20,7 +20,7 @@
         <activity android:name=".AdminOverview" />
         <activity android:name=".CreateUserActivity" />
         <activity android:name=".ViewActivity" />
-        <activity android:name=".UpdateActivity" />
+        <activity android:name=".ui.main.UpdateActivity" />
         <activity android:name=".LoginActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
