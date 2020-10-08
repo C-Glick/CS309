@@ -12,11 +12,13 @@ import com.android.volley.toolbox.JsonObjectRequest;
 import com.example.carbon_counter_front_end.R;
 import com.example.carbon_counter_front_end.app.AppController;
 import com.example.carbon_counter_front_end.data.model.AppDatabase;
+import com.example.carbon_counter_front_end.data.model.IVolleyListener;
 import com.example.carbon_counter_front_end.data.model.InsertDataThread;
 import com.example.carbon_counter_front_end.data.model.LoggedInUser;
 import com.example.carbon_counter_front_end.data.model.RequestServerForService;
 import com.example.carbon_counter_front_end.data.model.User;
 import com.example.carbon_counter_front_end.data.model.UserInformation;
+import com.example.carbon_counter_front_end.data.presenter.Presenter;
 
 import android.os.Bundle;
 import android.util.Base64;
@@ -33,8 +35,9 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class LoginActivity extends AppCompatActivity {
-    private String TAG = LoginActivity.class.getSimpleName();
-    private String tag_json_req = "json_obj_req";
+    private TextView failedLogin = (TextView) findViewById(R.id.failedLogin);
+    private TextView failedLogin2 = (TextView) findViewById(R.id.failedLogin2);
+    private Presenter presenter;
 
 
     @Override
@@ -42,12 +45,12 @@ public class LoginActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
 
+        presenter = new Presenter(LoginActivity.this, getApplicationContext());
+
         final TextView username = (TextView) findViewById(R.id.username);
         final TextView password = (TextView) findViewById(R.id.password);
         Button loginButton = (Button) findViewById(R.id.buttonLogin);
         Button registerButton = (Button) findViewById(R.id.buttonRegister);
-        final TextView failedLogin = (TextView) findViewById(R.id.failedLogin);
-        final TextView failedLogin2 = (TextView) findViewById(R.id.failedLogin2);
 
         loginButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -59,26 +62,18 @@ public class LoginActivity extends AppCompatActivity {
                 insertData.start();*/
                 UserInformation.username = username.getText().toString();
                 UserInformation.password = password.getText().toString();
+                presenter.setModel(new RequestServerForService(getApplicationContext(), new IVolleyListener() {
+                    @Override
+                    public void onSuccess() {
+                        gotoMainActivity();
+                    }
 
-                Intent i = new Intent(LoginActivity.this, MainActivity.class);
-                startActivity(i);
-             /*   RequestServerForService r = new RequestServerForService(TAG, tag_json_req);
-                byte[] authenticated = r.authenticateUser(username.getText().toString(), password.getText().toString());
-                System.out.println(authenticated);
-                if (authenticated.getClass("status") == 200) {
-                    failedLogin.setText("");
-                    failedLogin2.setText("");
+                    @Override
+                    public void onError() {
 
-                    //intent to main page
-                    Intent i = new Intent(LoginActivity.this, MainActivity.class);
-                    i.putExtra("username", username.getText().toString());
-                    i.putExtra("password", password.getText().toString());
-
-                    startActivity(i);
-                } else {
-                    failedLogin.setText("Invalid username or password!");
-                    failedLogin2.setText("Please register or try again!");
-                }*/
+                    }
+                }));
+                presenter.authenticate();
             }
         });
 
@@ -90,5 +85,18 @@ public class LoginActivity extends AppCompatActivity {
             }
         });
     }
+
+    public void gotoMainActivity() {
+        failedLogin.setText("");
+        failedLogin2.setText("");
+        Intent i = new Intent(LoginActivity.this, MainActivity.class);
+        startActivity(i);
+    }
+
+    public void displayError() {
+        failedLogin.setText("Invalid username or password!");
+        failedLogin2.setText("Please register or try again!");
+    }
+
 }
 

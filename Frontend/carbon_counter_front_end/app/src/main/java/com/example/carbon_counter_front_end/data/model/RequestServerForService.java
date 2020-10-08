@@ -1,5 +1,6 @@
 package com.example.carbon_counter_front_end.data.model;
 
+import android.content.Context;
 import android.util.Base64;
 import android.util.Log;
 
@@ -9,6 +10,7 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.VolleyLog;
 import com.android.volley.toolbox.JsonObjectRequest;
+import com.android.volley.toolbox.Volley;
 import com.example.carbon_counter_front_end.app.AppController;
 
 import org.json.JSONObject;
@@ -17,20 +19,18 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class RequestServerForService {
-    private String TAG;
-    private String tag_json_req;
+    IVolleyListener myListener;
+    Context context;
 
-    public RequestServerForService(String tag, String tag_req) {
-        this.TAG = tag;
-        this.tag_json_req = tag_req;
+    public RequestServerForService(Context c, IVolleyListener l) {
+        this.context = c;
+        this.myListener = l;
     }
 
-    public byte[] authenticateUser(final String username, final String password) {
+    public void authenticateUser() {
         String url = "http://10.24.227.38:8080/user";
 
-        url += "/" + username;
-
-        final Boolean[] authenticated = new Boolean[1];
+        url += "/" + UserInformation.username;
 
         JsonObjectRequest jsonObjReq = new JsonObjectRequest(Request.Method.GET,
                 url, null, // IF YOU WANT TO SEND A JSONOBJECT WITH POST THEN PASS IT HERE
@@ -38,16 +38,16 @@ public class RequestServerForService {
 
                     @Override
                     public void onResponse(JSONObject response) {
-                        Log.d(TAG, response.toString());
-                        authenticated[0] = true;
+                        Log.d("VOLLEY", "SERVER RESPONSE: " + response);
+                        myListener.onSuccess();
                     }
                 }, new Response.ErrorListener()
         {
             @Override
             public void onErrorResponse(VolleyError error) {
-                VolleyLog.d(TAG, "Error: " + error.getMessage());
+                VolleyLog.d("VOLLEY", "Error: " + error.getMessage());
                 //Label stating failed username or password
-                authenticated[0] = false;
+                myListener.onError();
             }
 
         }
@@ -57,7 +57,7 @@ public class RequestServerForService {
             @Override
             public Map<String, String> getHeaders() throws AuthFailureError {
                 Map<String, String>  params = new HashMap<String, String>();
-                String credentials = username+":"+password;
+                String credentials = UserInformation.username+":"+UserInformation.password;
                 String auth = "Basic "
                         + Base64.encodeToString(credentials.getBytes(),
                         Base64.NO_WRAP);
@@ -68,9 +68,8 @@ public class RequestServerForService {
         };
 
         // Adding request to request queue
-        AppController.getInstance().addToRequestQueue(jsonObjReq, tag_json_req);
-
-        return jsonObjReq.getBody();
+        //AppController.getInstance().addToRequestQueue(jsonObjReq, tag_json_req);
+        Volley.newRequestQueue(context).add(jsonObjReq);
     }
 }
 

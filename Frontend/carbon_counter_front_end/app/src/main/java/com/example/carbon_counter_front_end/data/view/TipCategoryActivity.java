@@ -28,7 +28,6 @@ import java.util.Map;
 public class TipCategoryActivity extends AppCompatActivity {
     private String TAG = ViewActivity.class.getSimpleName();
     private String tag_json_get = "json_obj_get";
-    private int milesDriven;
     private String username;
     private String password;
 
@@ -47,13 +46,7 @@ public class TipCategoryActivity extends AppCompatActivity {
         Button viewEnergy = (Button) findViewById(R.id.buttonEnergy);
         //Add code to pull from server the users stats and but topics in recommended, if any
         getMiles(username);
-
         //Buttons to activities for their specific type
-        if(milesDriven >= 100){
-            //set layout with miledriven in the recommended
-            setContentView(R.layout.activity_recommended_emissions);
-        }
-
 
 
     }
@@ -71,10 +64,12 @@ public class TipCategoryActivity extends AppCompatActivity {
                     @Override
                     public void onResponse(JSONObject response) {
                         try {
-                            milesDriven = response.getInt("milesDriven");
+                            System.out.println(response.getInt("milesDriven") > 100);
+                            if(response.getInt("milesDriven") > 100){
+                                setMilesDriven(true);
+                            }
 
-                            TextView mDriven = findViewById(R.id.milesDriven);
-                            mDriven.setText(milesDriven);
+
 
                         } catch (JSONException e) {
                             e.printStackTrace();
@@ -88,9 +83,6 @@ public class TipCategoryActivity extends AppCompatActivity {
             @Override
             public void onErrorResponse(VolleyError error) {
                 VolleyLog.d(TAG, "Error: " + error.getMessage());
-                System.out.println(error.getMessage());
-                System.out.println(username);
-                System.out.println(password);
             }
         }
 
@@ -111,5 +103,9 @@ public class TipCategoryActivity extends AppCompatActivity {
 
         // Adding request to request queue
         AppController.getInstance().addToRequestQueue(jsonObjReq, tag_json_get);
+    }
+
+    public void setMilesDriven(boolean milesDriven) {
+        setContentView(R.layout.activity_recommended_emissions);
     }
 }
