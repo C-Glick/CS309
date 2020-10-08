@@ -23,7 +23,7 @@
         <activity android:name=".data.view.AdminOverview" />
         <activity android:name=".data.view.CreateUserActivity" />
         <activity android:name=".data.view.ViewActivity" />
-        <activity android:name=".ui.main.UpdateActivity" />
+        <activity android:name=".data.view.UpdateActivity" />
         <activity android:name=".data.view.LoginActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

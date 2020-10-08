@@ -1,6 +1,8 @@
-package com.example.carbon_counter_front_end.ui.main;
+package com.example.carbon_counter_front_end.data.view;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.lifecycle.LiveData;
+import androidx.room.Room;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -17,15 +19,19 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.VolleyLog;
 import com.android.volley.toolbox.JsonObjectRequest;
-import com.example.carbon_counter_front_end.data.view.MainActivity;
 import com.example.carbon_counter_front_end.R;
-import com.example.carbon_counter_front_end.data.view.ViewActivity;
 import com.example.carbon_counter_front_end.app.AppController;
+import com.example.carbon_counter_front_end.data.model.AppDatabase;
+import com.example.carbon_counter_front_end.data.model.RetrieveUserInfoThread;
+import com.example.carbon_counter_front_end.data.model.User;
+import com.example.carbon_counter_front_end.data.model.UserInformation;
+import com.example.carbon_counter_front_end.data.model.UserRepository;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import static java.lang.Double.parseDouble;
@@ -37,15 +43,21 @@ public class UpdateActivity extends AppCompatActivity {
     private String tag_json_POST= "json_obj_POST";
     private String username;
     private String password;
+    private LiveData<List<User>> myUser;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_update);
+/*
+        UserRepository mUserRepository = new UserRepository(getApplication());
+        myUser = mUserRepository.getAllUsers();
 
-        Intent intent = getIntent();
-        username = intent.getStringExtra("username");
-        password = intent.getStringExtra("password");
+        username = myUser.getValue().get(0).username;
+        password = myUser.getValue().get(0).password;
+*/
+        username = UserInformation.username;
+        password = UserInformation.password;
 
         Button backButton = (Button) findViewById(R.id.buttonBack);
         Button viewButton = (Button) findViewById(R.id.buttonView2);
@@ -106,15 +118,14 @@ public class UpdateActivity extends AppCompatActivity {
                         @Override
                         public void onResponse(JSONObject response) {
                             Log.d(TAG, response.toString());
-
-                            System.out.println(response);
-
-
                         }
                     }, new Response.ErrorListener() {
                 @Override
                 public void onErrorResponse(VolleyError error) {
                     VolleyLog.d(TAG, "Error: " + error.getMessage());
+                    System.out.println(error.getMessage());
+                    System.out.println(username);
+                    System.out.println(password);
                 }
             }){
                 @Override

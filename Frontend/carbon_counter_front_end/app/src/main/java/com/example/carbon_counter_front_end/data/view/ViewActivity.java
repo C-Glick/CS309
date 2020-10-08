@@ -14,6 +14,7 @@ import com.android.volley.VolleyLog;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.example.carbon_counter_front_end.R;
 import com.example.carbon_counter_front_end.app.AppController;
+import com.example.carbon_counter_front_end.data.model.UserInformation;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -23,14 +24,15 @@ public class ViewActivity extends AppCompatActivity {
     private String tag_json_get= "json_obj_get";
     private String milesDriven;
     private String username;
+    private String password;
     private JSONObject UserInfo = new JSONObject();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_view);
-        Intent intent = getIntent();
-        username = intent.getStringExtra("username");
+        username = UserInformation.username;
+        password = UserInformation.password;
 
         try {
             getMiles(username);

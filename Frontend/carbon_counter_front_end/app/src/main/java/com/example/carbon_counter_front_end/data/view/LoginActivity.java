@@ -1,6 +1,7 @@
 package com.example.carbon_counter_front_end.data.view;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.room.Room;
 
 import com.android.volley.AuthFailureError;
 import com.android.volley.Request;
@@ -10,7 +11,12 @@ import com.android.volley.VolleyLog;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.example.carbon_counter_front_end.R;
 import com.example.carbon_counter_front_end.app.AppController;
+import com.example.carbon_counter_front_end.data.model.AppDatabase;
+import com.example.carbon_counter_front_end.data.model.InsertDataThread;
+import com.example.carbon_counter_front_end.data.model.LoggedInUser;
 import com.example.carbon_counter_front_end.data.model.RequestServerForService;
+import com.example.carbon_counter_front_end.data.model.User;
+import com.example.carbon_counter_front_end.data.model.UserInformation;
 
 import android.os.Bundle;
 import android.util.Base64;
@@ -46,16 +52,27 @@ public class LoginActivity extends AppCompatActivity {
         loginButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                RequestServerForService r = new RequestServerForService(TAG, tag_json_req);
+                /*InsertDataThread insertDataThread = new InsertDataThread(username.getText().toString(), password.getText().toString(), getApplicationContext());
+
+                Thread insertData = new Thread(insertDataThread);
+
+                insertData.start();*/
+                UserInformation.username = username.getText().toString();
+                UserInformation.password = password.getText().toString();
+
+                Intent i = new Intent(LoginActivity.this, MainActivity.class);
+                startActivity(i);
+             /*   RequestServerForService r = new RequestServerForService(TAG, tag_json_req);
                 byte[] authenticated = r.authenticateUser(username.getText().toString(), password.getText().toString());
                 System.out.println(authenticated);
-              /*  if (authenticated.getClass("status") == 200) {
+                if (authenticated.getClass("status") == 200) {
                     failedLogin.setText("");
                     failedLogin2.setText("");
 
                     //intent to main page
                     Intent i = new Intent(LoginActivity.this, MainActivity.class);
                     i.putExtra("username", username.getText().toString());
+                    i.putExtra("password", password.getText().toString());
 
                     startActivity(i);
                 } else {

@@ -1,6 +1,7 @@
 package com.example.carbon_counter_front_end.data.view;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.room.Room;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -8,7 +9,8 @@ import android.view.View;
 import android.widget.Button;
 
 import com.example.carbon_counter_front_end.R;
-import com.example.carbon_counter_front_end.ui.main.UpdateActivity;
+import com.example.carbon_counter_front_end.data.model.AppDatabase;
+import com.example.carbon_counter_front_end.data.model.UserInformation;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -17,10 +19,12 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        Intent temp = getIntent();
-        final String Username = temp.getStringExtra("username");
-        final String Password = temp.getStringExtra("Password");
-        final String role = temp.getStringExtra("role");
+
+
+
+        final String username = UserInformation.username;
+        final String password = UserInformation.password;
+        final String role = UserInformation.role;
 
         Button viewStats = (Button) findViewById(R.id.buttonView);
         Button updateStats = (Button) findViewById(R.id.buttonUpdate);
@@ -31,8 +35,8 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View view) {
                 //new intent to view stats page
                 Intent i = new Intent(MainActivity.this, ViewActivity.class);
-                i.putExtra("username",Username);
-                i.putExtra("password",Password);
+                i.putExtra("username",username);
+                i.putExtra("password",password);
                 startActivity(i);
             }
         });
@@ -42,8 +46,8 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View view) {
                 //New intent to update stats page
                 Intent i = new Intent(MainActivity.this, UpdateActivity.class);
-                i.putExtra("username",Username);
-                i.putExtra("password",Password);
+                i.putExtra("username",username);
+                i.putExtra("password",password);
 
                 startActivity(i);
             }
@@ -53,7 +57,8 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 Intent i = new Intent(MainActivity.this, TipCategoryActivity.class);
-                i.putExtra("username", Username);
+                i.putExtra("username",username);
+                i.putExtra("password",password);
                 startActivity(i);
             }
         });
