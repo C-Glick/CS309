@@ -83,35 +83,23 @@ public class LoginActivity extends AppCompatActivity {
                     @Override
                     public void onResponse(JSONObject response) {
                         Log.d(TAG, response.toString());
-                        try {
-                            if (response.get("password").equals(password)) {
-                                //clear failed login fields
-                                failedLogin.setText("");
-                                failedLogin2.setText("");
+                        failedLogin.setText("");
+                        failedLogin2.setText("");
 
-                                //intent to main page
-                                Intent i = new Intent(LoginActivity.this, MainActivity.class);
-                                i.putExtra("username",username);
+                        //intent to main page
+                        Intent i = new Intent(LoginActivity.this, MainActivity.class);
+                        i.putExtra("username",username);
 
-                                startActivity(i);
-
-                            } else {
-                                //Label stating failed username or password
-                                failedLogin.setText("Invalid username or password!");
-                                failedLogin2.setText("Please register or try again!");
-
-
-                            }
-                        } catch (JSONException e) {
-                            e.printStackTrace();
-                        }
+                        startActivity(i);
                     }
                 }, new Response.ErrorListener()
                     {
             @Override
             public void onErrorResponse(VolleyError error) {
                 VolleyLog.d(TAG, "Error: " + error.getMessage());
-                Toast.makeText(LoginActivity.this, "Invalid Username/Password", LENGTH_SHORT).show();
+                //Label stating failed username or password
+                failedLogin.setText("Invalid username or password!");
+                failedLogin2.setText("Please register or try again!");
             }
 
         }
