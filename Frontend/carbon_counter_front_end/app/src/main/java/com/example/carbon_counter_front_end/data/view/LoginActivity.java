@@ -14,19 +14,18 @@ import android.widget.Button;
 import android.widget.TextView;
 import android.content.Intent;
 
+import org.json.JSONObject;
+
 public class LoginActivity extends AppCompatActivity {
-    private TextView failedLogin = (TextView) findViewById(R.id.failedLogin);
-    private TextView failedLogin2 = (TextView) findViewById(R.id.failedLogin2);
-    private LoginLogic loginLogic;
-
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
 
-        loginLogic = new LoginLogic(LoginActivity.this, getApplicationContext());
 
+        final LoginLogic loginLogic = new LoginLogic(LoginActivity.this, getApplicationContext());
+        final TextView failedLogin = (TextView) findViewById(R.id.failedLogin);
+        final TextView failedLogin2 = (TextView) findViewById(R.id.failedLogin2);
         final TextView username = (TextView) findViewById(R.id.username);
         final TextView password = (TextView) findViewById(R.id.password);
         Button loginButton = (Button) findViewById(R.id.buttonLogin);
@@ -44,7 +43,7 @@ public class LoginActivity extends AppCompatActivity {
                 UserInformation.password = password.getText().toString();
                 loginLogic.setModel(new RequestServerForService(getApplicationContext(), new IVolleyListener() {
                     @Override
-                    public void onSuccess() {
+                    public void onSuccess(JSONObject response) {
                         loginLogic.clearError(failedLogin, failedLogin2);
 
                         Intent i = new Intent(LoginActivity.this, MainActivity.class);

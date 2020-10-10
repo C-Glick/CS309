@@ -35,7 +35,7 @@ public class RequestServerForService {
                     @Override
                     public void onResponse(JSONObject response) {
                         Log.d("VOLLEY", "SERVER RESPONSE: " + response);
-                        myListener.onSuccess();
+                        myListener.onSuccess(response);
                     }
                 }, new Response.ErrorListener()
         {
@@ -68,4 +68,6 @@ public class RequestServerForService {
         Volley.newRequestQueue(context).add(jsonObjReq);
     }
 }
+
+
 

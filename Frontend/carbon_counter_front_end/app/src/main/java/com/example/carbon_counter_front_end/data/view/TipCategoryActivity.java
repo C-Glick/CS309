@@ -17,6 +17,10 @@ import com.android.volley.VolleyLog;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.example.carbon_counter_front_end.R;
 import com.example.carbon_counter_front_end.app.AppController;
+import com.example.carbon_counter_front_end.data.logic.LoginLogic;
+import com.example.carbon_counter_front_end.data.logic.TipCategoryLogic;
+import com.example.carbon_counter_front_end.data.model.IVolleyListener;
+import com.example.carbon_counter_front_end.data.model.RequestServerForService;
 import com.example.carbon_counter_front_end.data.model.UserInformation;
 
 import org.json.JSONException;
@@ -37,75 +41,27 @@ public class TipCategoryActivity extends AppCompatActivity {
         setContentView(R.layout.activity_tip_category);
 
 
-        username = UserInformation.username;
-        password = UserInformation.password;
-
         Button viewEmissions = (Button) findViewById(R.id.buttonEmissions);
         Button viewWater = (Button) findViewById(R.id.buttonWater);
         Button viewWaste = (Button) findViewById(R.id.buttonWaste);
         Button viewEnergy = (Button) findViewById(R.id.buttonEnergy);
+
+        final TipCategoryLogic tipCategoryLogic = new TipCategoryLogic(this, getApplicationContext());
+        tipCategoryLogic.setModel(new RequestServerForService(getApplicationContext(), new IVolleyListener() {
+            @Override
+            public void onSuccess(JSONObject response) {
+                tipCategoryLogic.setLayout(response);
+            }
+
+            @Override
+            public void onError() {
+
+            }
+        }));
         //Add code to pull from server the users stats and but topics in recommended, if any
-        getMiles(username);
+        tipCategoryLogic.contactServer();
         //Buttons to activities for their specific type
 
 
-    }
-
-
-    private void getMiles(final String username) {
-        String url = "http://10.24.227.38:8080/stats/today";
-
-        url += "/" + username;
-
-        JsonObjectRequest jsonObjReq = new JsonObjectRequest(Request.Method.GET,
-                url, null, // IF YOU WANT TO SEND A JSONOBJECT WITH POST THEN PASS IT HERE
-                new Response.Listener<JSONObject>() {
-
-                    @Override
-                    public void onResponse(JSONObject response) {
-                        try {
-                            System.out.println(response.getInt("milesDriven") > 100);
-                            if(response.getInt("milesDriven") > 100){
-                                setRecommendedEmissions();
-                            }
-
-
-
-                        } catch (JSONException e) {
-                            e.printStackTrace();
-                        }
-
-                        Log.d(TAG, response.toString());
-
-                    }
-                }, new Response.ErrorListener()
-        {
-            @Override
-            public void onErrorResponse(VolleyError error) {
-                VolleyLog.d(TAG, "Error: " + error.getMessage());
-            }
-        }
-
-        ) {
-            @Override
-            public Map<String, String> getHeaders() throws AuthFailureError {
-                Map<String, String> params = new HashMap<String, String>();
-                String credentials = username + ":" + password;
-                String auth = "Basic "
-                        + Base64.encodeToString(credentials.getBytes(),
-                        Base64.NO_WRAP);
-                params.put("Authorization", auth);
-
-                return params;
-            }
-        };
-
-
-        // Adding request to request queue
-        AppController.getInstance().addToRequestQueue(jsonObjReq, tag_json_get);
-    }
-
-    public void setRecommendedEmissions() {
-        setContentView(R.layout.activity_recommended_emissions);
     }
 }
