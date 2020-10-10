@@ -27,11 +27,7 @@ public class RequestServerForService {
         this.myListener = l;
     }
 
-    public void authenticateUser() {
-        String url = "http://10.24.227.38:8080/user";
-
-        url += "/" + UserInformation.username;
-
+    public void contactServer(String url) {
         JsonObjectRequest jsonObjReq = new JsonObjectRequest(Request.Method.GET,
                 url, null, // IF YOU WANT TO SEND A JSONOBJECT WITH POST THEN PASS IT HERE
                 new Response.Listener<JSONObject>() {

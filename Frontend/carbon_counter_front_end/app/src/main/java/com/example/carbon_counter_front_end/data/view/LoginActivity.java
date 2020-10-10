@@ -6,7 +6,7 @@ import com.example.carbon_counter_front_end.R;
 import com.example.carbon_counter_front_end.data.model.IVolleyListener;
 import com.example.carbon_counter_front_end.data.model.RequestServerForService;
 import com.example.carbon_counter_front_end.data.model.UserInformation;
-import com.example.carbon_counter_front_end.data.presenter.Presenter;
+import com.example.carbon_counter_front_end.data.logic.LoginLogic;
 
 import android.os.Bundle;
 import android.view.View;
@@ -17,7 +17,7 @@ import android.content.Intent;
 public class LoginActivity extends AppCompatActivity {
     private TextView failedLogin = (TextView) findViewById(R.id.failedLogin);
     private TextView failedLogin2 = (TextView) findViewById(R.id.failedLogin2);
-    private Presenter presenter;
+    private LoginLogic loginLogic;
 
 
     @Override
@@ -25,7 +25,7 @@ public class LoginActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
 
-        presenter = new Presenter(LoginActivity.this, getApplicationContext());
+        loginLogic = new LoginLogic(LoginActivity.this, getApplicationContext());
 
         final TextView username = (TextView) findViewById(R.id.username);
         final TextView password = (TextView) findViewById(R.id.password);
@@ -42,18 +42,22 @@ public class LoginActivity extends AppCompatActivity {
                 insertData.start();*/
                 UserInformation.username = username.getText().toString();
                 UserInformation.password = password.getText().toString();
-                presenter.setModel(new RequestServerForService(getApplicationContext(), new IVolleyListener() {
+                loginLogic.setModel(new RequestServerForService(getApplicationContext(), new IVolleyListener() {
                     @Override
                     public void onSuccess() {
-                        gotoMainActivity();
+                        loginLogic.clearError(failedLogin, failedLogin2);
+
+                        Intent i = new Intent(LoginActivity.this, MainActivity.class);
+                        startActivity(i);
                     }
 
                     @Override
                     public void onError() {
-
+                        loginLogic.displayError(failedLogin, failedLogin2);
                     }
                 }));
-                presenter.authenticate();
+
+                loginLogic.authenticate();
             }
         });
 
@@ -64,18 +68,6 @@ public class LoginActivity extends AppCompatActivity {
                 startActivity(i);
             }
         });
-    }
-
-    public void gotoMainActivity() {
-        failedLogin.setText("");
-        failedLogin2.setText("");
-        Intent i = new Intent(LoginActivity.this, MainActivity.class);
-        startActivity(i);
-    }
-
-    public void displayError() {
-        failedLogin.setText("Invalid username or password!");
-        failedLogin2.setText("Please register or try again!");
     }
 
 }

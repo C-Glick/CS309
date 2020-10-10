@@ -66,7 +66,7 @@ public class TipCategoryActivity extends AppCompatActivity {
                         try {
                             System.out.println(response.getInt("milesDriven") > 100);
                             if(response.getInt("milesDriven") > 100){
-                                setMilesDriven(true);
+                                setRecommendedEmissions();
                             }
 
 
@@ -105,7 +105,7 @@ public class TipCategoryActivity extends AppCompatActivity {
         AppController.getInstance().addToRequestQueue(jsonObjReq, tag_json_get);
     }
 
-    public void setMilesDriven(boolean milesDriven) {
+    public void setRecommendedEmissions() {
         setContentView(R.layout.activity_recommended_emissions);
     }
 }
