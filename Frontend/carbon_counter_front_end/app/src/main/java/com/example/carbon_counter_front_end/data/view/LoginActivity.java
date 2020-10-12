@@ -14,6 +14,7 @@ import android.widget.Button;
 import android.widget.TextView;
 import android.content.Intent;
 
+import org.json.JSONException;
 import org.json.JSONObject;
 
 public class LoginActivity extends AppCompatActivity {
@@ -41,12 +42,17 @@ public class LoginActivity extends AppCompatActivity {
                 insertData.start();*/
                 UserInformation.username = username.getText().toString();
                 UserInformation.password = password.getText().toString();
+
+
                 loginLogic.setModel(new RequestServerForService(getApplicationContext(), new IVolleyListener() {
                     @Override
                     public void onSuccess(JSONObject response) {
                         loginLogic.clearError(failedLogin, failedLogin2);
-
                         Intent i = new Intent(LoginActivity.this, MainActivity.class);
+                        if(UserInformation.role.equals("ADMIN"))
+                        {
+                            i = new Intent(LoginActivity.this, AdminOverview.class);
+                        }
                         startActivity(i);
                     }
 
@@ -64,6 +70,7 @@ public class LoginActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 Intent i = new Intent(LoginActivity.this, CreateUserActivity.class);
+
                 startActivity(i);
             }
         });
