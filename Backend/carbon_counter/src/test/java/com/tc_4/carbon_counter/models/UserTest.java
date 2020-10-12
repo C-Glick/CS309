@@ -1,8 +1,7 @@
-package com.tc_4.carbon_counter;
+package com.tc_4.carbon_counter.models;
 
 import static org.junit.Assert.assertEquals;
 
-import com.tc_4.carbon_counter.models.User;
 import com.tc_4.carbon_counter.models.User.Role;
 
 import org.junit.Before;
