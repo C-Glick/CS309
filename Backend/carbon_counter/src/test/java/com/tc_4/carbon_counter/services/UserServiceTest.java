@@ -11,16 +11,19 @@ import java.util.Optional;
 
 import com.tc_4.carbon_counter.databases.UserDatabase;
 import com.tc_4.carbon_counter.models.User;
-
+import com.tc_4.carbon_counter.models.User.Role;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.TestConfiguration;
 import org.springframework.context.annotation.Bean;
+import org.springframework.security.test.context.support.WithUserDetails;
+import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringRunner;
 
 @RunWith(SpringRunner.class)
+@ContextConfiguration
 public class UserServiceTest {
 
     @TestConfiguration
@@ -70,6 +73,25 @@ public class UserServiceTest {
         });
     }
 
+    // @Before
+    // public void setupMockSecurity(){
+    //      mockMvc = MockMvcBuilders.webAppContextSetup(wac)
+    //         .apply(springSecurity())
+    //         .build();
+    //     auth = mock(CarbonUserPrincipal.class);
+    //     Authentication authentication = mock(Authentication.class);
+    //     SecurityContext securityContext = mock(SecurityContext.class);
+    //     when(securityContext.getAuthentication()).thenReturn(authentication);
+    //     SecurityContextHolder.setContext(securityContext);
+    //     when(SecurityContextHolder.getContext().getAuthentication().getPrincipal()).thenReturn(auth);
+    //    // when(auth.getAuthorities()).thenAnswer(x -> {
+    //     //
+    //   //      List<Role> grantedAuthorities = new ArrayList<Role>();
+    //   //      grantedAuthorities.add(userList.get(0).getRole());
+    //   //      return grantedAuthorities;
+    //   //  });
+    // }
+
     @Test
     public void testAddUser(){
         User u = new User();
@@ -78,5 +100,18 @@ public class UserServiceTest {
         userService.addUser(u);
 
         assertEquals(Optional.of(u), userDatabase.findByUsername("testUsername"));
+    }
+
+    @Test
+    @WithUserDetails(value="testUsername")
+    public void testGetUser(){
+        User u = new User();
+        u.setUsername("testUsername");
+        u.setPassword("password");
+        u.setRole(Role.USER);
+        userService.addUser(u);
+        
+
+        assertEquals(u, userService.getUser("testUsername"));
     }
 }
