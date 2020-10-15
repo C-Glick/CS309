@@ -107,6 +107,8 @@ public class UpdateActivity extends AppCompatActivity {
             userUpdate.put("userName", username);
             userUpdate.put("water", 0.0);
             userUpdate.put("power", 0.0);
+            userUpdate.put("waste", 0.0);
+            userUpdate.put("meat", 0.0);
             userUpdate.put("milesDriven", milesDriven);
             //   Toast.makeText(CreateUserActivity.this, jsonParam.toString(), Toast.LENGTH_LONG).show(); For Debugging later
 

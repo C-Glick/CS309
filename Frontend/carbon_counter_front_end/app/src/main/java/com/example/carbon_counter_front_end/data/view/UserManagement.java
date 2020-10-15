@@ -1,7 +1,10 @@
 package com.example.carbon_counter_front_end.data.view;
 
 import androidx.appcompat.app.AppCompatActivity;
+
 import android.os.Bundle;
+
+import com.example.carbon_counter_front_end.R;
 
 public class UserManagement extends AppCompatActivity {
 
@@ -9,5 +12,7 @@ public class UserManagement extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_user_management);
+
+
     }
 }
