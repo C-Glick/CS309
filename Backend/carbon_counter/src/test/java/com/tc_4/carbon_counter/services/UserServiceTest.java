@@ -9,10 +9,11 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
+import javax.annotation.PostConstruct;
+
 import com.tc_4.carbon_counter.databases.UserDatabase;
 import com.tc_4.carbon_counter.models.User;
 import com.tc_4.carbon_counter.models.User.Role;
-import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -38,6 +39,11 @@ public class UserServiceTest {
         public UserDatabase userDatabaseConfig(){
             return mock(UserDatabase.class);    //create mock database
         }
+
+        @Bean
+        public CarbonUserDetailsService userDetails(){
+            return new CarbonUserDetailsService();
+        }
     }
 
     @Autowired
@@ -50,68 +56,63 @@ public class UserServiceTest {
 
     //setup mock database and define how it should behave when 
     //it is called
-    @Before
+    //add a test user to the database to begin
+    @PostConstruct
     public void setupMockDatabase(){
         userList =  new ArrayList<User>();
+
+        //add test user
+        User testUser = new User();
+        testUser.setUsername("testUsername");
+        testUser.setPassword("password");
+        testUser.setRole(Role.USER);
+        testUser.setEmail("testEmail");
+        userList.add(testUser);
+
         when(userDatabase.save((User)any(User.class)))
-        .thenAnswer(x -> {
+            .thenAnswer(x -> {
               User u = x.getArgument(0);
               userList.add(u);
-              return null;
+              return u;
         });
 
         when(userDatabase.findAll()).thenReturn(userList);
 
         when(userDatabase.findByUsername((String)any(String.class)))
         .thenAnswer(x -> {
-            return Optional.of(userList.get(0));
+            for(User u : userList){
+                if(u.getUsername().equals(x.getArgument(0))){
+                    return Optional.of(u);
+                }
+            }
+            return Optional.empty();
         });
 
         when(userDatabase.findById((Long)any(Long.class)))
         .thenAnswer(x -> {
-            return userList.get(0);
+            for(User u : userList){
+                if(u.getId() == x.getArgument(0)){
+                    return Optional.of(u);
+                }
+            }
+            return Optional.empty();
         });
     }
-
-    // @Before
-    // public void setupMockSecurity(){
-    //      mockMvc = MockMvcBuilders.webAppContextSetup(wac)
-    //         .apply(springSecurity())
-    //         .build();
-    //     auth = mock(CarbonUserPrincipal.class);
-    //     Authentication authentication = mock(Authentication.class);
-    //     SecurityContext securityContext = mock(SecurityContext.class);
-    //     when(securityContext.getAuthentication()).thenReturn(authentication);
-    //     SecurityContextHolder.setContext(securityContext);
-    //     when(SecurityContextHolder.getContext().getAuthentication().getPrincipal()).thenReturn(auth);
-    //    // when(auth.getAuthorities()).thenAnswer(x -> {
-    //     //
-    //   //      List<Role> grantedAuthorities = new ArrayList<Role>();
-    //   //      grantedAuthorities.add(userList.get(0).getRole());
-    //   //      return grantedAuthorities;
-    //   //  });
-    // }
 
     @Test
     public void testAddUser(){
         User u = new User();
-        u.setUsername("testUsername");
+        u.setUsername("addUserTest");
         u.setPassword("password");
         userService.addUser(u);
 
-        assertEquals(Optional.of(u), userDatabase.findByUsername("testUsername"));
+        assertEquals(Optional.of(u), userDatabase.findByUsername("addUserTest"));
     }
 
     @Test
     @WithUserDetails(value="testUsername")
     public void testGetUser(){
-        User u = new User();
-        u.setUsername("testUsername");
-        u.setPassword("password");
-        u.setRole(Role.USER);
-        userService.addUser(u);
-        
-
+        User u = userDatabase.findByUsername("testUsername").get();
         assertEquals(u, userService.getUser("testUsername"));
     }
 }
