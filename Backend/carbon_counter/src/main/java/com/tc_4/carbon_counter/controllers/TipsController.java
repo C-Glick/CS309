@@ -6,9 +6,13 @@ import com.tc_4.carbon_counter.databases.TipsDatabase;
 import com.tc_4.carbon_counter.models.Tip;
 import com.tc_4.carbon_counter.models.Tip.Catagory;
 import com.tc_4.carbon_counter.models.Tip.Status;
+import com.tc_4.carbon_counter.services.TipsService;
 
+import org.json.JSONObject;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -16,16 +20,28 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 public class TipsController {
 
-    private final TipsDatabase database;
+    @Autowired
+    private TipsService tipsService;
 
-    TipsController(TipsDatabase database){
-        this.database = database;
+    @GetMapping("/tip/{title}")
+    public Tip getTipByTitle(@PathVariable String title){
+        return tipsService.getTipByTitle(title);
     }
-    @GetMapping("/tips/{title}")
-    public Optional<Tip> getUserInfo(@PathVariable String title){
-        return database.findByTitle(title);
+    @GetMapping("/tip/{catagory}")
+    public Tip[] getTipsByCatagory(@PathVariable Catagory catagory){
+        //TODO
+        return null;
+        //used for testing
+        //return tipsService.getTipsByCatagory(Catagory.CARBON);
     }
-    
+    @RequestMapping("/tip/addTip")
+    public Tip addTip(@RequestBody String newTip){
+        //all parts of json object must have something otherwise throws error
+        JSONObject obj = new JSONObject(newTip);
+        //recieves a JSON object and adds the tip
+        return tipsService.addTip(obj);
+    }
+    /*
     @RequestMapping("/tips/{title}/setTitle")
     public Tip setTitle(@PathVariable String title, @RequestParam("newTitle") String newTitle)
     {
@@ -82,6 +98,6 @@ public class TipsController {
         }else{
             return false;
         }    
-    }
+    }*/
     
 }
