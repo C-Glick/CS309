@@ -34,21 +34,31 @@ public class TipsController {
         //used for testing
         //return tipsService.getTipsByCatagory(Catagory.CARBON);
     }
+    /**
+     * 
+     * @param newTip must be in a JSON format and send a title, body and catagory that are all non-null
+     * @return
+     */
     @RequestMapping("/tip/addTip")
     public Tip addTip(@RequestBody String newTip){
         //all parts of json object must have something otherwise throws error
-        JSONObject obj = new JSONObject(newTip);
-        //recieves a JSON object and adds the tip
-        return tipsService.addTip(obj);
+        return tipsService.addTip(newTip);
+    }
+    /**
+     * 
+     * @param title the title of the tip to be edited
+     * @param edit the edited version of the tip in JSON format
+     * @return
+     */
+    @RequestMapping("/tip/editTip/{title}")
+    public Tip editTip(@PathVariable String title, @RequestBody String edit)
+    {       
+        //gets mad when returning tip for some reason
+        return tipsService.editTip(title, edit);
+
+        
     }
     /*
-    @RequestMapping("/tips/{title}/setTitle")
-    public Tip setTitle(@PathVariable String title, @RequestParam("newTitle") String newTitle)
-    {
-        //sets the working title to the new title and status to editing
-        database.findByTitle(title).get().setTitle(newTitle);
-        return database.save(database.findByTitle(title).get());    
-    }
     @RequestMapping("/tips/{title}/setCatagory")
     public Tip setCatagory(@PathVariable String title, @RequestParam("newCatagory") Catagory newCatagory)
     {

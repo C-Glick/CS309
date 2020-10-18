@@ -52,6 +52,13 @@ public class Tip {
 
     @Column(name="working_citations")
     String workingCitations;
+
+    /**
+     * Default constructor for Tip
+     */
+    public Tip(){
+       
+    }
     public long getId(){
         return id;
     }
