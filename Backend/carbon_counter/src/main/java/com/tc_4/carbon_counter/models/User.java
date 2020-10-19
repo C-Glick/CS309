@@ -7,7 +7,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 
 @Entity
-public class User {
+public class User{
     /**
      * Enumeration for the role of each user. Determines 
      * the permissions that this user has.
@@ -22,8 +22,8 @@ public class User {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     Long id;
   
-    @Column(name="user_name")
-    String userName;
+    @Column(name="username")
+    String username;
 
     @Column(name="email")
     String email;
@@ -38,8 +38,8 @@ public class User {
         return id;
     }
 
-    public String getUserName(){
-        return userName;
+    public String getUsername(){
+        return username;
     }
 
     public String getEmail(){
@@ -53,7 +53,7 @@ public class User {
         return role;
     }
     public void setUsername(String name){
-        userName = name;
+        username = name;
     }
     public void setEmail(String newEmail){
         email = newEmail;
@@ -69,4 +69,22 @@ public class User {
         return role.compareTo(permission)>=0;
     }
 
+    /**
+     * Copies the details from the other user into this user.
+     * Skips null variables effectively updating this user with the 
+     * changes from the other user. DOES NOT COPY PASSWORD
+     * 
+     * @param other The other user to copy from
+     */
+    public void copyFrom(User other){
+        if(other.username != null){
+            this.username = other.username;
+        }
+        if(other.email != null){
+            this.email = other.email;
+        }
+        if(other.role != null){
+            this.role = other.role;
+        }
+    }
 }
