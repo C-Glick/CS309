@@ -99,17 +99,6 @@ public class UpdateActivity extends AppCompatActivity {
             public void onClick(View view) {
                 try {
                     updateInfo();
-                    UpdateStatsLogic.setModel(new RequestServerForService(getApplicationContext(), new IVolleyListener() {
-                        @Override
-                        public void onSuccess(JSONObject response) throws JSONException {
-
-                        }
-
-                        @Override
-                        public void onError() {
-
-                        }
-                    }));
                     UpdateStatsLogic.authenticate(userUpdate);
                 } catch (JSONException e) {
                     e.printStackTrace();
@@ -118,30 +107,6 @@ public class UpdateActivity extends AppCompatActivity {
 
         });
 
-
-//        UpdateStatsLogic.setModel(new RequestServerForService(getApplicationContext(), new IVolleyListener() {
-//            @Override
-//            public void onSuccess(JSONObject response) throws JSONException {
-//                UpdateStatsLogic.clearError(failedLogin, failedLogin2);
-//
-//                UserInformation.role = response.getString("role");
-//
-//                Intent i = new Intent(LoginActivity.this, MainActivity.class);
-//                if(UserInformation.role.equals("ADMIN")) {
-//                    i = new Intent(LoginActivity.this, AdminOverview.class);
-//                }
-//                startActivity(i);
-//            }
-//
-//            @Override
-//            public void onError() {
-//                loginLogic.displayError(failedLogin, failedLogin2);
-//            }
-//        }));
-//
-//        loginLogic.authenticate();
-//    }
-//});
 
 
     }

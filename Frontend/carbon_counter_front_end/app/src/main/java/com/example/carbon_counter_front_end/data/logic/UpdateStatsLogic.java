@@ -20,7 +20,7 @@ public class UpdateStatsLogic {
         this.context = context;
     }
 
-    public static void setModel(RequestServerForService m) { this.model = m;}
+    public void setModel(RequestServerForService m) { this.model = m;}
 
     public static void authenticate(JSONObject stats) {
         // String url = "http://10.24.227.38:8080/stats/addDaily";
