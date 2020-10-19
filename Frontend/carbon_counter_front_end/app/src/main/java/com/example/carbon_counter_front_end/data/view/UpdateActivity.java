@@ -21,7 +21,10 @@ import com.android.volley.VolleyLog;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.example.carbon_counter_front_end.R;
 import com.example.carbon_counter_front_end.app.AppController;
+import com.example.carbon_counter_front_end.data.logic.UpdateStatsLogic;
 import com.example.carbon_counter_front_end.data.model.AppDatabase;
+import com.example.carbon_counter_front_end.data.model.IVolleyListener;
+import com.example.carbon_counter_front_end.data.model.RequestServerForService;
 import com.example.carbon_counter_front_end.data.model.RetrieveUserInfoThread;
 import com.example.carbon_counter_front_end.data.model.User;
 import com.example.carbon_counter_front_end.data.model.UserInformation;
@@ -44,7 +47,12 @@ public class UpdateActivity extends AppCompatActivity {
     private String username;
     private String password;
     private LiveData<List<User>> myUser;
-
+    private String miles;
+    private String water;
+    private String power;
+    private String meat;
+    private String waste;
+    final JSONObject userUpdate = new JSONObject();
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -63,6 +71,11 @@ public class UpdateActivity extends AppCompatActivity {
         Button viewButton = (Button) findViewById(R.id.buttonView2);
         Button submitButton = (Button) findViewById(R.id.buttonSubmit);
         final EditText milesPerWeek = (EditText) findViewById(R.id.milesPerWeek);
+        final EditText waterPerWeek = (EditText) findViewById(R.id.waterPerWeek);
+       // final EditText milesPerWeek = (EditText) findViewById(R.id.milesPerWeek);
+        miles = milesPerWeek.toString();
+        water = waterPerWeek.toString();
+
 
         backButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -85,17 +98,59 @@ public class UpdateActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 try {
-                    updateInfo(milesPerWeek.getText());
+                    updateInfo();
+                    UpdateStatsLogic.setModel(new RequestServerForService(getApplicationContext(), new IVolleyListener() {
+                        @Override
+                        public void onSuccess(JSONObject response) throws JSONException {
+
+                        }
+
+                        @Override
+                        public void onError() {
+
+                        }
+                    }));
+                    UpdateStatsLogic.authenticate(userUpdate);
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
             }
+
         });
+
+
+//        UpdateStatsLogic.setModel(new RequestServerForService(getApplicationContext(), new IVolleyListener() {
+//            @Override
+//            public void onSuccess(JSONObject response) throws JSONException {
+//                UpdateStatsLogic.clearError(failedLogin, failedLogin2);
+//
+//                UserInformation.role = response.getString("role");
+//
+//                Intent i = new Intent(LoginActivity.this, MainActivity.class);
+//                if(UserInformation.role.equals("ADMIN")) {
+//                    i = new Intent(LoginActivity.this, AdminOverview.class);
+//                }
+//                startActivity(i);
+//            }
+//
+//            @Override
+//            public void onError() {
+//                loginLogic.displayError(failedLogin, failedLogin2);
+//            }
+//        }));
+//
+//        loginLogic.authenticate();
+//    }
+//});
+
+
     }
 
-    private void updateInfo(Editable text) throws JSONException {
-            double milesDriven = parseDouble(text.toString());
-            String url = "http://10.24.227.38:8080/stats/addDaily";
+    private void updateInfo() throws JSONException {
+            double milesDriven = parseDouble(miles);
+            double waterUsed = parseDouble(water);
+
+            //String url = "http://10.24.227.38:8080/stats/addDaily";
 
             //url += "/" + username;
 //        "water": "test6@iastate.edu"
@@ -103,45 +158,49 @@ public class UpdateActivity extends AppCompatActivity {
 //        "milesDriven": 55.6
 //        "meat":
 //        "garbage": 34.6 (double)
-            final JSONObject userUpdate = new JSONObject();
+           // final JSONObject userUpdate = new JSONObject();
             userUpdate.put("userName", username);
-            userUpdate.put("water", 0.0);
-            userUpdate.put("power", 0.0);
-            userUpdate.put("waste", 0.0);
-            userUpdate.put("meat", 0.0);
+            userUpdate.put("water", waterUsed);
+            userUpdate.put("power", power);
             userUpdate.put("milesDriven", milesDriven);
+            userUpdate.put("meat", meat);
+            userUpdate.put("waste", waste);
+
+
             //   Toast.makeText(CreateUserActivity.this, jsonParam.toString(), Toast.LENGTH_LONG).show(); For Debugging later
 
 
-            JsonObjectRequest jsonObjReq = new JsonObjectRequest(Request.Method.POST,
-                    url, userUpdate, // IF YOU WANT TO SEND A JSONOBJECT WITH POST THEN PASS IT HERE
-                    new Response.Listener<JSONObject>() {
-
-                        @Override
-                        public void onResponse(JSONObject response) {
-                            Log.d(TAG, response.toString());
-                        }
-                    }, new Response.ErrorListener() {
-                @Override
-                public void onErrorResponse(VolleyError error) {
-                    VolleyLog.d(TAG, "Error: " + error.getMessage());
-                    System.out.println(error.getMessage());
-                    System.out.println(username);
-                    System.out.println(password);
-                }
-            }){
-                @Override
-                public Map<String, String> getHeaders() throws AuthFailureError {
-                    Map<String, String>  params = new HashMap<String, String>();
-                    String credentials = username+":"+password;
-                    String auth = "Basic "
-                            + Base64.encodeToString(credentials.getBytes(),
-                            Base64.NO_WRAP);
-                    params.put("Authorization", auth);
-
-                    return params;
-                }
-            };
-            AppController.getInstance().addToRequestQueue(jsonObjReq, tag_json_POST);
+//            JsonObjectRequest jsonObjReq = new JsonObjectRequest(Request.Method.POST,
+//                    url, userUpdate, // IF YOU WANT TO SEND A JSONOBJECT WITH POST THEN PASS IT HERE
+//                    new Response.Listener<JSONObject>() {
+//
+//                        @Override
+//                        public void onResponse(JSONObject response) {
+//                            Log.d(TAG, response.toString());
+//                        }
+//                    }, new Response.ErrorListener() {
+//                @Override
+//                public void onErrorResponse(VolleyError error) {
+//                    VolleyLog.d(TAG, "Error: " + error.getMessage());
+//                    System.out.println(error.getMessage());
+//                    System.out.println(username);
+//                    System.out.println(password);
+//                }
+//            }){
+//                @Override
+//                public Map<String, String> getHeaders() throws AuthFailureError {
+//                    Map<String, String>  params = new HashMap<String, String>();
+//                    String credentials = username+":"+password;
+//                    String auth = "Basic "
+//                            + Base64.encodeToString(credentials.getBytes(),
+//                            Base64.NO_WRAP);
+//                    params.put("Authorization", auth);
+//
+//                    return params;
+//                }
+//            };
+//            AppController.getInstance().addToRequestQueue(jsonObjReq, tag_json_POST);
     }
+
+
 }

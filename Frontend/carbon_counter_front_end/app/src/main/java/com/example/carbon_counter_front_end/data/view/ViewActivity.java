@@ -65,6 +65,7 @@ public class ViewActivity extends AppCompatActivity {
                                // CurrentData = UserInfo.getJSONObject(UserInfo.length()-1);
                                 milesDriven = UserInfo.getString("milesDriven");
 
+
                                 TextView mDriven = findViewById(R.id.milesDriven);
                                 mDriven.setText(milesDriven);
 

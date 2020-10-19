@@ -24,7 +24,6 @@ public class LoginLogic {
     public void authenticate() {
         String url = "http://10.24.227.38:8080/user";
         url += "/" + UserInformation.username;
-
         model.contactServer(url);
     }
 
