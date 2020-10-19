@@ -149,7 +149,7 @@ public class UserService {
      */
     public boolean checkPermission(Role requiredRole){
         CarbonUserPrincipal auth =(CarbonUserPrincipal) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        
+
         //check all permissions including and above required role
         for(Role r : Role.values()){
             //skip lower roles
