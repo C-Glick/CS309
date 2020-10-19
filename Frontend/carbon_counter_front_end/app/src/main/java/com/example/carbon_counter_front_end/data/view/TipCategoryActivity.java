@@ -1,33 +1,20 @@
 package com.example.carbon_counter_front_end.data.view;
 
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Base64;
-import android.util.Log;
+import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
-import com.android.volley.AuthFailureError;
-import com.android.volley.Request;
-import com.android.volley.Response;
-import com.android.volley.VolleyError;
-import com.android.volley.VolleyLog;
-import com.android.volley.toolbox.JsonObjectRequest;
+import androidx.appcompat.app.AppCompatActivity;
+
 import com.example.carbon_counter_front_end.R;
-import com.example.carbon_counter_front_end.app.AppController;
-import com.example.carbon_counter_front_end.data.logic.LoginLogic;
 import com.example.carbon_counter_front_end.data.logic.TipCategoryLogic;
 import com.example.carbon_counter_front_end.data.model.IVolleyListener;
 import com.example.carbon_counter_front_end.data.model.RequestServerForService;
-import com.example.carbon_counter_front_end.data.model.UserInformation;
 
-import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.util.HashMap;
-import java.util.Map;
 import java.util.Stack;
 
 public class TipCategoryActivity extends AppCompatActivity {
@@ -47,6 +34,42 @@ public class TipCategoryActivity extends AppCompatActivity {
         final Button viewWater = (Button) findViewById(R.id.buttonWater);
         final Button viewWaste = (Button) findViewById(R.id.buttonWaste);
         final Button viewEnergy = (Button) findViewById(R.id.buttonEnergy);
+
+        viewEmissions.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent i = new Intent(TipCategoryActivity.this, ViewCategoryResults.class);
+                i.putExtra("category", "emissions");
+                startActivity(i);
+            }
+        });
+
+        viewWater.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent i = new Intent(TipCategoryActivity.this, ViewCategoryResults.class);
+                i.putExtra("category", "water");
+                startActivity(i);
+            }
+        });
+
+        viewWaste.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent i = new Intent(TipCategoryActivity.this, ViewCategoryResults.class);
+                i.putExtra("category", "waste");
+                startActivity(i);
+            }
+        });
+
+        viewEnergy.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent i = new Intent(TipCategoryActivity.this, ViewCategoryResults.class);
+                i.putExtra("category", "energy");
+                startActivity(i);
+            }
+        });
 
         final TipCategoryLogic tipCategoryLogic = new TipCategoryLogic(this, getApplicationContext());
         tipCategoryLogic.setModel(new RequestServerForService(getApplicationContext(), new IVolleyListener() {
