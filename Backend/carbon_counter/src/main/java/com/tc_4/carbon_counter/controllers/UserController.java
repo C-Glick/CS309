@@ -36,7 +36,7 @@ public class UserController {
 
     /**
      * The user service is called by the controller, it is what actually
-     * preforms the commands.
+     * preforms the commands. 
      */
     @Autowired
     private UserService userService;
