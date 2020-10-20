@@ -1,5 +1,6 @@
 package com.tc_4.carbon_counter.controllers;
 
+import java.util.List;
 import java.util.Optional;
 
 import com.tc_4.carbon_counter.databases.TipsDatabase;
@@ -25,14 +26,13 @@ public class TipsController {
 
     @GetMapping("/tip/{title}")
     public Tip getTipByTitle(@PathVariable String title){
+        //DONE
         return tipsService.getTipByTitle(title);
     }
-    @GetMapping("/tip/{catagory}")
-    public Tip[] getTipsByCatagory(@PathVariable Catagory catagory){
-        //TODO
-        return null;
-        //used for testing
-        //return tipsService.getTipsByCatagory(Catagory.CARBON);
+    @GetMapping("/tips/{catagory}")
+    public List<Tip> getTipsByCategory(@PathVariable Catagory catagory){
+        //DONE
+        return tipsService.getTipsByCatagory(catagory);
     }
     /**
      * 
@@ -41,7 +41,8 @@ public class TipsController {
      */
     @RequestMapping("/tip/addTip")
     public Tip addTip(@RequestBody String newTip){
-        //all parts of json object must have something otherwise throws error
+        //TODO
+
         return tipsService.addTip(newTip);
     }
     /**
@@ -53,17 +54,31 @@ public class TipsController {
     @RequestMapping("/tip/editTip/{title}")
     public Tip editTip(@PathVariable String title, @RequestBody String edit)
     {       
-        //gets mad when returning tip for some reason
+        //DONE
         return tipsService.editTip(title, edit);
-
-        
+    }
+    @RequestMapping("/tip/setStatus/{title}")
+    public Tip setStatus(@PathVariable String title, @RequestParam Status newStatus){
+        //TODO
+        return tipsService.setStatus(title, newStatus);
+    }
+    @RequestMapping("/allTips")
+    public Tip allTips(@PathVariable String title, @RequestParam Status newStatus){
+        //TODO
+        //returns all tips in List
+        return tipsService.setStatus(title, newStatus);
+    }
+    @RequestMapping("/tip/deleteTip/{title}")
+    public boolean deleteTip(@PathVariable String title){
+        //TODO
+        return true;
     }
     /*
-    @RequestMapping("/tips/{title}/setCatagory")
-    public Tip setCatagory(@PathVariable String title, @RequestParam("newCatagory") Catagory newCatagory)
+    @RequestMapping("/tips/{title}/setcatagory")
+    public Tip setcatagory(@PathVariable String title, @RequestParam("newcatagory") catagory newcatagory)
     {
         //sets the working catagory to the new catagory and status to editing
-        database.findByTitle(title).get().setCatagory(newCatagory);
+        database.findByTitle(title).get().setcatagory(newcatagory);
         return database.save(database.findByTitle(title).get());    
     }
     @RequestMapping("/tips/{title}/setBody")

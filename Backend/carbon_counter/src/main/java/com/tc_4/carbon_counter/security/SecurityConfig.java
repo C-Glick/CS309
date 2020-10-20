@@ -55,7 +55,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         http
         .csrf().disable()
         .authorizeRequests()
-            .antMatchers("/", "/user/add", "/tips/{title}","/tip/addTip","/tip/editTip/{title}").permitAll()
+            .antMatchers("/", "/user/add", "/tip/{title}","/tip/addTip","/tip/editTip/{title}","/tips/{catagory}").permitAll()
             .anyRequest().authenticated()            
         .and().httpBasic();
         //need authenication to edit tips actually just need to test
