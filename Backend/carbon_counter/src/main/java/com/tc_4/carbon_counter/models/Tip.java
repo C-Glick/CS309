@@ -7,7 +7,7 @@ import javax.persistence.Id;
 
 @Entity
 public class Tip {
-    public enum Catagory{
+    public enum Category{
         WATER,
         CARBON
 
@@ -32,14 +32,14 @@ public class Tip {
     @Column(name="working_title")
     String workingTitle;
 
-    @Column(name="catagory")
-    Catagory catagory;
+    @Column(name="category")
+    Category category;
 
     @Column(name="status")
     Status status;
 
-    @Column(name="working_catagory")
-    Catagory workingCatagory;
+    @Column(name="working_category")
+    Category workingCategory;
     
     @Column(name="body")
     String body;
@@ -71,8 +71,8 @@ public class Tip {
     public String getCitations(){
         return citations;
     } 
-    public Catagory getCatagory(){
-        return catagory;
+    public Category getCategory(){
+        return category;
     }
     public String getWorkingTitle(){
         return workingTitle;
@@ -83,8 +83,8 @@ public class Tip {
     public String getWorkingCitations(){
         return workingCitations;
     }
-    public Catagory getWorkingCatagory(){
-        return workingCatagory;
+    public Category getWorkingCategory(){
+        return workingCategory;
     }
     public Status getStatus(){
         return status;
@@ -97,9 +97,9 @@ public class Tip {
         status = Status.EDITING;
         workingBody = newBody;
     }
-    public void setCatagory(Catagory newCatagory){
+    public void setCategory(Category newCategory){
         status = Status.EDITING;
-        workingCatagory = newCatagory;
+        workingCategory = newCategory;
     }
     public void setCitations(String newCitation){
         status = Status.EDITING;
@@ -111,14 +111,14 @@ public class Tip {
             status = newStatus;
             title = workingTitle;
             body = workingBody;
-            catagory = workingCatagory;
+            category = workingCategory;
             citations = workingCitations;
         }
         if(newStatus == Status.DENIED){
             status = newStatus;
             workingTitle = title;
             workingBody = body;
-            workingCatagory = catagory;
+            workingCategory = category;
             workingCitations = citations;
         }
         

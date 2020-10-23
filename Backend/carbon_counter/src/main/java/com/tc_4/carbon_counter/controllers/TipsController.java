@@ -3,7 +3,7 @@ package com.tc_4.carbon_counter.controllers;
 import java.util.List;
 
 import com.tc_4.carbon_counter.models.Tip;
-import com.tc_4.carbon_counter.models.Tip.Catagory;
+import com.tc_4.carbon_counter.models.Tip.Category;
 import com.tc_4.carbon_counter.models.Tip.Status;
 import com.tc_4.carbon_counter.services.TipsService;
 
@@ -43,17 +43,17 @@ public class TipsController {
     }
     /**
      * 
-     * @param catagory the category 
-     * @return all the approved tips in that catagory
+     * @param category the category 
+     * @return all the approved tips in that category
      */
-    @GetMapping("/tips/{catagory}")
-    public List<Tip> getTipsByCategory(@PathVariable Catagory catagory){
+    @GetMapping("/tips/{category}")
+    public List<Tip> getTipsByCategory(@PathVariable Category category){
         //DONE
-        return tipsService.getTipsByCatagory(catagory);
+        return tipsService.getTipsByCategory(category);
     }
     /**
      * 
-     * @param newTip must be in a JSON format and send a title, body and catagory that are all non-null and the title must be unique
+     * @param newTip must be in a JSON format and send a title, body and category that are all non-null and the title must be unique
      * @return the new tip
      */
     @RequestMapping("/tip/addTip")

@@ -6,7 +6,7 @@ import com.tc_4.carbon_counter.databases.TipsDatabase;
 import com.tc_4.carbon_counter.exceptions.TipNotFoundException;
 import com.tc_4.carbon_counter.exceptions.TitleTakenException;
 import com.tc_4.carbon_counter.models.Tip;
-import com.tc_4.carbon_counter.models.Tip.Catagory;
+import com.tc_4.carbon_counter.models.Tip.Category;
 import com.tc_4.carbon_counter.models.Tip.Status;
 
 import org.json.JSONObject;
@@ -47,12 +47,12 @@ public class TipsService {
     
     /**
      * 
-     * @param catagory the catagory of the tips
-     * @return all approved tips in that catagory
+     * @param category the category of the tips
+     * @return all approved tips in that category
      */
-    public List<Tip> getTipsByCatagory(Catagory catagory) {
+    public List<Tip> getTipsByCategory(Category category) {
         //DONE
-        List<Tip> tips = tipsDatabase.findByCatagoryAndStatus(catagory, Status.APPROVED);//this works now
+        List<Tip> tips = tipsDatabase.findByCategoryAndStatus(category, Status.APPROVED);//this works now
         return tips;
     }
     /**
@@ -71,8 +71,8 @@ public class TipsService {
         temp.setTitle(title);
         String body = obj.getString("body");
         temp.setBody(body);
-        String catagory = obj.getString("catagory");
-        temp.setCatagory(Catagory.valueOf(catagory));
+        String category = obj.getString("category");
+        temp.setCategory(Category.valueOf(category));
         tipsDatabase.save(temp);
         return tipsDatabase.findByWorkingTitle(title).get();
     }
@@ -98,8 +98,8 @@ public class TipsService {
         if (newTip.has("body") && !newTip.isNull("body")) {
             tempTip.setBody(newTip.getString("body"));
         }
-        if (newTip.has("catagory") && !newTip.isNull("catagory")) {
-            tempTip.setCatagory(Catagory.valueOf(newTip.getString("catagory")));
+        if (newTip.has("category") && !newTip.isNull("category")) {
+            tempTip.setCategory(Category.valueOf(newTip.getString("category")));
         }
         tipsDatabase.save(tempTip);
         return tipsDatabase.findByTitle(title).get();
