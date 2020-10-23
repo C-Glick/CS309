@@ -12,8 +12,10 @@ import org.springframework.data.jpa.repository.JpaRepository;
 public interface TipsDatabase extends JpaRepository<Tip, Long> {
     
     Optional<Tip> findByTitle(String title);
+    Optional<Tip> findByTitleAndStatus(String title, Status status);
+    Optional<Tip> findByWorkingTitleAndStatus(String title, Status status);
     Optional<Tip> findByWorkingTitle(String workingTitle);
     List<Tip> findByCatagoryAndStatus(Catagory catagory,Status status);
-    //Optional<Tip> findByCatagory(Catagory catagory);
+    List<Tip> findByStatus(Status status);
     Optional<Tip> findById(Long id);
 }

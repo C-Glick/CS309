@@ -1,15 +1,12 @@
 package com.tc_4.carbon_counter.controllers;
 
 import java.util.List;
-import java.util.Optional;
 
-import com.tc_4.carbon_counter.databases.TipsDatabase;
 import com.tc_4.carbon_counter.models.Tip;
 import com.tc_4.carbon_counter.models.Tip.Catagory;
 import com.tc_4.carbon_counter.models.Tip.Status;
 import com.tc_4.carbon_counter.services.TipsService;
 
-import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -24,11 +21,31 @@ public class TipsController {
     @Autowired
     private TipsService tipsService;
 
+    /**
+     * 
+     * @param title the title of the tip
+     * @return  the tip with that title
+     */
     @GetMapping("/tip/{title}")
     public Tip getTipByTitle(@PathVariable String title){
         //DONE
         return tipsService.getTipByTitle(title);
     }
+    /**
+     * this is for admins and requires authentication 
+     * @param title the working title of the tip
+     * @return the tip with that working title
+     */
+    @GetMapping("/tip/{title}/admin")
+    public Tip getTipByWorkingTitle(@PathVariable String title){
+        //DONE
+        return tipsService.getTipByTitle(title);
+    }
+    /**
+     * 
+     * @param catagory the category 
+     * @return all the approved tips in that catagory
+     */
     @GetMapping("/tips/{catagory}")
     public List<Tip> getTipsByCategory(@PathVariable Catagory catagory){
         //DONE
@@ -36,20 +53,19 @@ public class TipsController {
     }
     /**
      * 
-     * @param newTip must be in a JSON format and send a title, body and catagory that are all non-null
-     * @return
+     * @param newTip must be in a JSON format and send a title, body and catagory that are all non-null and the title must be unique
+     * @return the new tip
      */
     @RequestMapping("/tip/addTip")
     public Tip addTip(@RequestBody String newTip){
-        //TODO
-
+        //DONE
         return tipsService.addTip(newTip);
     }
     /**
-     * 
+     * this is for admins and requires authentication 
      * @param title the title of the tip to be edited
      * @param edit the edited version of the tip in JSON format
-     * @return
+     * @return the edited tip
      */
     @RequestMapping("/tip/editTip/{title}")
     public Tip editTip(@PathVariable String title, @RequestBody String edit)
@@ -57,72 +73,45 @@ public class TipsController {
         //DONE
         return tipsService.editTip(title, edit);
     }
+    /**
+     * this is for admins and requires authentication 
+     * @param title the working title of the tip
+     * @param newStatus the new status of the tip either APPROVED, PENDING, DENIED or EDITING
+     * @return the tip
+     */
     @RequestMapping("/tip/setStatus/{title}")
     public Tip setStatus(@PathVariable String title, @RequestParam Status newStatus){
-        //TODO
+        //DONE
         return tipsService.setStatus(title, newStatus);
     }
-    @RequestMapping("/allTips")
-    public Tip allTips(@PathVariable String title, @RequestParam Status newStatus){
-        //TODO
-        //returns all tips in List
-        return tipsService.setStatus(title, newStatus);
+    /**
+     * this is for admins and requires authentication 
+     * @return a list of all tips that are not strictly approved
+     */
+    @GetMapping("tips/all/admin")
+    public List<Tip> allUnapprovedTips(){
+        //DONE
+        //returns all unapproved tips in List
+        return tipsService.allTips();
     }
-    @RequestMapping("/tip/deleteTip/{title}")
+    /**
+     * 
+     * @return the list of all approved tips
+     */
+    @GetMapping("tips/all")
+    public List<Tip> allApprovedTips(){
+        //DONE
+        //returns all approved tips in List
+        return tipsService.allTipsApproved();
+    }
+    /**
+     * this is for admins and requires authentication 
+     * @param title the working title of the tip to be deleted
+     * @return true if it is deleted else returns false
+     */
+    @RequestMapping("/tip/delete/{title}")
     public boolean deleteTip(@PathVariable String title){
-        //TODO
-        return true;
-    }
-    /*
-    @RequestMapping("/tips/{title}/setcatagory")
-    public Tip setcatagory(@PathVariable String title, @RequestParam("newcatagory") catagory newcatagory)
-    {
-        //sets the working catagory to the new catagory and status to editing
-        database.findByTitle(title).get().setcatagory(newcatagory);
-        return database.save(database.findByTitle(title).get());    
-    }
-    @RequestMapping("/tips/{title}/setBody")
-    public Tip setBody(@PathVariable String title, @RequestParam("newBody") String newBody)
-    {
-        //sets the working body to the new body and status to editing
-        database.findByTitle(title).get().setBody(newBody);
-        return database.save(database.findByTitle(title).get());    
-    }
-    @RequestMapping("/tips/{title}/setCitation")
-    public Tip setCitation(@PathVariable String title, @RequestParam("newCitation") String newCitation)
-    {
-        //sets the working citation to the new citation and status to editing
-        database.findByTitle(title).get().setCitations(newCitation);
-        return database.save(database.findByTitle(title).get());    
-    }
-    //need to work on
-    //will need to make it check permissions to see if user can actually set the status
-    @RequestMapping("/tips/{title}/setStatus")
-    public boolean setTitle(@PathVariable String title, @RequestParam("newStatus") Status newStatus)
-    {
-        //returns true if it successfully set status else false
-        long id = database.findByTitle(title).get().getId();
-        if(newStatus == Status.APPROVED){
-            database.findByTitle(title).get().setStatus(Status.APPROVED);
-            //had to find by id as all other aspects may change when setting status
-            database.save(database.findById(id).get());
-            return true;
-        }else if(newStatus == Status.DENIED){
-            database.findByTitle(title).get().setStatus(Status.DENIED);
-            //will set the all aspects of the tip to previous version that was approved if none were approved should be null
-            database.save(database.findById(id).get());
-            return true;
-        }else if(newStatus == Status.EDITING){
-            database.findByTitle(title).get().setStatus(Status.EDITING);
-            //dont really need this tbh just have all statuses 
-            return true;
-        }else if(newStatus == Status.PENDING){
-            database.findByTitle(title).get().setStatus(Status.PENDING);
-            //also unsure if i need this
-            return true;
-        }else{
-            return false;
-        }    
-    }*/
-    
+        //DONE
+        return tipsService.deleteTipByWorkingTitle(title);
+    }    
 }
