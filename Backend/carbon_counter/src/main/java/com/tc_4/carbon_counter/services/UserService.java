@@ -115,14 +115,22 @@ public class UserService {
         return friendsDatabase.findByUserTwoAndStatus(username,Status.REQUESTED);
     }
     public boolean acceptFriend(String username, String userOne){
-        //TODO
+        if(friendsDatabase.findByUserOneAndUserTwo(userOne, username).isPresent()){
+            Friends temp = friendsDatabase.findByUserOneAndUserTwo(userOne, username).get();
+            temp.setStatus(Status.APPROVED);
+            friendsDatabase.save(temp);
+            return true;
+        }
         return false;
     }
     public boolean denyFriend(String username, String userOne){
-        //TODO
-        
-        friendsDatabase.delete(friendsDatabase.findByUserOneAndUserTwo(userOne, username).get());
-        return true;
+        if(friendsDatabase.findByUserOneAndUserTwo(userOne, username).isPresent()){
+            Friends temp = friendsDatabase.findByUserOneAndUserTwo(userOne, username).get();
+            temp.setStatus(Status.DENIED);
+            friendsDatabase.save(temp);
+            return true;
+        }
+        return false;
     }
   
     /**
