@@ -1,9 +1,14 @@
 package com.tc_4.carbon_counter.services;
 
+import java.util.List;
+
+import com.tc_4.carbon_counter.databases.FriendsDatabase;
 import com.tc_4.carbon_counter.databases.UserDatabase;
 import com.tc_4.carbon_counter.exceptions.UnauthorizedException;
 import com.tc_4.carbon_counter.exceptions.UserNotFoundException;
+import com.tc_4.carbon_counter.models.Friends;
 import com.tc_4.carbon_counter.models.User;
+import com.tc_4.carbon_counter.models.Friends.Status;
 import com.tc_4.carbon_counter.models.User.Role;
 import com.tc_4.carbon_counter.security.CarbonUserPrincipal;
 
@@ -23,6 +28,9 @@ public class UserService {
 
     @Autowired
     private UserDatabase userDatabase;
+
+    @Autowired
+    private FriendsDatabase friendsDatabase;
 
     /** Password encoder used when making a new user or changing a password*/
     private BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
@@ -86,6 +94,35 @@ public class UserService {
             return true;
         }
         throw new UnauthorizedException("Incorrect old password");
+    }
+
+    public boolean friendRequest(String user, String username){
+        //DONE
+        if(userDatabase.existsByUsername(user) && userDatabase.existsByUsername(username)){
+            Friends temp = new Friends();
+            temp.setUserOne(user);
+            temp.setUserTwo(username);
+            temp.setStatus(Status.REQUESTED);
+            if(!friendsDatabase.findByUserOneAndUserTwo(user, username).isPresent()){
+                friendsDatabase.save(temp);
+                return true;
+            }
+        }
+        return false;
+    }
+    public List<Friends> allFriendRequests(String username){
+        //TODO
+        return friendsDatabase.findByUserTwoAndStatus(username,Status.REQUESTED);
+    }
+    public boolean acceptFriend(String username, String userOne){
+        //TODO
+        return false;
+    }
+    public boolean denyFriend(String username, String userOne){
+        //TODO
+        
+        friendsDatabase.delete(friendsDatabase.findByUserOneAndUserTwo(userOne, username).get());
+        return true;
     }
   
     /**

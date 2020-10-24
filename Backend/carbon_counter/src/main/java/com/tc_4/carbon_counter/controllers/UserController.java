@@ -1,5 +1,8 @@
 package com.tc_4.carbon_counter.controllers;
 
+import java.util.List;
+
+import com.tc_4.carbon_counter.models.Friends;
 import com.tc_4.carbon_counter.models.User;
 import com.tc_4.carbon_counter.services.UserService;
 
@@ -98,6 +101,30 @@ public class UserController {
     @PostMapping("/user/edit/{username}")
     public User editUser(@PathVariable String username, @RequestBody User user){
         return userService.editUser(username, user);
+    }
+
+    @RequestMapping("/user/friend_request/{user}")
+    public boolean friendRequest(@PathVariable String user, @RequestParam String username){
+        //DONE
+        return userService.friendRequest(user, username);
+    }
+    
+    @RequestMapping("user/{username}/friend_requests")
+    public List<Friends> allFriendRequests(@PathVariable String username){
+        //TODO
+        //sends correct thing here but sends empty json to postman
+        return userService.allFriendRequests(username);
+    }
+
+    @RequestMapping("user/{username}/accept")
+    public boolean acceptFriend(@PathVariable String username, @RequestParam String userOne){
+        //TODO
+        return userService.acceptFriend(username, userOne);
+    }
+    @RequestMapping("user/{username}/deny")
+    public boolean denyFriend(@PathVariable String username, @RequestParam String userOne){
+        //TODO
+        return userService.denyFriend(username, userOne);
     }
 
     /**
