@@ -41,7 +41,7 @@ public class NewsController {
     NewsService newsService;
 
     //save location on server file system
-    String imagesFolder = "/home/gitlab-runner/bin/images";
+    String imagesFolder = "/home/gitlab-runner/bin/images/";
     
     /**
      * Get a stored image by its name.
@@ -83,7 +83,7 @@ public class NewsController {
     @PostMapping(value = {"/image/{fileName}","/image/"})
     public String saveImage(HttpServletResponse response, @RequestParam("image") MultipartFile file, @PathVariable Optional<String> fileName){
         if(!User.checkPermission(Role.CREATOR)){
-            throw new UnauthorizedException("You dont have authorization to upload images");
+            throw new UnauthorizedException("You don't have authorization to upload images");
         }
         
         if(file.isEmpty()){
@@ -104,7 +104,8 @@ public class NewsController {
 
         }catch(IOException e){
             response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
-            return e.getMessage();
+            e.printStackTrace();
+            return e.getMessage() + " " + e.getCause();
         }
     }
 
