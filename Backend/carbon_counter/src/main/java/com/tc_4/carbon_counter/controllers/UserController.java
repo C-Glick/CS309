@@ -1,5 +1,8 @@
 package com.tc_4.carbon_counter.controllers;
 
+import java.util.List;
+
+import com.tc_4.carbon_counter.models.Friends;
 import com.tc_4.carbon_counter.models.User;
 import com.tc_4.carbon_counter.services.UserService;
 
@@ -98,6 +101,53 @@ public class UserController {
     @PostMapping("/user/edit/{username}")
     public User editUser(@PathVariable String username, @RequestBody User user){
         return userService.editUser(username, user);
+    }
+
+    /**
+     * 
+     * @param user the user sending the friend request
+     * @param username the user being sent the friend request
+     * @return true if it sends the request otherwise throws userNotFoundException or RequestExistsException 
+     */
+    @RequestMapping("/user/friend_request/{user}")
+    public boolean friendRequest(@PathVariable String user, @RequestParam String username){
+        //DONE
+        return userService.friendRequest(user, username);
+    }
+    
+    /**
+     * 
+     * @param username the user whos requests you would like
+     * @return all the friend requests for that user
+     */
+    @RequestMapping("/user/requests/{username}")
+    public List<Friends> allFriendRequests(@PathVariable String username){
+        //DONE
+        return userService.allFriendRequests(username);
+    }
+
+    /**
+     * 
+     * @param username the user who was sent the request
+     * @param userOne the user who sent the request
+     * @return true if the request exists otherwise throws usernotfoundexception or requestnotfoundexception
+     */
+    @RequestMapping("/user/accept/{username}")
+    public boolean acceptFriend(@PathVariable String username, @RequestParam String userOne){
+        //DONE
+        return userService.acceptFriend(username, userOne);
+    }
+
+    /**
+     * 
+     * @param username the user who was sent the request
+     * @param userOne the user who sent the request
+     * @return true if the request exists otherwise throws usernotfoundexception or requestnotfoundexception
+     */
+    @RequestMapping("/user/deny/{username}")
+    public boolean denyFriend(@PathVariable String username, @RequestParam String userOne){
+        //DONE
+        return userService.denyFriend(username, userOne);
     }
 
     /**
