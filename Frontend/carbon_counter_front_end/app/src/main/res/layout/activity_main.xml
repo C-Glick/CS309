@@ -14,7 +14,7 @@
         android:layout_alignParentStart="true"
         android:layout_alignParentTop="true"
         android:layout_marginStart="51dp"
-        android:layout_marginTop="308dp"
+        android:layout_marginTop="370dp"
         android:background="@drawable/mybutton"
         android:text="@string/view_my_stats" />
 
@@ -25,7 +25,7 @@
         android:layout_alignParentStart="true"
         android:layout_alignParentTop="true"
         android:layout_marginStart="51dp"
-        android:layout_marginTop="407dp"
+        android:layout_marginTop="491dp"
         android:background="@drawable/mybutton"
         android:text="@string/view_tip_categories" />
 
@@ -35,7 +35,7 @@
         android:layout_height="77dp"
         android:layout_alignParentTop="true"
         android:layout_alignParentEnd="true"
-        android:layout_marginTop="311dp"
+        android:layout_marginTop="370dp"
         android:layout_marginEnd="51dp"
         android:background="@drawable/mybutton"
         android:text="@string/update_my_stats" />
@@ -56,8 +56,9 @@
         android:layout_height="wrap_content"
         android:layout_alignParentTop="true"
         android:layout_alignParentEnd="true"
-        android:layout_marginTop="212dp"
+        android:layout_marginTop="278dp"
         android:layout_marginEnd="50dp"
+        android:background="@drawable/mybutton"
         android:text="Next" />
 
     <Button
@@ -66,7 +67,28 @@
         android:layout_height="wrap_content"
         android:layout_alignParentTop="true"
         android:layout_alignParentEnd="true"
-        android:layout_marginTop="212dp"
-        android:layout_marginEnd="282dp"
+        android:layout_centerVertical="true"
+        android:layout_marginTop="278dp"
+        android:layout_marginEnd="284dp"
+        android:background="@drawable/mybutton"
         android:text="Previous" />
+
+    <Button
+        android:id="@+id/buttonGo"
+        android:layout_width="60dp"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="278dp"
+        android:background="@drawable/mybutton"
+        android:text="GO" />
+
+    <TextView
+        android:id="@+id/newsTitle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="208dp"
+        android:text="" />
 </RelativeLayout>

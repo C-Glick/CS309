@@ -2,10 +2,12 @@ package com.example.carbon_counter_front_end.data.view;
 
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.net.Uri;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -35,26 +37,56 @@ public class MainActivity extends AppCompatActivity {
         Button viewStats = (Button) findViewById(R.id.buttonView);
         Button updateStats = (Button) findViewById(R.id.buttonUpdate);
         Button viewTips = (Button) findViewById(R.id.buttonViewTip);
-        MainActivityLogic mainLogic = new MainActivityLogic(this, this.getApplicationContext());
+        final MainActivityLogic mainLogic = new MainActivityLogic(this, this.getApplicationContext());
 
         final ImageView display = (ImageView) findViewById(R.id.imageView);
 
+        final TextView newsTitle = (TextView) findViewById(R.id.newsTitle);
+
+        Button nextNews = (Button) findViewById(R.id.buttonNewsNext);
+        Button prevNews = (Button) findViewById(R.id.buttonNewsPrev);
+        Button goNews = (Button) findViewById(R.id.buttonGo);
+
+        nextNews.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                mainLogic.setNextImage();
+            }
+        });
+
+        prevNews.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                mainLogic.setPrevImage();
+            }
+        });
+
+        goNews.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Uri uri = mainLogic.getUri();
+                Intent intent = new Intent(Intent.ACTION_VIEW, uri);
+                startActivity(intent);
+            }
+        });
 
         mainLogic.setModel(new RequestServerForService(this.getApplicationContext(), new IVolleyListener() {
             @Override
             public void onImageSuccess(Bitmap image) {
                 display.setImageBitmap(image);
+
+                String title = mainLogic.getTitle();
+                newsTitle.setText(title);
             }
 
             @Override
             public void onSuccessJSONArray(JSONArray response) {
-                System.out.println(response);
+                mainLogic.setMyNews(response);
             }
 
             @Override
             public void onSuccess(JSONObject response) {
 
-                System.out.println(response);
             }
 
             @Override
