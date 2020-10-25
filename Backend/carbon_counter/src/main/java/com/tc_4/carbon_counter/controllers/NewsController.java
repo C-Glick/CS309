@@ -18,7 +18,9 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.time.LocalDate;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 import javax.servlet.http.HttpServletResponse;
@@ -48,6 +50,9 @@ public class NewsController {
      * Will first search the class path of the project for the file,
      * if not found will then search the file system of the server.
      * @param fileName The name of the file to retrieve, passed in as a path variable
+     * @return The image requested in the http body, media type is image/jpg
+     * @throws CarbonFileNotFoundException if the image could not be found.
+     * @throws IOException
      */
     @GetMapping("/image/{fileName}")
     public void getImage(HttpServletResponse response, @PathVariable String fileName) throws IOException {
@@ -62,7 +67,7 @@ public class NewsController {
         }
 
         if(imgFile.exists()){
-            response.setContentType(MediaType.IMAGE_PNG_VALUE);
+            response.setContentType(MediaType.IMAGE_JPEG_VALUE);
             StreamUtils.copy(imgFile.getInputStream(), response.getOutputStream());
         }else{
             throw new CarbonFileNotFoundException(fileName);
@@ -78,17 +83,21 @@ public class NewsController {
      * 
      * @param file The image to upload, pass as a multi-part file as form data, max size of 10MB
      * @param fileName optional file name passed as a path variable, if omitted will use file name from passed in file
-     * @return
+     * @return the result of the upload wrapped in a map, the key is message. 
+     * @throws UnauthorizedException if user is not authenticated as at least a creator
      */
     @PostMapping(value = {"/image/{fileName}","/image/"})
-    public String saveImage(HttpServletResponse response, @RequestParam("image") MultipartFile file, @PathVariable Optional<String> fileName){
+    public Map<String, String> saveImage(HttpServletResponse response, @RequestParam("image") MultipartFile file, @PathVariable Optional<String> fileName){
         if(!User.checkPermission(Role.CREATOR)){
             throw new UnauthorizedException("You don't have authorization to upload images");
         }
+        HashMap<String, String> responseMessage = new HashMap<>();
+
         
         if(file.isEmpty()){
             response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
-            return "Please attach a image to upload";
+            responseMessage.put("message", "Please attach a image to upload");
+            return responseMessage;
         }
         
         try{
@@ -100,12 +109,14 @@ public class NewsController {
                 path = Paths.get(imagesFolder + file.getOriginalFilename());
             }
             Files.write(path,bytes);
-            return "successful upload";
+            responseMessage.put("message", "successful upload");
+            return responseMessage;
 
         }catch(IOException e){
             response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
             e.printStackTrace();
-            return e.getMessage() + " " + e.getCause();
+            responseMessage.put("message", e.getMessage() + " " + e.getCause());
+            return responseMessage;
         }
     }
 

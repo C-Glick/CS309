@@ -75,7 +75,7 @@ public class NewsService {
     public List<News> getLastNNews(int n) {
         List<News> all = newsDatabase.findAllByOrderByDateAsc();
         List<News> result = new ArrayList<News>();
-        for (int i = 0; i < n && i < all.size(); i++) {
+        for (int i = Math.max(all.size() - n, 0); i < all.size(); i++) {
             result.add(all.get(i));
         }
         return result;
