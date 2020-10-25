@@ -28,12 +28,27 @@ public class NewsService {
      */
     public News addNews(News news) {
         if(!User.checkPermission(Role.CREATOR)){
-            throw new UnauthorizedException("Not authorized");
+            throw new UnauthorizedException("You don't have authorization to add news items.");
         }
         if (news.getDate() == null) {
             news.setDate(LocalDate.now());
         }
         return newsDatabase.save(news);
+    }
+
+    /**
+     * Delete a news item from the database based on its title.
+     * @param title The title of the news item to delete
+     * @return the news item that was deleted
+     */
+    public News deleteNews(String title){
+        if(!User.checkPermission(Role.CREATOR)){
+            throw new UnauthorizedException("You don't have authorization to delete news items.");
+        }
+
+        News deletedItem = newsDatabase.findByTitle(title).get();
+        newsDatabase.delete(deletedItem);
+        return deletedItem;
     }
 
     /**

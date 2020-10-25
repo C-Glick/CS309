@@ -7,12 +7,14 @@ import org.springframework.core.io.Resource;
 import org.springframework.core.io.ResourceLoader;
 import org.springframework.http.MediaType;
 import org.springframework.util.StreamUtils;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -121,6 +123,38 @@ public class NewsController {
     }
 
     /**
+     * Delete a stored image by its name.
+     * Will first search the class path of the project for the file,
+     * if not found will then search the file system of the server.
+     * 
+     * @param fileName The name of the file to retrieve, passed in as a path variable
+     * @throws CarbonFileNotFoundException if the image could not be found.
+     * @throws IOException
+     */
+    @DeleteMapping("/image/{fileName}")
+    public void deleteImage(HttpServletResponse response, @PathVariable String fileName) throws IOException {
+        if(!User.checkPermission(Role.CREATOR)){
+            throw new UnauthorizedException("You don't have authorization to delete images");
+        }
+
+        File imgFile;
+        //classpath to delete images from
+        imgFile = new File("src/main/resources/images/" + fileName);
+        
+        if(!imgFile.exists()){
+            //file system, location on server to delete images from
+            imgFile = new File(imagesFolder + fileName);
+        }
+        
+        if(imgFile.exists()){
+            imgFile.delete();
+            response.setStatus(HttpServletResponse.SC_OK);
+        }else{
+            throw new CarbonFileNotFoundException(fileName);
+        }
+    }
+
+    /**
      * Add a news item to the database. Must be authenticated as at least a creator.
      * Required fields: title, imageTitle, link, body
      * Optional fields: date(defaults to today)
@@ -146,11 +180,23 @@ public class NewsController {
     }
 
     /**
+     * Deletes a news item by its title.
+     * Must be authenticated as at least a creator.
+     * 
+     * @param title The title to search by, passed in as a path variable
+     * @return The news item that was delete if successful
+     */
+    @DeleteMapping("/news/{title}")
+    public News deleteNewsByTitle(@PathVariable String title){
+        return newsService.deleteNews(title);
+    }
+
+    /**
      * Get all news objects that have a date after the date passed in.
      * List is sorted by date past to present.
      * 
      * @param date The date to search by, passed as a path variable in the from of "yyyy-MM-dd"
-     * @return A list of news objects, (can be empty) as a JSON list
+     * @return A list of news objects, (can be empty) as a JSON array
      */
     @GetMapping("/news/after/{date}")
     public List<News> getNewsAfterDate(@PathVariable String date){
@@ -164,7 +210,7 @@ public class NewsController {
      * List is sorted by date past to present.
      * 
      * @param n the number of news objects to get passed in as a path variable.
-     * @return A list of news objects that is up to n in size as a JSON list.
+     * @return A list of news objects that is up to n in size as a JSON array.
      */
     @GetMapping("/news/last/{n}")
     public List<News> getLastNNews(@PathVariable int n){
@@ -175,7 +221,7 @@ public class NewsController {
      * Get all news objects in the database.
      * List is sorted by date past to present.
      * 
-     * @return A list of news objects as a JSON list
+     * @return A list of news objects as a JSON array
      */
     @GetMapping("/news/all")
     public List<News> getAllNews(){
