@@ -1,6 +1,7 @@
 package com.tc_4.carbon_counter.controllers;
 
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.ResourceLoader;
@@ -10,15 +11,23 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Optional;
 
 import javax.servlet.http.HttpServletResponse;
 
 import com.tc_4.carbon_counter.exceptions.CarbonFileNotFoundException;
+import com.tc_4.carbon_counter.exceptions.UnauthorizedException;
 import com.tc_4.carbon_counter.models.News;
+import com.tc_4.carbon_counter.models.User;
+import com.tc_4.carbon_counter.models.User.Role;
 import com.tc_4.carbon_counter.services.NewsService;
 
 
@@ -30,11 +39,15 @@ public class NewsController {
 
     @Autowired
     NewsService newsService;
+
+    //TODO: set image save location on server
+    String imagesFolder = "C:/Users/The_Pheonix/git/309_Project/Backend/carbon_counter/src/main/resources/";
     
     /**
      * Get a stored image by its name.
      * Will first search the class path of the project for the file,
      * if not found will then search the file system of the server.
+     * @param fileName The name of the file to retrieve, passed in as a path variable
      */
     @GetMapping("/image/{fileName}")
     public void getImage(HttpServletResponse response, @PathVariable String fileName) throws IOException {
@@ -45,33 +58,7 @@ public class NewsController {
 
         if(!imgFile.exists()){
             //file system, location on server to pull images from
-            imgFile = resourceLoader.getResource("file:C:/Users/The_Pheonix/git/309_Project/Backend/carbon_counter/src/main/resources/" + fileName);
-        }
-
-        if(imgFile.exists()){
-            response.setContentType(MediaType.IMAGE_PNG_VALUE);
-            StreamUtils.copy(imgFile.getInputStream(), response.getOutputStream());
-        }else{
-            throw new CarbonFileNotFoundException(fileName);
-        }
-    }
-
-    //TODO: save images
-     /**
-     * Get a stored image by its name.
-     * Will first search the class path of the project for the file,
-     * if not found will then search the file system of the server.
-     */
-    @PostMapping("/image/{fileName}")
-    public void saveImage(HttpServletResponse response, @PathVariable String fileName) throws IOException {
-        
-        Resource imgFile;
-        //classpath, stored within the jar file
-        imgFile = resourceLoader.getResource("classpath:" + fileName);
-
-        if(!imgFile.exists()){
-            //file system, location on server to pull images from
-            imgFile = resourceLoader.getResource("file:C:/Users/The_Pheonix/git/309_Project/Backend/carbon_counter/src/main/resources/" + fileName);
+            imgFile = resourceLoader.getResource("file:" + imagesFolder + fileName);
         }
 
         if(imgFile.exists()){
@@ -83,7 +70,46 @@ public class NewsController {
     }
 
     /**
-     * Add a news item to the database.
+     * Save an image to the server's file system.
+     * Pass the image as a form-data, with key "image" and value 
+     * as the file.
+     * 
+     * Max image size is 10MB.
+     * 
+     * @param file The image to upload, pass as a multi-part file as form data, max size of 1MB
+     * @param fileName optional file name passed as a path variable, if omitted will use file name from passed in file
+     * @return
+     */
+    @PostMapping(value = {"/image/{fileName}","/image/"})
+    public String saveImage(HttpServletResponse response, @RequestParam("image") MultipartFile file, @PathVariable Optional<String> fileName){
+        if(!User.checkPermission(Role.CREATOR)){
+            throw new UnauthorizedException("You dont have authorization to upload images");
+        }
+        
+        if(file.isEmpty()){
+            response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+            return "Please attach a image to upload";
+        }
+        
+        try{
+            byte[] bytes = file.getBytes();
+            Path path;
+            if(fileName.isPresent() && !fileName.get().equals("")){
+                path = Paths.get(imagesFolder + fileName.get());
+            }else{
+                path = Paths.get(imagesFolder + file.getOriginalFilename());
+            }
+            Files.write(path,bytes);
+            return "successful upload";
+
+        }catch(IOException e){
+            response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
+            return e.getMessage();
+        }
+    }
+
+    /**
+     * Add a news item to the database. Must be authenticated as at least a creator.
      * Required fields: title, imageTitle, link, body
      * Optional fields: date(defaults to today)
      * 

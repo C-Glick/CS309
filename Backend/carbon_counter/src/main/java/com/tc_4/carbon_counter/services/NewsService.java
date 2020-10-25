@@ -6,7 +6,10 @@ import java.util.List;
 import java.util.Optional;
 
 import com.tc_4.carbon_counter.databases.NewsDatabase;
+import com.tc_4.carbon_counter.exceptions.UnauthorizedException;
 import com.tc_4.carbon_counter.models.News;
+import com.tc_4.carbon_counter.models.User;
+import com.tc_4.carbon_counter.models.User.Role;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -24,6 +27,9 @@ public class NewsService {
      * @return The News object
      */
     public News addNews(News news) {
+        if(!User.checkPermission(Role.CREATOR)){
+            throw new UnauthorizedException("Not authorized");
+        }
         if (news.getDate() == null) {
             news.setDate(LocalDate.now());
         }
