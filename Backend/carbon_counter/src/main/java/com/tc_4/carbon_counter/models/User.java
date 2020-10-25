@@ -6,6 +6,10 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 
+import com.tc_4.carbon_counter.security.CarbonUserPrincipal;
+
+import org.springframework.security.core.context.SecurityContextHolder;
+
 @Entity
 public class User{
     /**
@@ -64,8 +68,33 @@ public class User{
     public void setRole(Role newRole){
         role = newRole;
     }
-    public boolean checkPermission(Role permission){
-        return role.compareTo(permission)>=0;
+    
+    /**
+     * Preforms a check to see if the user that created the current request 
+     * has the required role or higher.
+     * 
+     * @param requiredRole  The minimum role needed to preform this action
+     * @return              True if the user has access, false if they dont
+     */
+    public static boolean checkPermission(Role requiredRole){
+        CarbonUserPrincipal auth =(CarbonUserPrincipal) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+
+        //check all permissions including and above required role
+        for(Role r : Role.values()){
+            //skip lower roles
+            if(r.compareTo(requiredRole) < 0 ){
+                continue;
+            }
+
+            if(auth.getAuthorities().stream().anyMatch(a ->
+            a.getAuthority().equals(r.toString()))){
+                
+                // user has at least the minimum role
+                return true;
+            }
+        }
+        //user does not have at least the minimum role
+        return false;
     }
 
     /**

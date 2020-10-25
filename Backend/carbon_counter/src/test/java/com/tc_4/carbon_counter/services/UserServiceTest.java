@@ -197,10 +197,10 @@ public class UserServiceTest {
     @Test
     @WithUserDetails("testUsername")
     public void testCheckPermission(){
-        assertEquals(true, userService.checkPermission(Role.USER));
-        assertEquals(false, userService.checkPermission(Role.CREATOR));
-        assertEquals(false, userService.checkPermission(Role.ADMIN));
-        assertEquals(false, userService.checkPermission(Role.DEV));
+        assertEquals(true, User.checkPermission(Role.USER));
+        assertEquals(false, User.checkPermission(Role.CREATOR));
+        assertEquals(false, User.checkPermission(Role.ADMIN));
+        assertEquals(false, User.checkPermission(Role.DEV));
     }
 
 }
