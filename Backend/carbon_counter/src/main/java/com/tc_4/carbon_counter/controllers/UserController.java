@@ -109,21 +109,22 @@ public class UserController {
         return userService.friendRequest(user, username);
     }
     
-    @RequestMapping("user/{username}/friend_requests")
+    @RequestMapping("/user/friend_requests/{username}")
     public List<Friends> allFriendRequests(@PathVariable String username){
         //TODO
+        //should work but security is being a pain
         //sends correct thing here but sends empty json to postman
         return userService.allFriendRequests(username);
     }
 
-    @RequestMapping("user/{username}/accept")
+    @RequestMapping("/user/accept/{username}")
     public boolean acceptFriend(@PathVariable String username, @RequestParam String userOne){
-        //TODO
+        //DONE
         return userService.acceptFriend(username, userOne);
     }
-    @RequestMapping("user/{username}/deny")
+    @RequestMapping("/user/deny/{username}")
     public boolean denyFriend(@PathVariable String username, @RequestParam String userOne){
-        //TODO
+        //DONE
         return userService.denyFriend(username, userOne);
     }
 

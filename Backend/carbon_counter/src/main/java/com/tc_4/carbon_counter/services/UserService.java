@@ -4,6 +4,8 @@ import java.util.List;
 
 import com.tc_4.carbon_counter.databases.FriendsDatabase;
 import com.tc_4.carbon_counter.databases.UserDatabase;
+import com.tc_4.carbon_counter.exceptions.RequestExistsException;
+import com.tc_4.carbon_counter.exceptions.RequestNotFoundException;
 import com.tc_4.carbon_counter.exceptions.UnauthorizedException;
 import com.tc_4.carbon_counter.exceptions.UserNotFoundException;
 import com.tc_4.carbon_counter.models.Friends;
@@ -22,6 +24,7 @@ import org.springframework.stereotype.Service;
  * Able to get users, add users, remove users etc. This class
  * is made to be called from controllers.
  * @author Colton Glick
+ * @author Andrew Pester
  */
 @Service
 public class UserService {
@@ -95,42 +98,76 @@ public class UserService {
         }
         throw new UnauthorizedException("Incorrect old password");
     }
-
+    /**
+     * 
+     * @param user the user sending the friend request
+     * @param username the user recieveing the request
+     * @return true if it sends the request otherwise throws userNotFoundException or RequestExistsException
+     */
     public boolean friendRequest(String user, String username){
-        //DONE
-        if(userDatabase.existsByUsername(user) && userDatabase.existsByUsername(username)){
-            Friends temp = new Friends();
-            temp.setUserOne(user);
-            temp.setUserTwo(username);
-            temp.setStatus(Status.REQUESTED);
-            if(!friendsDatabase.findByUserOneAndUserTwo(user, username).isPresent()){
-                friendsDatabase.save(temp);
-                return true;
-            }
+        if(!userDatabase.existsByUsername(user)){
+            throw new UserNotFoundException(user);
         }
-        return false;
+        if(!userDatabase.existsByUsername(username)){
+            throw new UserNotFoundException(username);
+        }
+        Friends temp = new Friends();
+        temp.setUserOne(user);
+        temp.setUserTwo(username);
+        temp.setStatus(Status.REQUESTED);
+        if(!friendsDatabase.findByUserOneAndUserTwo(user, username).isPresent()){
+            friendsDatabase.save(temp);
+            return true;
+        }
+        throw new RequestExistsException();
     }
+    /**
+     * 
+     * @param username the username of the user
+     * @return all the friend request of that user
+     */
     public List<Friends> allFriendRequests(String username){
-        //TODO
         return friendsDatabase.findByUserTwoAndStatus(username,Status.REQUESTED);
     }
+    /**
+     * 
+     * @param username the user who is accepting the friend request
+     * @param userOne the user who sent the friend request 
+     * @return true if the request exists otherwise throws usernotfoundexception or requestnotfoundexception
+     */
     public boolean acceptFriend(String username, String userOne){
         if(friendsDatabase.findByUserOneAndUserTwo(userOne, username).isPresent()){
             Friends temp = friendsDatabase.findByUserOneAndUserTwo(userOne, username).get();
             temp.setStatus(Status.APPROVED);
             friendsDatabase.save(temp);
             return true;
+        }else if(!userDatabase.existsByUsername(username)){
+            throw new UserNotFoundException(username);
+        }else if(!userDatabase.existsByUsername(userOne)){
+            throw new UserNotFoundException(userOne);
+        }else{
+            throw new RequestNotFoundException(userOne, username);
         }
-        return false;
     }
+    /**
+     * 
+     * @param username the user who is denying the friend request
+     * @param userOne the user who sent the friend request 
+     * @return true if the request exists otherwise throws usernotfoundexception or requestnotfoundexception
+     */
     public boolean denyFriend(String username, String userOne){
         if(friendsDatabase.findByUserOneAndUserTwo(userOne, username).isPresent()){
             Friends temp = friendsDatabase.findByUserOneAndUserTwo(userOne, username).get();
             temp.setStatus(Status.DENIED);
             friendsDatabase.save(temp);
             return true;
+        }else if(!userDatabase.existsByUsername(username)){
+            throw new UserNotFoundException(username);
+        }else if(!userDatabase.existsByUsername(userOne)){
+            throw new UserNotFoundException(userOne);
+        }else{
+            throw new RequestNotFoundException(userOne, username);
         }
-        return false;
     }
   
     /**

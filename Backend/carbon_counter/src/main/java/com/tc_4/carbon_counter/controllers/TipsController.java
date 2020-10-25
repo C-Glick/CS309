@@ -15,6 +15,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+/**
+ * @author Andrew Pester
+ */
 @RestController
 public class TipsController {
 
@@ -88,7 +91,7 @@ public class TipsController {
      * this is for admins and requires authentication 
      * @return a list of all tips that are not strictly approved
      */
-    @GetMapping("tips/all/admin")
+    @GetMapping("/tips/all/admin")
     public List<Tip> allUnapprovedTips(){
         //DONE
         //returns all unapproved tips in List
@@ -98,7 +101,7 @@ public class TipsController {
      * 
      * @return the list of all approved tips
      */
-    @GetMapping("tips/all")
+    @GetMapping("/tips/all")
     public List<Tip> allApprovedTips(){
         //DONE
         //returns all approved tips in List
