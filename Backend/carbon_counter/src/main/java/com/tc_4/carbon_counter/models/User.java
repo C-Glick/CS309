@@ -65,14 +65,14 @@ public class User{
         role = newRole;
     }
     public boolean checkPermission(Role permission){
-        //need to test
         return role.compareTo(permission)>=0;
     }
 
     /**
      * Copies the details from the other user into this user.
+     * DOES NOT COPY PASSWORD!
      * Skips null variables effectively updating this user with the 
-     * changes from the other user. DOES NOT COPY PASSWORD
+     * changes from the other user.
      * 
      * @param other The other user to copy from
      */

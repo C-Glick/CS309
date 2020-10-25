@@ -14,7 +14,7 @@
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true">
         <activity android:name=".data.view.UserManagement"></activity>
-        <activity android:name=".data.view.viewCategoryResults" />
+
         <activity android:name=".data.view.TipCategoryActivity" />
         <activity
             android:name=".data.view.AdminTipApprovalActivity"
