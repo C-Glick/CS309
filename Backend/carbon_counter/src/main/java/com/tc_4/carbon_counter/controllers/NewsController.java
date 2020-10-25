@@ -40,8 +40,8 @@ public class NewsController {
     @Autowired
     NewsService newsService;
 
-    //TODO: set image save location on server
-    String imagesFolder = "C:/Users/The_Pheonix/git/309_Project/Backend/carbon_counter/src/main/resources/";
+    //save location on server file system
+    String imagesFolder = "/home/gitlab-runner/bin/images";
     
     /**
      * Get a stored image by its name.
@@ -76,7 +76,7 @@ public class NewsController {
      * 
      * Max image size is 10MB.
      * 
-     * @param file The image to upload, pass as a multi-part file as form data, max size of 1MB
+     * @param file The image to upload, pass as a multi-part file as form data, max size of 10MB
      * @param fileName optional file name passed as a path variable, if omitted will use file name from passed in file
      * @return
      */
