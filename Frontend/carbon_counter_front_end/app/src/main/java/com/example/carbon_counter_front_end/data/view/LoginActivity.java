@@ -1,19 +1,20 @@
 package com.example.carbon_counter_front_end.data.view;
 
-import androidx.appcompat.app.AppCompatActivity;
-
-import com.example.carbon_counter_front_end.R;
-import com.example.carbon_counter_front_end.data.model.IVolleyListener;
-import com.example.carbon_counter_front_end.data.model.RequestServerForService;
-import com.example.carbon_counter_front_end.data.model.UserInformation;
-import com.example.carbon_counter_front_end.data.logic.LoginLogic;
-
+import android.content.Intent;
+import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
-import android.content.Intent;
 
+import androidx.appcompat.app.AppCompatActivity;
+
+import com.example.carbon_counter_front_end.R;
+import com.example.carbon_counter_front_end.data.logic.LoginLogic;
+import com.example.carbon_counter_front_end.data.model.IVolleyListener;
+import com.example.carbon_counter_front_end.data.model.RequestServerForService;
+
+import org.json.JSONArray;
 import org.json.JSONObject;
 
 public class LoginActivity extends AppCompatActivity {
@@ -39,9 +40,18 @@ public class LoginActivity extends AppCompatActivity {
                 Thread insertData = new Thread(insertDataThread);
 
                 insertData.start();*/
-                UserInformation.username = username.getText().toString();
-                UserInformation.password = password.getText().toString();
+
                 loginLogic.setModel(new RequestServerForService(getApplicationContext(), new IVolleyListener() {
+                    @Override
+                    public void onImageSuccess(Bitmap image) {
+
+                    }
+
+                    @Override
+                    public void onSuccessJSONArray(JSONArray response) {
+                        //do nothing
+                    }
+
                     @Override
                     public void onSuccess(JSONObject response) {
                         loginLogic.clearError(failedLogin, failedLogin2);
@@ -56,7 +66,7 @@ public class LoginActivity extends AppCompatActivity {
                     }
                 }));
 
-                loginLogic.authenticate();
+                loginLogic.authenticate(username.getText().toString(), password.getText().toString());
             }
         });
 

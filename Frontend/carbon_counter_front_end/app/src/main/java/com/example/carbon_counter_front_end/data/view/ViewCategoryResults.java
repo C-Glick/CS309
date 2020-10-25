@@ -1,6 +1,7 @@
 package com.example.carbon_counter_front_end.data.view;
 
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -13,6 +14,7 @@ import com.example.carbon_counter_front_end.data.logic.ViewCategoryResultsLogic;
 import com.example.carbon_counter_front_end.data.model.IVolleyListener;
 import com.example.carbon_counter_front_end.data.model.RequestServerForService;
 
+import org.json.JSONArray;
 import org.json.JSONObject;
 
 public class ViewCategoryResults extends AppCompatActivity {
@@ -48,10 +50,17 @@ public class ViewCategoryResults extends AppCompatActivity {
         ViewCategoryResultsLogic resultsLogic = new ViewCategoryResultsLogic(this, getApplicationContext());
         resultsLogic.setModel(new RequestServerForService(getApplicationContext(), new IVolleyListener() {
             @Override
-            public void onSuccess(JSONObject response) {
-                //Take response and form hash-map and send back to logic
+            public void onImageSuccess(Bitmap image) {
 
-                //Call logic for the tip to be displayed
+            }
+
+            @Override
+            public void onSuccessJSONArray(JSONArray response) {
+
+            }
+
+            @Override
+            public void onSuccess(JSONObject response) {
 
             }
 

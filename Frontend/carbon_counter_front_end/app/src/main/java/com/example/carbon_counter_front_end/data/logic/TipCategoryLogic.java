@@ -35,6 +35,7 @@ public class TipCategoryLogic {
 
         url += "/" + UserInformation.username;
 
+
         model.contactServer(url);
     }
 

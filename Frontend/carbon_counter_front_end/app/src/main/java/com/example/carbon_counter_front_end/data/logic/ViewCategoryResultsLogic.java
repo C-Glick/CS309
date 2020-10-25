@@ -3,7 +3,6 @@ package com.example.carbon_counter_front_end.data.logic;
 import android.content.Context;
 
 import com.example.carbon_counter_front_end.data.model.RequestServerForService;
-import com.example.carbon_counter_front_end.data.model.UserInformation;
 import com.example.carbon_counter_front_end.data.view.ViewCategoryResults;
 
 public class ViewCategoryResultsLogic {
@@ -21,7 +20,7 @@ public class ViewCategoryResultsLogic {
     public void getTips(String category){
         String url = "http://10.24.227.38:8080/tips";
 
-        url += "/" + category + "/" + UserInformation.username;
+        url += "/" + category;
 
         model.contactServer(url);
     }
