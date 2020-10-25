@@ -72,7 +72,7 @@ public class UpdateActivity extends AppCompatActivity {
         Button submitButton = (Button) findViewById(R.id.buttonSubmit);
         final EditText milesPerWeek = (EditText) findViewById(R.id.milesPerWeek);
         final EditText waterPerWeek = (EditText) findViewById(R.id.waterPerWeek);
-       // final EditText milesPerWeek = (EditText) findViewById(R.id.milesPerWeek);
+        //final EditText milesPerWeek = (EditText) findViewById(R.id.milesPerWeek);
         miles = milesPerWeek.toString();
         water = waterPerWeek.toString();
 
