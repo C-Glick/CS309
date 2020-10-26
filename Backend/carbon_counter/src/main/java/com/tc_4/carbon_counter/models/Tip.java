@@ -9,7 +9,9 @@ import javax.persistence.Id;
 public class Tip {
     public enum Category{
         WATER,
-        CARBON
+        CARBON,
+        ENERGY, 
+        WASTE
 
     }
     public enum Status{
