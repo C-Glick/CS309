@@ -25,6 +25,11 @@ public class TipCategoryActivity extends AppCompatActivity {
     private String username;
     private String password;
 
+    private final String emissions = "CARBON";
+    private final String water = "WATER";
+    private final String waste = "GARBAGE";
+    private final String energy = "ENERGY";
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -41,7 +46,7 @@ public class TipCategoryActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 Intent i = new Intent(TipCategoryActivity.this, ViewCategoryResults.class);
-                i.putExtra("category", "CARBON");
+                i.putExtra("category", emissions);
                 startActivity(i);
             }
         });
@@ -50,7 +55,7 @@ public class TipCategoryActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 Intent i = new Intent(TipCategoryActivity.this, ViewCategoryResults.class);
-                i.putExtra("category", "WATER");
+                i.putExtra("category", water);
                 startActivity(i);
             }
         });
@@ -59,7 +64,7 @@ public class TipCategoryActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 Intent i = new Intent(TipCategoryActivity.this, ViewCategoryResults.class);
-                i.putExtra("category", "WASTE");
+                i.putExtra("category", waste);
                 startActivity(i);
             }
         });
@@ -68,7 +73,7 @@ public class TipCategoryActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 Intent i = new Intent(TipCategoryActivity.this, ViewCategoryResults.class);
-                i.putExtra("category", "ENERGY");
+                i.putExtra("category", energy);
                 startActivity(i);
             }
         });
