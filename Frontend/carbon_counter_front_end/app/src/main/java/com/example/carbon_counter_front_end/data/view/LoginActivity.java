@@ -60,10 +60,10 @@ public class LoginActivity extends AppCompatActivity {
                     public void onSuccess(JSONObject response) {
                         loginLogic.clearError(failedLogin, failedLogin2);
                         Intent i = new Intent(LoginActivity.this, MainActivity.class);
-                        if(UserInformation.role.equals("ADMIN"))
-                        {
-                            i = new Intent(LoginActivity.this, AdminOverview.class);
-                        }
+//                        if(UserInformation.role.equals("ADMIN"))
+//                        {
+//                            i = new Intent(LoginActivity.this, AdminOverview.class);
+//                        }
                         startActivity(i);
                     }
 

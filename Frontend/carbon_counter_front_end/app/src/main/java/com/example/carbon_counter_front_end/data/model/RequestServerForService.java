@@ -2,7 +2,6 @@ package com.example.carbon_counter_front_end.data.model;
 
 import android.content.Context;
 import android.graphics.Bitmap;
-import android.text.Editable;
 import android.util.Base64;
 import android.util.Log;
 import android.widget.ImageView;
@@ -16,7 +15,6 @@ import com.android.volley.toolbox.ImageRequest;
 import com.android.volley.toolbox.JsonArrayRequest;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
-import com.example.carbon_counter_front_end.app.AppController;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -24,8 +22,6 @@ import org.json.JSONObject;
 
 import java.util.HashMap;
 import java.util.Map;
-
-import static java.lang.Double.parseDouble;
 
 public class RequestServerForService {
     IVolleyListener myListener;
@@ -44,7 +40,11 @@ public class RequestServerForService {
                     @Override
                     public void onResponse(JSONObject response) {
                         Log.d("VOLLEY", "SERVER RESPONSE: " + response);
-                        myListener.onSuccess(response);
+                        try {
+                            myListener.onSuccess(response);
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
                     }
                 }, new Response.ErrorListener()
         {
@@ -78,23 +78,6 @@ public class RequestServerForService {
     }
 
     public void postServer(String url, JSONObject stats) throws JSONException {
-        //  double milesDriven = parseDouble(text.toString());
-        // String url = "http://10.24.227.38:8080/stats/addDaily";
-
-        //url += "/" + username;
-//        "water": "test6@iastate.edu"
-//        "power": "test123"
-//        "milesDriven": 55.6
-//        "meat":
-//        "garbage": 34.6 (double)
-//        final JSONObject userUpdate = new JSONObject();
-//        userUpdate.put("userName", username);
-//        userUpdate.put("water", 0.0);
-//        userUpdate.put("power", 0.0);
-//        userUpdate.put("waste", 0.0);
-//        userUpdate.put("meat", 0.0);
-//        userUpdate.put("milesDriven", milesDriven);
-        //   Toast.makeText(CreateUserActivity.this, jsonParam.toString(), Toast.LENGTH_LONG).show(); For Debugging later
 
 
         JsonObjectRequest jsonObjReq = new JsonObjectRequest(Request.Method.POST,
@@ -104,7 +87,11 @@ public class RequestServerForService {
                     @Override
                     public void onResponse(JSONObject response) {
                         Log.d("VOLLEY", "SERVER RESPONSE: " + response);
-                        myListener.onSuccess(response);
+                        try {
+                            myListener.onSuccess(response);
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
                     }
                 }, new Response.ErrorListener()
         {
@@ -115,6 +102,8 @@ public class RequestServerForService {
                 myListener.onError();
             }
         }){
+
+
             @Override
             public Map<String, String> getHeaders() throws AuthFailureError {
                 Map<String, String>  params = new HashMap<String, String>();

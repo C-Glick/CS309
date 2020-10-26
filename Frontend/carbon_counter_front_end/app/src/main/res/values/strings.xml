@@ -29,4 +29,5 @@
     <string name="tab_text_1">Tab 1</string>
     <string name="tab_text_2">Tab 2</string>
     <string name="hello_world" />
+    <string name="estimate_how_many_lbs_of_trash_you_ve_thrown_away_this_week">Estimate how many lbs of trash you\'ve thrown away this week:</string>
 </resources>

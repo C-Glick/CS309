@@ -25,22 +25,12 @@ public class UpdateStatsLogic {
     public void authenticate(JSONObject stats) {
         // String url = "http://10.24.227.38:8080/stats/addDaily";
         String url = "http://10.24.227.38:8080/stats/addDaily";
-        url += "/" + UserInformation.username;
+        //url += "/" + UserInformation.username;
         try {
             model.postServer(url, stats);
         } catch (JSONException e) {
             e.printStackTrace();
         }
-    }
-
-    public void clearError(TextView failedLogin, TextView failedLogin2) {
-        failedLogin.setText("");
-        failedLogin2.setText("");
-    }
-
-    public void displayError(TextView failedLogin, TextView failedLogin2) {
-        failedLogin.setText("Invalid username or password!");
-        failedLogin2.setText("Please register or try again!");
     }
 
 

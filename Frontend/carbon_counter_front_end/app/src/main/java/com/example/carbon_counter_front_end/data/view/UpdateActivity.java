@@ -5,6 +5,7 @@ import androidx.lifecycle.LiveData;
 import androidx.room.Room;
 
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.text.Editable;
 import android.util.Base64;
@@ -12,6 +13,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Toast;
 
 import com.android.volley.AuthFailureError;
 import com.android.volley.Request;
@@ -31,6 +33,7 @@ import com.example.carbon_counter_front_end.data.model.User;
 import com.example.carbon_counter_front_end.data.model.UserInformation;
 import com.example.carbon_counter_front_end.data.model.UserRepository;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -38,6 +41,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import static android.widget.Toast.LENGTH_SHORT;
 import static java.lang.Double.parseDouble;
 import static java.lang.Integer.parseInt;
 
@@ -56,7 +60,7 @@ public class UpdateActivity extends AppCompatActivity {
     final JSONObject userUpdate = new JSONObject();
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        final UpdateStatsLogic updateStatsLogic = new UpdateStatsLogic(UpdateActivity.this, getApplicationContext());
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_update);
 /*
@@ -74,9 +78,12 @@ public class UpdateActivity extends AppCompatActivity {
         Button submitButton = (Button) findViewById(R.id.buttonSubmit);
         final EditText milesPerWeek = (EditText) findViewById(R.id.milesPerWeek);
         final EditText waterPerWeek = (EditText) findViewById(R.id.waterPerWeek);
-        //final EditText milesPerWeek = (EditText) findViewById(R.id.milesPerWeek);
-        miles = milesPerWeek.toString();
-        water = waterPerWeek.toString();
+        final EditText meatPerWeek = (EditText) findViewById(R.id.meatPerWeek);
+        final EditText powerPerWeek = (EditText) findViewById(R.id.powerPerWeek);
+        final EditText wastePerWeek = (EditText) findViewById(R.id.wastePerWeek);
+
+
+
 
 
         backButton.setOnClickListener(new View.OnClickListener() {
@@ -99,25 +106,36 @@ public class UpdateActivity extends AppCompatActivity {
         submitButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                final UpdateStatsLogic updateStatsLogic = new UpdateStatsLogic(UpdateActivity.this, getApplicationContext());
                 try {
+                    miles = milesPerWeek.getText().toString();
+                    water = waterPerWeek.getText().toString();
+                    meat = meatPerWeek.getText().toString();
+                    power = powerPerWeek.getText().toString();
+                    waste = wastePerWeek.getText().toString();
+
+
                     updateInfo();
 
                     updateStatsLogic.setModel(new RequestServerForService(getApplicationContext(), new IVolleyListener() {
                         @Override
-                        public void onSuccess(JSONObject response) throws JSONException {
-
+                        public void onImageSuccess(Bitmap image) {
                         }
-
+                        @Override
+                        public void onSuccessJSONArray(JSONArray response) {
+                        }
+                        @Override
+                        public void onSuccess(JSONObject response) throws JSONException {
+                        }
                         @Override
                         public void onError() {
-
                         }
                     }));
-
-                    updateStatsLogic.authenticate(userUpdate);
+                   // Toast.makeText(UpdateActivity.this, (CharSequence) userUpdate, LENGTH_SHORT).show();
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
+                updateStatsLogic.authenticate(userUpdate);
             }
 
         });
@@ -127,8 +145,8 @@ public class UpdateActivity extends AppCompatActivity {
     }
 
     private void updateInfo() throws JSONException {
-            double milesDriven = parseDouble(miles);
-            double waterUsed = parseDouble(water);
+//            double milesDriven = parseDouble(miles);
+//            double waterUsed = parseDouble(water);
 
             //String url = "http://10.24.227.38:8080/stats/addDaily";
 
@@ -139,47 +157,21 @@ public class UpdateActivity extends AppCompatActivity {
 //        "meat":
 //        "garbage": 34.6 (double)
            // final JSONObject userUpdate = new JSONObject();
-            userUpdate.put("userName", username);
-            userUpdate.put("water", waterUsed);
-            userUpdate.put("power", power);
-            userUpdate.put("milesDriven", milesDriven);
-            userUpdate.put("meat", meat);
-            userUpdate.put("waste", waste);
+        double updateWater = parseDouble(water);
+        double updatePower = parseDouble(power);
+        double updateMiles = parseDouble(miles);
+        double updateWaste = parseDouble(waste);
+        double updateMeat = parseDouble(meat);
+
+        userUpdate.put("username", username);
+        userUpdate.put("water", updateWater);
+        userUpdate.put("power", updatePower);
+        userUpdate.put("milesDriven", updateMiles);
+        userUpdate.put("meat", updateMeat);
+        userUpdate.put("garbage", updateWaste);
 
 
-            //   Toast.makeText(CreateUserActivity.this, jsonParam.toString(), Toast.LENGTH_LONG).show(); For Debugging later
 
-
-//            JsonObjectRequest jsonObjReq = new JsonObjectRequest(Request.Method.POST,
-//                    url, userUpdate, // IF YOU WANT TO SEND A JSONOBJECT WITH POST THEN PASS IT HERE
-//                    new Response.Listener<JSONObject>() {
-//
-//                        @Override
-//                        public void onResponse(JSONObject response) {
-//                            Log.d(TAG, response.toString());
-//                        }
-//                    }, new Response.ErrorListener() {
-//                @Override
-//                public void onErrorResponse(VolleyError error) {
-//                    VolleyLog.d(TAG, "Error: " + error.getMessage());
-//                    System.out.println(error.getMessage());
-//                    System.out.println(username);
-//                    System.out.println(password);
-//                }
-//            }){
-//                @Override
-//                public Map<String, String> getHeaders() throws AuthFailureError {
-//                    Map<String, String>  params = new HashMap<String, String>();
-//                    String credentials = username+":"+password;
-//                    String auth = "Basic "
-//                            + Base64.encodeToString(credentials.getBytes(),
-//                            Base64.NO_WRAP);
-//                    params.put("Authorization", auth);
-//
-//                    return params;
-//                }
-//            };
-//            AppController.getInstance().addToRequestQueue(jsonObjReq, tag_json_POST);
     }
 
 
