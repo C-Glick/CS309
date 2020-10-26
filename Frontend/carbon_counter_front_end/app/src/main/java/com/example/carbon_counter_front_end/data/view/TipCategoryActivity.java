@@ -41,7 +41,7 @@ public class TipCategoryActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 Intent i = new Intent(TipCategoryActivity.this, ViewCategoryResults.class);
-                i.putExtra("category", "emissions");
+                i.putExtra("category", "CARBON");
                 startActivity(i);
             }
         });
@@ -50,7 +50,7 @@ public class TipCategoryActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 Intent i = new Intent(TipCategoryActivity.this, ViewCategoryResults.class);
-                i.putExtra("category", "water");
+                i.putExtra("category", "WATER");
                 startActivity(i);
             }
         });
@@ -59,7 +59,7 @@ public class TipCategoryActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 Intent i = new Intent(TipCategoryActivity.this, ViewCategoryResults.class);
-                i.putExtra("category", "waste");
+                i.putExtra("category", "WASTE");
                 startActivity(i);
             }
         });
@@ -68,7 +68,7 @@ public class TipCategoryActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 Intent i = new Intent(TipCategoryActivity.this, ViewCategoryResults.class);
-                i.putExtra("category", "energy");
+                i.putExtra("category", "ENERGY");
                 startActivity(i);
             }
         });

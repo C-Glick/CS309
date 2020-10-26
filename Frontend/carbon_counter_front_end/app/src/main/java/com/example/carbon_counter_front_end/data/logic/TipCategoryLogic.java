@@ -41,7 +41,7 @@ public class TipCategoryLogic {
 
     public void getStats(JSONObject response) {
         try {
-            milesDriven = response.getInt("miles_driven");
+            milesDriven = response.getInt("milesDriven");
             water = response.getInt("water");
             power = response.getInt("power");
             meat = response.getInt("meat");

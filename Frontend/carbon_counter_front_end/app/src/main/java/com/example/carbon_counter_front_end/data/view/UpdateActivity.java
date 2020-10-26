@@ -1,9 +1,5 @@
 package com.example.carbon_counter_front_end.data.view;
 
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.lifecycle.LiveData;
-import androidx.room.Room;
-
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.Editable;
@@ -13,6 +9,9 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.lifecycle.LiveData;
+
 import com.android.volley.AuthFailureError;
 import com.android.volley.Request;
 import com.android.volley.Response;
@@ -21,11 +20,8 @@ import com.android.volley.VolleyLog;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.example.carbon_counter_front_end.R;
 import com.example.carbon_counter_front_end.app.AppController;
-import com.example.carbon_counter_front_end.data.model.AppDatabase;
-import com.example.carbon_counter_front_end.data.model.RetrieveUserInfoThread;
 import com.example.carbon_counter_front_end.data.model.User;
 import com.example.carbon_counter_front_end.data.model.UserInformation;
-import com.example.carbon_counter_front_end.data.model.UserRepository;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -35,7 +31,6 @@ import java.util.List;
 import java.util.Map;
 
 import static java.lang.Double.parseDouble;
-import static java.lang.Integer.parseInt;
 
 public class UpdateActivity extends AppCompatActivity {
 
@@ -104,7 +99,7 @@ public class UpdateActivity extends AppCompatActivity {
 //        "meat":
 //        "garbage": 34.6 (double)
             final JSONObject userUpdate = new JSONObject();
-            userUpdate.put("userName", username);
+            userUpdate.put("username", username);
             userUpdate.put("water", 0.0);
             userUpdate.put("power", 0.0);
             userUpdate.put("milesDriven", milesDriven);

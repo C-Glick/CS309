@@ -30,6 +30,9 @@ public class ViewCategoryResultsLogic {
     public void getTips(String category){
         String url = "http://10.24.227.38:8080/tips";
 
+        //Postman
+        //String url = "https://d6ec0f7b-56b8-45f7-9fb6-e1e957bbf62f.mock.pstmn.io/tips";
+
         url += "/" + category;
 
         model.contactServerArray(url);
@@ -65,7 +68,9 @@ public class ViewCategoryResultsLogic {
         String subject = "";
 
         try {
-            subject = myTips.get(tipsIndex).getString("subject");
+            if(myTips.size() > 0) {
+                subject = myTips.get(tipsIndex).getString("title");
+            }
         } catch (JSONException e) {
             e.printStackTrace();
         }
@@ -78,7 +83,9 @@ public class ViewCategoryResultsLogic {
         String description = "";
 
         try {
-            description = myTips.get(tipsIndex).getString("body");
+            if(myTips.size() > 0) {
+                description = myTips.get(tipsIndex).getString("body");
+            }
         } catch (JSONException e) {
             e.printStackTrace();
         }
