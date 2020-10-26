@@ -57,14 +57,14 @@ public class LoginActivity extends AppCompatActivity {
                     }
 
                     @Override
-                    public void onSuccess(JSONObject response) {
+                    public void onSuccess(JSONObject response) throws JSONException {
                         loginLogic.clearError(failedLogin, failedLogin2);
-                        Intent i = new Intent(LoginActivity.this, MainActivity.class);
-//                        if(UserInformation.role.equals("ADMIN"))
-//                        {
-//                            i = new Intent(LoginActivity.this, AdminOverview.class);
-//                        }
-                        startActivity(i);
+                            UserInformation.role = response.getString("role");
+                            Intent i = new Intent(LoginActivity.this, MainActivity.class);
+                            startActivity(i);
+
+
+
                     }
 
                     @Override
@@ -86,6 +86,9 @@ public class LoginActivity extends AppCompatActivity {
             }
         });
     }
+
+
+
 
 }
 

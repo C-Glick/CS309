@@ -99,4 +99,17 @@ public class MainActivityLogic {
 
         return title;
     }
+
+    public boolean Permissions(String role)
+    {
+        if(role.equals("ADMIN") || role.equals("DEV"))
+        {
+            return true;
+        }
+        else
+        {
+            return false;
+        }
+
+    }
 }
