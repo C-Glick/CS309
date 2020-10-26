@@ -157,7 +157,7 @@ public class UserController {
      * @param username  provide as a path variable. The current username of the user to remove
      * @return          boolean, true if the user was successfully removed
      */
-    @DeleteMapping("/user/remove/{username}")
+    @DeleteMapping("/user/{username}")
     public Boolean removeUser(@PathVariable String username){
         return userService.removeUser(username);
     }
