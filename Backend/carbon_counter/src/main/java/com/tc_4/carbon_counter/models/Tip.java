@@ -46,13 +46,6 @@ public class Tip {
 
     @Column(name="working_body")
     String workingBody;
-
-    @Column(name="citations")
-    String citations;
-
-    @Column(name="working_citations")
-    String workingCitations;
-
     /**
      * Default constructor for Tip
      */
@@ -68,9 +61,6 @@ public class Tip {
     public String getBody(){
         return body;
     }
-    public String getCitations(){
-        return citations;
-    } 
     public Category getCategory(){
         return category;
     }
@@ -79,9 +69,6 @@ public class Tip {
     }
     public String getWorkingBody(){
         return workingBody;
-    }
-    public String getWorkingCitations(){
-        return workingCitations;
     }
     public Category getWorkingCategory(){
         return workingCategory;
@@ -101,10 +88,6 @@ public class Tip {
         status = Status.EDITING;
         workingCategory = newCategory;
     }
-    public void setCitations(String newCitation){
-        status = Status.EDITING;
-        workingCitations = newCitation;
-    }
     public void setStatus(Status newStatus){
         //iff status == approved then should set the working stuff to be the main variables for the tip
         if(newStatus == Status.APPROVED){
@@ -112,14 +95,12 @@ public class Tip {
             title = workingTitle;
             body = workingBody;
             category = workingCategory;
-            citations = workingCitations;
         }
         if(newStatus == Status.DENIED){
             status = newStatus;
             workingTitle = title;
             workingBody = body;
             workingCategory = category;
-            workingCitations = citations;
         }
         
         

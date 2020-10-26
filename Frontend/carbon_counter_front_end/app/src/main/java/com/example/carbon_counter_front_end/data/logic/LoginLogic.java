@@ -1,13 +1,11 @@
 package com.example.carbon_counter_front_end.data.logic;
 
 import android.content.Context;
-import android.content.Intent;
 import android.widget.TextView;
 
 import com.example.carbon_counter_front_end.data.model.RequestServerForService;
 import com.example.carbon_counter_front_end.data.model.UserInformation;
 import com.example.carbon_counter_front_end.data.view.LoginActivity;
-import com.example.carbon_counter_front_end.data.view.MainActivity;
 
 public class LoginLogic {
     private RequestServerForService model;
@@ -21,8 +19,14 @@ public class LoginLogic {
 
     public void setModel(RequestServerForService m) { this.model = m;}
 
-    public void authenticate() {
-        String url = "http://10.24.227.38:8080/user"; 
+    public void authenticate(String username, String password) {
+        UserInformation.username = username;
+        UserInformation.password = password;
+
+        String url = "http://10.24.227.38:8080/user";
+        url += "/" + username;
+        System.out.println(url);
+
         model.contactServer(url);
     }
 

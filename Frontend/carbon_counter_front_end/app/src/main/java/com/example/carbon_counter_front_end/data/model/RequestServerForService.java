@@ -1,19 +1,24 @@
 package com.example.carbon_counter_front_end.data.model;
 
 import android.content.Context;
+import android.graphics.Bitmap;
 import android.text.Editable;
 import android.util.Base64;
 import android.util.Log;
+import android.widget.ImageView;
 
 import com.android.volley.AuthFailureError;
 import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.VolleyLog;
+import com.android.volley.toolbox.ImageRequest;
+import com.android.volley.toolbox.JsonArrayRequest;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
 import com.example.carbon_counter_front_end.app.AppController;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -39,11 +44,7 @@ public class RequestServerForService {
                     @Override
                     public void onResponse(JSONObject response) {
                         Log.d("VOLLEY", "SERVER RESPONSE: " + response);
-                        try {
-                            myListener.onSuccess(response);
-                        } catch (JSONException e) {
-                            e.printStackTrace();
-                        }
+                        myListener.onSuccess(response);
                     }
                 }, new Response.ErrorListener()
         {
@@ -78,7 +79,7 @@ public class RequestServerForService {
 
     public void postServer(String url, JSONObject stats) throws JSONException {
         //  double milesDriven = parseDouble(text.toString());
-       // String url = "http://10.24.227.38:8080/stats/addDaily";
+        // String url = "http://10.24.227.38:8080/stats/addDaily";
 
         //url += "/" + username;
 //        "water": "test6@iastate.edu"
@@ -103,11 +104,7 @@ public class RequestServerForService {
                     @Override
                     public void onResponse(JSONObject response) {
                         Log.d("VOLLEY", "SERVER RESPONSE: " + response);
-                        try {
-                            myListener.onSuccess(response);
-                        } catch (JSONException e) {
-                            e.printStackTrace();
-                        }
+                        myListener.onSuccess(response);
                     }
                 }, new Response.ErrorListener()
         {
@@ -132,6 +129,68 @@ public class RequestServerForService {
         };
         Volley.newRequestQueue(context).add(jsonObjReq);
     }
+
+    public void contactServerImage(String url){
+        ImageRequest imageRequest = new ImageRequest(url, new Response.Listener<Bitmap>() {
+            @Override
+            public void onResponse(Bitmap response) {
+                myListener.onImageSuccess(response);
+            }
+        }, 750, 500, ImageView.ScaleType.CENTER_CROP, Bitmap.Config.RGB_565,
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        System.out.println(error);
+                    }
+                })
+
+        {
+            @Override
+            public Map<String, String> getHeaders() throws AuthFailureError {
+                Map<String, String> params = new HashMap<String, String>();
+                String credentials = UserInformation.username + ":" + UserInformation.password;
+                String auth = "Basic "
+                        + Base64.encodeToString(credentials.getBytes(),
+                        Base64.NO_WRAP);
+                params.put("Authorization", auth);
+
+                return params;
+            }
+        };
+
+        Volley.newRequestQueue(context).add(imageRequest);
+    }
+
+
+    public void contactServerArray(String url) {
+        JsonArrayRequest jsonArrReq = new JsonArrayRequest(Request.Method.GET, url, null, new Response.Listener<JSONArray>() {
+            @Override
+            public void onResponse(JSONArray response) {
+                myListener.onSuccessJSONArray(response);
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                myListener.onError();
+            }
+        }) {
+            @Override
+            public Map<String, String> getHeaders() throws AuthFailureError {
+                Map<String, String> params = new HashMap<String, String>();
+                String credentials = UserInformation.username + ":" + UserInformation.password;
+                String auth = "Basic "
+                        + Base64.encodeToString(credentials.getBytes(),
+                        Base64.NO_WRAP);
+                params.put("Authorization", auth);
+
+                return params;
+            }
+        };
+
+        Volley.newRequestQueue(context).add(jsonArrReq);
+    }
+
+
 }
 
 

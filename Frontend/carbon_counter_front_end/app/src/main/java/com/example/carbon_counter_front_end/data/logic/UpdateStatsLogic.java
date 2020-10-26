@@ -11,7 +11,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 public class UpdateStatsLogic {
-    private static RequestServerForService model;
+    private RequestServerForService model;
     private UpdateActivity view;
     private Context context;
 
@@ -22,7 +22,7 @@ public class UpdateStatsLogic {
 
     public void setModel(RequestServerForService m) { this.model = m;}
 
-    public static void authenticate(JSONObject stats) {
+    public void authenticate(JSONObject stats) {
         // String url = "http://10.24.227.38:8080/stats/addDaily";
         String url = "http://10.24.227.38:8080/stats/addDaily";
         url += "/" + UserInformation.username;

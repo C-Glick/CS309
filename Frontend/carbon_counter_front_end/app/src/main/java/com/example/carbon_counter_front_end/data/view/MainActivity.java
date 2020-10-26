@@ -1,16 +1,24 @@
 package com.example.carbon_counter_front_end.data.view;
 
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.room.Room;
-
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.net.Uri;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageView;
+import android.widget.TextView;
+
+import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.carbon_counter_front_end.R;
-import com.example.carbon_counter_front_end.data.model.AppDatabase;
+import com.example.carbon_counter_front_end.data.logic.MainActivityLogic;
+import com.example.carbon_counter_front_end.data.model.IVolleyListener;
+import com.example.carbon_counter_front_end.data.model.RequestServerForService;
 import com.example.carbon_counter_front_end.data.model.UserInformation;
+
+import org.json.JSONArray;
+import org.json.JSONObject;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -29,14 +37,69 @@ public class MainActivity extends AppCompatActivity {
         Button viewStats = (Button) findViewById(R.id.buttonView);
         Button updateStats = (Button) findViewById(R.id.buttonUpdate);
         Button viewTips = (Button) findViewById(R.id.buttonViewTip);
+        final MainActivityLogic mainLogic = new MainActivityLogic(this, this.getApplicationContext());
+
+        final ImageView display = (ImageView) findViewById(R.id.imageView);
+
+        final TextView newsTitle = (TextView) findViewById(R.id.newsTitle);
+
+        Button nextNews = (Button) findViewById(R.id.buttonNewsNext);
+        Button prevNews = (Button) findViewById(R.id.buttonNewsPrev);
+        Button goNews = (Button) findViewById(R.id.buttonGo);
+
+        nextNews.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                mainLogic.setNextImage();
+            }
+        });
+
+        prevNews.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                mainLogic.setPrevImage();
+            }
+        });
+
+        goNews.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Uri uri = mainLogic.getUri();
+                Intent intent = new Intent(Intent.ACTION_VIEW, uri);
+                startActivity(intent);
+            }
+        });
+
+        mainLogic.setModel(new RequestServerForService(this.getApplicationContext(), new IVolleyListener() {
+            @Override
+            public void onImageSuccess(Bitmap image) {
+                display.setImageBitmap(image);
+
+                String title = mainLogic.getTitle();
+                newsTitle.setText(title);
+            }
+
+            @Override
+            public void onSuccessJSONArray(JSONArray response) {
+                mainLogic.setMyNews(response);
+            }
+
+            @Override
+            public void onSuccess(JSONObject response) {
+
+            }
+
+            @Override
+            public void onError() {
+                System.out.println("error");
+            }
+        }));
 
         viewStats.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 //new intent to view stats page
                 Intent i = new Intent(MainActivity.this, ViewActivity.class);
-                i.putExtra("username",username);
-                i.putExtra("password",password);
                 startActivity(i);
             }
         });
@@ -46,9 +109,6 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View view) {
                 //New intent to update stats page
                 Intent i = new Intent(MainActivity.this, UpdateActivity.class);
-                i.putExtra("username",username);
-                i.putExtra("password",password);
-
                 startActivity(i);
             }
         });
@@ -57,10 +117,10 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 Intent i = new Intent(MainActivity.this, TipCategoryActivity.class);
-                i.putExtra("username",username);
-                i.putExtra("password",password);
                 startActivity(i);
             }
         });
+
+        mainLogic.getNews();
     }
 }

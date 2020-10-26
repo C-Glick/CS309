@@ -20,6 +20,13 @@ public class CarbonExceptionHandler {
         return Collections.singletonMap("message", e.getMessage());
     }
 
+    @ExceptionHandler(CarbonFileNotFoundException.class)
+    @ResponseStatus(HttpStatus.NOT_FOUND)
+    @ResponseBody
+    public Map<String, String> handleCarbonFileNotFoundException(CarbonFileNotFoundException e){
+        return Collections.singletonMap("message", e.getMessage());
+    }
+
     @ExceptionHandler(UnauthorizedException.class)
     @ResponseStatus(HttpStatus.UNAUTHORIZED)
     @ResponseBody

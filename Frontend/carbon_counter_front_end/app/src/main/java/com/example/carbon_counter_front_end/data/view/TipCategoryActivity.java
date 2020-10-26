@@ -1,6 +1,7 @@
 package com.example.carbon_counter_front_end.data.view;
 
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -13,6 +14,7 @@ import com.example.carbon_counter_front_end.data.logic.TipCategoryLogic;
 import com.example.carbon_counter_front_end.data.model.IVolleyListener;
 import com.example.carbon_counter_front_end.data.model.RequestServerForService;
 
+import org.json.JSONArray;
 import org.json.JSONObject;
 
 import java.util.Stack;
@@ -73,6 +75,16 @@ public class TipCategoryActivity extends AppCompatActivity {
 
         final TipCategoryLogic tipCategoryLogic = new TipCategoryLogic(this, getApplicationContext());
         tipCategoryLogic.setModel(new RequestServerForService(getApplicationContext(), new IVolleyListener() {
+            @Override
+            public void onImageSuccess(Bitmap image) {
+
+            }
+
+            @Override
+            public void onSuccessJSONArray(JSONArray response) {
+
+            }
+
             @Override
             public void onSuccess(JSONObject response) {
                 Stack<Character> allStack = tipCategoryLogic.setLayout(response);

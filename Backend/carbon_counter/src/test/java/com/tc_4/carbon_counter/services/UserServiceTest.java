@@ -13,9 +13,14 @@ import java.util.Optional;
 
 import javax.annotation.PostConstruct;
 
+import com.tc_4.carbon_counter.databases.FriendsDatabase;
 import com.tc_4.carbon_counter.databases.UserDatabase;
+import com.tc_4.carbon_counter.exceptions.RequestExistsException;
+import com.tc_4.carbon_counter.exceptions.RequestNotFoundException;
 import com.tc_4.carbon_counter.exceptions.UserNotFoundException;
+import com.tc_4.carbon_counter.models.Friends;
 import com.tc_4.carbon_counter.models.User;
+import com.tc_4.carbon_counter.models.Friends.Status;
 import com.tc_4.carbon_counter.models.User.Role;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -48,6 +53,11 @@ public class UserServiceTest {
             return mock(UserDatabase.class);
         }
 
+        @Bean
+        public FriendsDatabase friendsDatabaseConfig(){
+            return mock(FriendsDatabase.class);
+        }
+
 
         //needed for authentication to work correctly
         @Bean
@@ -61,6 +71,11 @@ public class UserServiceTest {
 
     @Autowired
     private UserDatabase userDatabase;  //mock database
+
+    @Autowired
+    private FriendsDatabase friendsDatabase;
+
+    private List<Friends> friendsList;
 
     private List<User> userList;    //list to hold data for mock database
 
@@ -76,6 +91,7 @@ public class UserServiceTest {
     @PostConstruct
     public void setupMockObjects(){
         userList =  new ArrayList<User>();
+        friendsList = new ArrayList<Friends>();
 
         //add test user
         User testUser = new User();
@@ -84,6 +100,23 @@ public class UserServiceTest {
         testUser.setRole(Role.USER);
         testUser.setEmail("testEmail");
         userList.add(testUser);
+        //this cause tests to fail
+        /*
+        User testUser2 = new User();
+        testUser.setUsername("testUser2");
+        testUser.setPassword("password");
+        testUser.setRole(Role.USER);
+        testUser.setEmail("testEmail");
+        userList.add(testUser2);
+        */
+        //add test friends
+        Friends testFriend1 = new Friends();
+        testFriend1.setUserOne("testUsername");
+        testFriend1.setUserTwo("testUser2");
+        testFriend1.setStatus(Status.REQUESTED);
+        friendsList.add(testFriend1);
+        
+
 
         //save
         when(userDatabase.save((User)any(User.class)))
@@ -92,13 +125,27 @@ public class UserServiceTest {
               userList.add(u);
               return u;
         });
+        
+        when(friendsDatabase.save((Friends)any(Friends.class)))
+        .thenAnswer(x -> {
+            Friends f = x.getArgument(0);
+            friendsList.add(f);
+            return f;
+        });
+        
 
         //delete
         doAnswer((x) -> {
 			userList.remove(x.getArgument(0));
 			return null;
-		}).when(userDatabase).delete(any());
-
+        }).when(userDatabase).delete(any());
+        
+        
+        doAnswer(x -> {
+            friendsList.remove(x.getArgument(0));
+            return null;
+        }).when(friendsDatabase).delete(any());
+        
         //findAll
         when(userDatabase.findAll()).thenReturn(userList);
 
@@ -129,6 +176,33 @@ public class UserServiceTest {
         .thenAnswer(x -> {
             return userDatabase.findByUsername(x.getArgument(0)).isPresent();
         });
+        
+        //findByUserOneAndUserTwo
+        when(friendsDatabase.findByUserOneAndUserTwo((String)any(String.class), (String)any(String.class)))
+        .thenAnswer(x -> {
+            for(Friends f: friendsList){
+                if(f.getUserOne().equals(x.getArgument(0)) && f.getUserTwo().equals(x.getArgument(1))){
+                    return Optional.of(f);
+                }
+
+            }
+            return Optional.empty();
+        });
+
+        //findByUserTwoAndStatus
+        when(friendsDatabase.findByUserTwoAndStatus((String)any(String.class),(Status)any(Status.class)))
+        .thenAnswer(x -> {
+            List<Friends> requests = new ArrayList<>();
+
+            for(Friends f: friendsList){
+                if(f.getUserTwo().equals(x.getArgument(0)) && f.getStatus().equals(x.getArgument(1))){
+                    requests.add(f);
+                }
+            }
+            return requests;
+        });
+        
+
     }
 
     // withUserDetails annotation tells spring to authenticate as this user when 
@@ -140,6 +214,71 @@ public class UserServiceTest {
         assertThrows(UserNotFoundException.class, () -> {userService.doesUserExist("nonexistent_user");});
         assertEquals(true, userService.doesUserExist("testUsername"));
     }
+    
+    @Test
+    public void testFriendRequest(){
+        //DONE
+        //have to create second user in test as to not break other tests
+        User testUser2 = new User();
+        testUser2.setUsername("testUser2");
+        testUser2.setPassword("password");
+        testUser2.setRole(Role.USER);
+        testUser2.setEmail("testEmail");
+        userList.add(testUser2);
+        assertThrows(RequestExistsException.class, () -> {userService.friendRequest("testUsername", "testUser2");});
+        assertThrows(UserNotFoundException.class, () -> {userService.friendRequest("nonexistent_user", "testUser2");});
+        //removes existing friendship
+        Friends temp  = new Friends();
+        temp.setUserOne("testUsername");
+        temp.setUserTwo("testUser2");
+        temp.setStatus(Status.REQUESTED);
+        friendsDatabase.delete(temp);
+        friendsList.clear();
+        assertEquals(true, userService.friendRequest("testUsername", "testUser2"));
+
+    }
+
+    @Test
+    public void testAllFriendRequest(){
+        //DONE
+        List<Friends> results = userService.allFriendRequests("testUser2");
+        assertEquals(results.get(0), friendsList.get(0));
+    }
+
+    @Test
+    public void testAcceptFriend(){
+        assertThrows(UserNotFoundException.class, () ->{userService.acceptFriend("username", "userOne");});
+        User testUser2 = new User();
+        testUser2.setUsername("testUser2");
+        testUser2.setPassword("password");
+        testUser2.setRole(Role.USER);
+        testUser2.setEmail("testEmail");
+        userList.add(testUser2);
+        friendsList.get(0).setStatus(Status.APPROVED);
+        assertEquals(true, userService.acceptFriend("testUser2", "testUsername"));
+        friendsDatabase.delete(friendsList.get(0));
+        friendsList.clear();
+        assertThrows(RequestNotFoundException.class, () ->{userService.acceptFriend("testUser2", "testUsername");});
+
+
+    }
+
+    @Test
+    public void testDenyFriend(){
+        assertThrows(UserNotFoundException.class, () ->{userService.denyFriend("username", "userOne");});
+        User testUser2 = new User();
+        testUser2.setUsername("testUser2");
+        testUser2.setPassword("password");
+        testUser2.setRole(Role.USER);
+        testUser2.setEmail("testEmail");
+        userList.add(testUser2);
+        friendsList.get(0).setStatus(Status.DENIED);
+        assertEquals(true, userService.denyFriend("testUser2", "testUsername"));
+        friendsDatabase.delete(friendsList.get(0));
+        friendsList.clear();
+        assertThrows(RequestNotFoundException.class, () ->{userService.acceptFriend("testUser2", "testUsername");});
+    }
+    
 
     @Test
     @WithUserDetails("testUsername")
@@ -197,10 +336,10 @@ public class UserServiceTest {
     @Test
     @WithUserDetails("testUsername")
     public void testCheckPermission(){
-        assertEquals(true, userService.checkPermission(Role.USER));
-        assertEquals(false, userService.checkPermission(Role.CREATOR));
-        assertEquals(false, userService.checkPermission(Role.ADMIN));
-        assertEquals(false, userService.checkPermission(Role.DEV));
+        assertEquals(true, User.checkPermission(Role.USER));
+        assertEquals(false, User.checkPermission(Role.CREATOR));
+        assertEquals(false, User.checkPermission(Role.ADMIN));
+        assertEquals(false, User.checkPermission(Role.DEV));
     }
 
 }

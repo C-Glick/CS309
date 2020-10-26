@@ -7,7 +7,8 @@
     tools:context=".data.view.AdminOverview">
 
     <Button
-        android:id="@+id/tipApprovalbutton"
+
+        android:id="@+id/tipbutton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginBottom="294dp"
@@ -16,7 +17,8 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.498"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/deleteUser" />
+        app:layout_constraintTop_toBottomOf="@+id/deleteUser"
+        tools:ignore="UnknownId" />
 
     <Button
         android:id="@+id/ManageUser"
@@ -29,5 +31,6 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.488"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        tools:ignore="UnknownId" />
 </androidx.constraintlayout.widget.ConstraintLayout>

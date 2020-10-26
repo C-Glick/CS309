@@ -17,8 +17,10 @@ public class AdminOverview extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_admin_overview);
 
+
         Button manageUser = (Button) findViewById(R.id.ManageUser);
-        Button tipApproval = (Button) findViewById(R.id.tipApprovalbutton);
+        //Button tipApproval = (Button) findViewById(R.id.tipApprovalbutton);
+        Button tip = (Button) findViewById(R.id.tipbutton);
         manageUser.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -27,15 +29,15 @@ public class AdminOverview extends AppCompatActivity {
             }
         });
 
-        tipApproval.setOnClickListener(new View.OnClickListener() {
+        tip.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
-
+                Intent i = new Intent(AdminOverview.this, AdminTipApprovalActivity.class);
+                startActivity(i);
             }
         });
 
-
-
     }
+
+
 }
