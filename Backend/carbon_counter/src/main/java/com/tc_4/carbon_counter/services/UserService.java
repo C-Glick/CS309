@@ -1,11 +1,17 @@
 package com.tc_4.carbon_counter.services;
 
+import java.util.List;
+
+import com.tc_4.carbon_counter.databases.FriendsDatabase;
 import com.tc_4.carbon_counter.databases.UserDatabase;
+import com.tc_4.carbon_counter.exceptions.RequestExistsException;
+import com.tc_4.carbon_counter.exceptions.RequestNotFoundException;
 import com.tc_4.carbon_counter.exceptions.UnauthorizedException;
 import com.tc_4.carbon_counter.exceptions.UserNotFoundException;
+import com.tc_4.carbon_counter.models.Friends;
 import com.tc_4.carbon_counter.models.User;
+import com.tc_4.carbon_counter.models.Friends.Status;
 import com.tc_4.carbon_counter.models.User.Role;
-import com.tc_4.carbon_counter.security.CarbonUserPrincipal;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -17,12 +23,16 @@ import org.springframework.stereotype.Service;
  * Able to get users, add users, remove users etc. This class
  * is made to be called from controllers.
  * @author Colton Glick
+ * @author Andrew Pester
  */
 @Service
 public class UserService {
 
     @Autowired
     private UserDatabase userDatabase;
+
+    @Autowired
+    private FriendsDatabase friendsDatabase;
 
     /** Password encoder used when making a new user or changing a password*/
     private BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
@@ -36,7 +46,7 @@ public class UserService {
      * @throws UserNotFoundException
      */
     public User getUser(String username){
-        if(checkPermission(Role.ADMIN)){
+        if(User.checkPermission(Role.ADMIN)){
             return userDatabase.findByUsername(username).
             orElseThrow(() -> new UserNotFoundException(username));
         }else{
@@ -72,7 +82,7 @@ public class UserService {
      * @throws UnauthorizedException if you don't have permission to change this user's password
      */
     public boolean changePassword(String username, String newPassword){
-        if(!checkPermission(Role.ADMIN) && !SecurityContextHolder.getContext().getAuthentication().getName().equals(username) ){
+        if(!User.checkPermission(Role.ADMIN) && !SecurityContextHolder.getContext().getAuthentication().getName().equals(username) ){
             throw new UnauthorizedException("You do not have permission to change the password of user '" + username + "'");
         }
 
@@ -86,6 +96,77 @@ public class UserService {
             return true;
         }
         throw new UnauthorizedException("Incorrect old password");
+    }
+    /**
+     * 
+     * @param user the user sending the friend request
+     * @param username the user recieveing the request
+     * @return true if it sends the request otherwise throws userNotFoundException or RequestExistsException
+     */
+    public boolean friendRequest(String user, String username){
+        if(!userDatabase.existsByUsername(user)){
+            throw new UserNotFoundException(user);
+        }
+        if(!userDatabase.existsByUsername(username)){
+            throw new UserNotFoundException(username);
+        }
+        Friends temp = new Friends();
+        temp.setUserOne(user);
+        temp.setUserTwo(username);
+        temp.setStatus(Status.REQUESTED);
+        if(!friendsDatabase.findByUserOneAndUserTwo(user, username).isPresent()){
+            friendsDatabase.save(temp);
+            return true;
+        }
+        throw new RequestExistsException();
+    }
+    /**
+     * 
+     * @param username the username of the user
+     * @return all the friend request of that user
+     */
+    public List<Friends> allFriendRequests(String username){
+        return friendsDatabase.findByUserTwoAndStatus(username,Status.REQUESTED);
+    }
+    /**
+     * 
+     * @param username the user who is accepting the friend request
+     * @param userOne the user who sent the friend request 
+     * @return true if the request exists otherwise throws usernotfoundexception or requestnotfoundexception
+     */
+    public boolean acceptFriend(String username, String userOne){
+        if(friendsDatabase.findByUserOneAndUserTwo(userOne, username).isPresent()){
+            Friends temp = friendsDatabase.findByUserOneAndUserTwo(userOne, username).get();
+            temp.setStatus(Status.APPROVED);
+            friendsDatabase.save(temp);
+            return true;
+        }else if(!userDatabase.existsByUsername(username)){
+            throw new UserNotFoundException(username);
+        }else if(!userDatabase.existsByUsername(userOne)){
+            throw new UserNotFoundException(userOne);
+        }else{
+            throw new RequestNotFoundException(userOne, username);
+        }
+    }
+    /**
+     * 
+     * @param username the user who is denying the friend request
+     * @param userOne the user who sent the friend request 
+     * @return true if the request exists otherwise throws usernotfoundexception or requestnotfoundexception
+     */
+    public boolean denyFriend(String username, String userOne){
+        if(friendsDatabase.findByUserOneAndUserTwo(userOne, username).isPresent()){
+            Friends temp = friendsDatabase.findByUserOneAndUserTwo(userOne, username).get();
+            temp.setStatus(Status.DENIED);
+            friendsDatabase.save(temp);
+            return true;
+        }else if(!userDatabase.existsByUsername(username)){
+            throw new UserNotFoundException(username);
+        }else if(!userDatabase.existsByUsername(userOne)){
+            throw new UserNotFoundException(userOne);
+        }else{
+            throw new RequestNotFoundException(userOne, username);
+        }
     }
   
     /**
@@ -138,33 +219,5 @@ public class UserService {
         userDatabase.delete(getUser(username));
         //TODO: delete all user stats too
         return true;
-    }
-
-    /**
-     * Preforms a check to see if the user that created this request 
-     * has the required role or higher.
-     * 
-     * @param requiredRole  The minimum role needed to preform this action
-     * @return              True if the user has access, false if they dont
-     */
-    public boolean checkPermission(Role requiredRole){
-        CarbonUserPrincipal auth =(CarbonUserPrincipal) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        
-        //check all permissions including and above required role
-        for(Role r : Role.values()){
-            //skip lower roles
-            if(r.compareTo(requiredRole) < 0 ){
-                continue;
-            }
-
-            if(auth.getAuthorities().stream().anyMatch(a ->
-            a.getAuthority().equals(r.toString()))){
-                
-                // user has at least the minimum role
-                return true;
-            }
-        }
-        //user does not have at least the minimum role
-        return false;
     }
 }

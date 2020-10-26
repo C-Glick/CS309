@@ -7,7 +7,7 @@ import javax.persistence.Id;
 
 @Entity
 public class Tip {
-    public enum Catagory{
+    public enum Category{
         WATER,
         CARBON
 
@@ -32,26 +32,26 @@ public class Tip {
     @Column(name="working_title")
     String workingTitle;
 
-    @Column(name="catagory")
-    Catagory catagory;
+    @Column(name="category")
+    Category category;
 
     @Column(name="status")
     Status status;
 
-    @Column(name="working_catagory")
-    Catagory workingCatagory;
+    @Column(name="working_category")
+    Category workingCategory;
     
     @Column(name="body")
     String body;
 
     @Column(name="working_body")
     String workingBody;
-
-    @Column(name="citations")
-    String citations;
-
-    @Column(name="working_citations")
-    String workingCitations;
+    /**
+     * Default constructor for Tip
+     */
+    public Tip(){
+       
+    }
     public long getId(){
         return id;
     }
@@ -61,11 +61,8 @@ public class Tip {
     public String getBody(){
         return body;
     }
-    public String getCitations(){
-        return citations;
-    } 
-    public Catagory getCatagory(){
-        return catagory;
+    public Category getCategory(){
+        return category;
     }
     public String getWorkingTitle(){
         return workingTitle;
@@ -73,11 +70,8 @@ public class Tip {
     public String getWorkingBody(){
         return workingBody;
     }
-    public String getWorkingCitations(){
-        return workingCitations;
-    }
-    public Catagory getWorkingCatagory(){
-        return workingCatagory;
+    public Category getWorkingCategory(){
+        return workingCategory;
     }
     public Status getStatus(){
         return status;
@@ -90,13 +84,9 @@ public class Tip {
         status = Status.EDITING;
         workingBody = newBody;
     }
-    public void setCatagory(Catagory newCatagory){
+    public void setCategory(Category newCategory){
         status = Status.EDITING;
-        workingCatagory = newCatagory;
-    }
-    public void setCitations(String newCitation){
-        status = Status.EDITING;
-        workingCitations = newCitation;
+        workingCategory = newCategory;
     }
     public void setStatus(Status newStatus){
         //iff status == approved then should set the working stuff to be the main variables for the tip
@@ -104,15 +94,13 @@ public class Tip {
             status = newStatus;
             title = workingTitle;
             body = workingBody;
-            catagory = workingCatagory;
-            citations = workingCitations;
+            category = workingCategory;
         }
         if(newStatus == Status.DENIED){
             status = newStatus;
             workingTitle = title;
             workingBody = body;
-            workingCatagory = catagory;
-            workingCitations = citations;
+            workingCategory = category;
         }
         
         
