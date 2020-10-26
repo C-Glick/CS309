@@ -21,6 +21,7 @@ import com.android.volley.VolleyLog;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.example.carbon_counter_front_end.R;
 import com.example.carbon_counter_front_end.app.AppController;
+import com.example.carbon_counter_front_end.data.logic.LoginLogic;
 import com.example.carbon_counter_front_end.data.logic.UpdateStatsLogic;
 import com.example.carbon_counter_front_end.data.model.AppDatabase;
 import com.example.carbon_counter_front_end.data.model.IVolleyListener;
@@ -55,6 +56,7 @@ public class UpdateActivity extends AppCompatActivity {
     final JSONObject userUpdate = new JSONObject();
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        final UpdateStatsLogic updateStatsLogic = new UpdateStatsLogic(UpdateActivity.this, getApplicationContext());
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_update);
 /*
@@ -99,7 +101,20 @@ public class UpdateActivity extends AppCompatActivity {
             public void onClick(View view) {
                 try {
                     updateInfo();
-                    UpdateStatsLogic.authenticate(userUpdate);
+
+                    updateStatsLogic.setModel(new RequestServerForService(getApplicationContext(), new IVolleyListener() {
+                        @Override
+                        public void onSuccess(JSONObject response) throws JSONException {
+
+                        }
+
+                        @Override
+                        public void onError() {
+
+                        }
+                    }));
+
+                    updateStatsLogic.authenticate(userUpdate);
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }

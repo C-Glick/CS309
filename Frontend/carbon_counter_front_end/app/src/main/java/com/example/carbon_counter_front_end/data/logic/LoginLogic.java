@@ -22,8 +22,7 @@ public class LoginLogic {
     public void setModel(RequestServerForService m) { this.model = m;}
 
     public void authenticate() {
-        String url = "http://10.24.227.38:8080/user";
-        url += "/" + UserInformation.username;
+        String url = "http://10.24.227.38:8080/user"; 
         model.contactServer(url);
     }
 
