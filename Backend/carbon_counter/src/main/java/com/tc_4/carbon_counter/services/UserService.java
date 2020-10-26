@@ -12,7 +12,6 @@ import com.tc_4.carbon_counter.models.Friends;
 import com.tc_4.carbon_counter.models.User;
 import com.tc_4.carbon_counter.models.Friends.Status;
 import com.tc_4.carbon_counter.models.User.Role;
-import com.tc_4.carbon_counter.security.CarbonUserPrincipal;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -47,7 +46,7 @@ public class UserService {
      * @throws UserNotFoundException
      */
     public User getUser(String username){
-        if(checkPermission(Role.ADMIN)){
+        if(User.checkPermission(Role.ADMIN)){
             return userDatabase.findByUsername(username).
             orElseThrow(() -> new UserNotFoundException(username));
         }else{
@@ -83,7 +82,7 @@ public class UserService {
      * @throws UnauthorizedException if you don't have permission to change this user's password
      */
     public boolean changePassword(String username, String newPassword){
-        if(!checkPermission(Role.ADMIN) && !SecurityContextHolder.getContext().getAuthentication().getName().equals(username) ){
+        if(!User.checkPermission(Role.ADMIN) && !SecurityContextHolder.getContext().getAuthentication().getName().equals(username) ){
             throw new UnauthorizedException("You do not have permission to change the password of user '" + username + "'");
         }
 
@@ -220,33 +219,5 @@ public class UserService {
         userDatabase.delete(getUser(username));
         //TODO: delete all user stats too
         return true;
-    }
-
-    /**
-     * Preforms a check to see if the user that created this request 
-     * has the required role or higher.
-     * 
-     * @param requiredRole  The minimum role needed to preform this action
-     * @return              True if the user has access, false if they dont
-     */
-    public boolean checkPermission(Role requiredRole){
-        CarbonUserPrincipal auth =(CarbonUserPrincipal) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-
-        //check all permissions including and above required role
-        for(Role r : Role.values()){
-            //skip lower roles
-            if(r.compareTo(requiredRole) < 0 ){
-                continue;
-            }
-
-            if(auth.getAuthorities().stream().anyMatch(a ->
-            a.getAuthority().equals(r.toString()))){
-                
-                // user has at least the minimum role
-                return true;
-            }
-        }
-        //user does not have at least the minimum role
-        return false;
     }
 }
