@@ -11,7 +11,7 @@ public class Tip {
         WATER,
         CARBON,
         ENERGY, 
-        WASTE
+        GARBAGE
 
     }
     public enum Status{
