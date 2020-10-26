@@ -18,6 +18,7 @@ import com.example.carbon_counter_front_end.data.model.UserInformation;
 
 import org.json.JSONArray;
 
+import org.json.JSONException;
 import org.json.JSONObject;
 
 public class LoginActivity extends AppCompatActivity {
@@ -57,6 +58,11 @@ public class LoginActivity extends AppCompatActivity {
 
                     @Override
                     public void onSuccess(JSONObject response) {
+                        try {
+                            UserInformation.role = response.getString("role");
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
                         loginLogic.clearError(failedLogin, failedLogin2);
                         Intent i = new Intent(LoginActivity.this, MainActivity.class);
                         if(UserInformation.role.equals("ADMIN"))

@@ -46,6 +46,14 @@ public class MainActivityLogic {
         getImage();
     }
 
+    public int getNewsIndex(){
+        return newsIndex;
+    }
+
+    public void addNews(JSONObject news){
+        myNews.add(news);
+    }
+
     public void getImage(){
         try {
             String image = myNews.get(newsIndex).getString("imageTitle");
