@@ -50,7 +50,7 @@ public class NewsController {
     /**
      * Get a stored image by its name.
      * Will first search the class path of the project for the file,
-     * if not found will then search the file system of the server.
+     * if not found will then search the file system of the server. 
      * @param fileName The name of the file to retrieve, passed in as a path variable
      * @return The image requested in the http body, media type is image/jpg
      * @throws CarbonFileNotFoundException if the image could not be found.
