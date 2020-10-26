@@ -13,8 +13,11 @@ import com.example.carbon_counter_front_end.R;
 import com.example.carbon_counter_front_end.data.logic.LoginLogic;
 import com.example.carbon_counter_front_end.data.model.IVolleyListener;
 import com.example.carbon_counter_front_end.data.model.RequestServerForService;
+import com.example.carbon_counter_front_end.data.model.UserInformation;
+
 
 import org.json.JSONArray;
+
 import org.json.JSONObject;
 
 public class LoginActivity extends AppCompatActivity {
@@ -55,8 +58,11 @@ public class LoginActivity extends AppCompatActivity {
                     @Override
                     public void onSuccess(JSONObject response) {
                         loginLogic.clearError(failedLogin, failedLogin2);
-
                         Intent i = new Intent(LoginActivity.this, MainActivity.class);
+                        if(UserInformation.role.equals("ADMIN"))
+                        {
+                            i = new Intent(LoginActivity.this, AdminOverview.class);
+                        }
                         startActivity(i);
                     }
 
@@ -74,6 +80,7 @@ public class LoginActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 Intent i = new Intent(LoginActivity.this, CreateUserActivity.class);
+
                 startActivity(i);
             }
         });
