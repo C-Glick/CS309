@@ -1,5 +1,6 @@
 package com.tc_4.carbon_counter.services;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import com.tc_4.carbon_counter.databases.TipsDatabase;
@@ -136,7 +137,10 @@ public class TipsService {
      */
     public List<Tip> allTipsApproved(){
         //DONE
-        return tipsDatabase.findByStatus(Status.APPROVED);
+        
+        List<Tip> list = new ArrayList<>();
+        list.addAll(tipsDatabase.findByStatus(Status.APPROVED));
+        return list;
     }
     /**
      * 

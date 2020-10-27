@@ -79,5 +79,20 @@ public class StatsService {
             return oldEntryStats;
         }
     }
+    /**
+     * 
+     * @param username the username of the user 
+     * @return true if it deletes all stats for that user otherwise throws usernotfoundexception if the user can't be found
+     */
+    public boolean deleteAllStatsByUser(String username){
+        List<DailyStats> list = dailyStatsDatabase.findByUsername(username);
+        if(list.size() == 0){
+            throw new UserNotFoundException(username);
+        }
+        for(int i = 0; i<list.size();i++){
+            dailyStatsDatabase.delete(list.get(i));
+        }
+        return true;
+    }
 
 }
