@@ -47,14 +47,12 @@ public class StatsController {
      * Returns the daily stats for the specified user on the specified day
      * 
      * @param username Pass as a path variable
-     * @param date Enter date in the request body json in the format "date":"yyyy-mm-dd"
+     * @param date Enter date as a path variable in the format "yyyy-MM-dd"
      * @return The most recent Daily stats entry for that day or null if none exists
      */
-    @GetMapping("/stats/onDate/{username}")
-    public Optional<DailyStats> getUserDailyStatsByDate(@PathVariable String username, @RequestBody Map<String, String> date){
-        //Using a Map to get the date as a String(returns the whole JSON otherwise), and using Date.valueOf()
-        //to convert to a date object
-        return statsService.getUserDailyStatsByDate(username, LocalDate.parse(date.get("date")));
+    @GetMapping("/stats/{date}/{username}")
+    public Optional<DailyStats> getUserDailyStatsByDate(@PathVariable String username, @PathVariable String date){
+        return statsService.getUserDailyStatsByDate(username, LocalDate.parse(date));
     }
 
     /**
