@@ -2,7 +2,6 @@ package com.tc_4.carbon_counter.controllers;
 
 import java.time.LocalDate;
 import java.util.List;
-import java.util.Map;
 import java.util.Optional;
 
 import com.tc_4.carbon_counter.models.DailyStats;
