@@ -64,7 +64,7 @@
 			<scope>test</scope>
 		</dependency>
 
-		<!--swagger dependency for generatring api json-->
+		<!--swagger dependency for generatring api json--> 
 		<dependency>
 			<groupId>io.springfox</groupId>
 			<artifactId>springfox-swagger2</artifactId>
