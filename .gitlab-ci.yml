@@ -73,8 +73,8 @@ updateDocs:
     - cd Backend/carbon_counter
     - mvn javadoc:javadoc
     #remove all current doc files and replace with new version
-    - sudo rm -r /var/www/html/*
-    - sudo cp -r target/site/apidocs/* /var/www/html
+    - sudo rm -r /var/www/html/backend/*
+    - sudo cp -r target/site/apidocs/* /var/www/html/backend
   artifacts:
     paths:
       - Backend/carbon_counter/target/site/apidocs/*
