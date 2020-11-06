@@ -55,7 +55,22 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         http
         .csrf().disable()
         .authorizeRequests()
-            .antMatchers("/", "/user/add", "/tip/{title}","/tip/addTip","/tips/{catagory}","/tips/all", "/user/friend_request/{user}").permitAll()
+            .antMatchers(
+                "/", 
+                "/user/add", 
+                "/tip/{title}",
+                "/tip/addTip",
+                "/tips/{catagory}",
+                "/tips/all", 
+                "/user/friend_request/{user}",
+                //allow API docs
+                "/v2/api-docs",
+                "/configuration/ui",
+                "/swagger-resources/**",
+                "/configuration/security",
+                "/swagger-ui.html",
+                "/webjars/**"
+                ).permitAll()
             .anyRequest().authenticated()            
         .and().httpBasic();
         //need authenication to edit tips actually just need to test
