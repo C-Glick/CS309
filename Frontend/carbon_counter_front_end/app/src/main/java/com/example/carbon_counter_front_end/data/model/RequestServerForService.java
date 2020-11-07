@@ -22,15 +22,27 @@ import org.json.JSONObject;
 import java.util.HashMap;
 import java.util.Map;
 
+/**
+ * Class for contacting the server
+ */
 public class RequestServerForService {
     IVolleyListener myListener;
     Context context;
 
+    /**
+     * RequestServerForService Constructor - Used for contacting the server
+     * @param c context of the view
+     * @param l interface for the view defining how to handle the responses
+     */
     public RequestServerForService(Context c, IVolleyListener l) {
         this.context = c;
         this.myListener = l;
     }
 
+    /**
+     * Method for get server requests to return a JSONObject
+     * @param url server url to contact
+     */
     public void contactServer(String url) {
         JsonObjectRequest jsonObjReq = new JsonObjectRequest(Request.Method.GET,
                 url, null, // IF YOU WANT TO SEND A JSONOBJECT WITH POST THEN PASS IT HERE
@@ -73,6 +85,10 @@ public class RequestServerForService {
         Volley.newRequestQueue(context).add(jsonObjReq);
     }
 
+    /**
+     * Method for get server requests to return a JSONArray
+     * @param url server url to contact
+     */
     public void contactServerArray(String url) {
         JsonArrayRequest jsonArrReq = new JsonArrayRequest(Request.Method.GET, url, null, new Response.Listener<JSONArray>() {
             @Override
@@ -101,6 +117,10 @@ public class RequestServerForService {
         Volley.newRequestQueue(context).add(jsonArrReq);
     }
 
+    /**
+     * Method for get server requests to return a Bitmap to display an image
+     * @param url server url to contact
+     */
     public void contactServerImage(String url){
         ImageRequest imageRequest = new ImageRequest(url, new Response.Listener<Bitmap>() {
             @Override

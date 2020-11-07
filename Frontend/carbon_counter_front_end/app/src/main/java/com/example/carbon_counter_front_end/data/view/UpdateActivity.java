@@ -32,6 +32,10 @@ import java.util.Map;
 
 import static java.lang.Double.parseDouble;
 
+/**
+ * Update Stats page
+ * @author Morgan Funk
+ */
 public class UpdateActivity extends AppCompatActivity {
 
     private String TAG = UpdateActivity.class.getSimpleName();

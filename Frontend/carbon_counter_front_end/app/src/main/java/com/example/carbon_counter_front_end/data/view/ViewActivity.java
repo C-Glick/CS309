@@ -1,11 +1,10 @@
 package com.example.carbon_counter_front_end.data.view;
 
-import androidx.appcompat.app.AppCompatActivity;
-
-import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.widget.TextView;
+
+import androidx.appcompat.app.AppCompatActivity;
 
 import com.android.volley.Request;
 import com.android.volley.Response;
@@ -19,6 +18,9 @@ import com.example.carbon_counter_front_end.data.model.UserInformation;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+/**
+ * View user's stats
+ */
 public class ViewActivity extends AppCompatActivity {
     private String TAG = ViewActivity.class.getSimpleName();
     private String tag_json_get= "json_obj_get";

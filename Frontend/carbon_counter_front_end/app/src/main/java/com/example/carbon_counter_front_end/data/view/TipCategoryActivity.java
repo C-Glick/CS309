@@ -19,6 +19,10 @@ import org.json.JSONObject;
 
 import java.util.Stack;
 
+/**
+ * Tip Category page - Displays recommended categories based on user's stats.
+ * @author Zachary Current
+ */
 public class TipCategoryActivity extends AppCompatActivity {
     private String TAG = ViewActivity.class.getSimpleName();
     private String tag_json_get = "json_obj_get";

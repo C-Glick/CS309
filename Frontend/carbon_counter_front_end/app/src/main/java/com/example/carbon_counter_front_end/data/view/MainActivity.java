@@ -20,6 +20,10 @@ import com.example.carbon_counter_front_end.data.model.UserInformation;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
+/**
+ * Main menu for Carbon Counter
+ * @author Zachary Current
+ */
 public class MainActivity extends AppCompatActivity {
 
     @Override

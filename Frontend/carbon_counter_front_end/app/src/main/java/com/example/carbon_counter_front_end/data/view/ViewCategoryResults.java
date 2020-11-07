@@ -17,6 +17,10 @@ import com.example.carbon_counter_front_end.data.model.RequestServerForService;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
+/**
+ * View Tip page - based on the category you selected on the Tips Category page.
+ * @author Zachary Current
+ */
 public class ViewCategoryResults extends AppCompatActivity {
     private String category;
 

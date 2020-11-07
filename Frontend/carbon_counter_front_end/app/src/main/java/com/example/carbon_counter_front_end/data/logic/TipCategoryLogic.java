@@ -37,7 +37,7 @@ public class TipCategoryLogic {
 
     /**
      * To set the model of this logic to take care of contacting the server.
-     * @param m
+     * @param m model to contact the server
      */
     public void setModel(RequestServerForService m){ this.model = m; }
 
