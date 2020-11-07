@@ -141,9 +141,8 @@ public class TipCategoryActivity extends AppCompatActivity {
 
             }
         }));
-        //Add code to pull from server the users stats and but topics in recommended, if any
+
         tipCategoryLogic.contactServer();
-        //Buttons to activities for their specific type
 
 
     }
