@@ -41,6 +41,7 @@ public class MainActivity extends AppCompatActivity {
         Button viewStats = (Button) findViewById(R.id.buttonView);
         Button updateStats = (Button) findViewById(R.id.buttonUpdate);
         Button viewTips = (Button) findViewById(R.id.buttonViewTip);
+        Button addTip = (Button) findViewById(R.id.buttonAddTip);
         final MainActivityLogic mainLogic = new MainActivityLogic(this, this.getApplicationContext());
 
         final ImageView display = (ImageView) findViewById(R.id.imageView);
@@ -121,6 +122,21 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 Intent i = new Intent(MainActivity.this, TipCategoryActivity.class);
+                startActivity(i);
+            }
+        });
+
+        addTip.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                /*
+                if(UserInformation.role == "CREATOR" || UserInformation.role == "ADMIN"){
+
+                } else {
+
+                }
+                 */
+                Intent i = new Intent(MainActivity.this, AddTipActivity.class);
                 startActivity(i);
             }
         });
