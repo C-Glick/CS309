@@ -24,11 +24,7 @@ import static org.mockito.Mockito.when;
 
 @RunWith(MockitoJUnitRunner.class)
 public class UpdateAndViewTest {
-    @Mock
-    private Context context;
 
-    @Mock
-    private UpdateActivity UpdateActivity;
 
     @Mock
     private RequestServerForService model;
@@ -39,11 +35,7 @@ public class UpdateAndViewTest {
 
     JSONObject mockJSON = mock(JSONObject.class);
 
-    @Mock private EditText miles;
-    @Mock private EditText water;
-    @Mock private EditText power;
-    @Mock private EditText waste;
-    @Mock private EditText meat;
+
 
     @Before
     public void setup()
@@ -69,7 +61,7 @@ public class UpdateAndViewTest {
     @Test
     public void UpdateUser() throws JSONException {
 
-        String temp = "ADMIN";
+      //  String temp = "ADMIN";
 
         UpdateStatsLogic mock = mock(UpdateStatsLogic.class);
         mock.setModel(model);
@@ -79,6 +71,7 @@ public class UpdateAndViewTest {
 
 
         assertEquals(true,MockLogi.Permissions("ADMIN"));
+
         assertEquals(false,MockLogi.Permissions("USER"));
 
 

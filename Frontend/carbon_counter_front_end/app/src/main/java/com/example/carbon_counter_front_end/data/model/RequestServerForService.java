@@ -14,6 +14,7 @@ import com.android.volley.VolleyLog;
 import com.android.volley.toolbox.ImageRequest;
 import com.android.volley.toolbox.JsonArrayRequest;
 import com.android.volley.toolbox.JsonObjectRequest;
+import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 
 import org.json.JSONArray;
@@ -178,6 +179,54 @@ public class RequestServerForService {
 
         Volley.newRequestQueue(context).add(jsonArrReq);
     }
+
+    public void deleteRequest(String url)
+    {
+        JsonObjectRequest jsonObjReq = new JsonObjectRequest(Request.Method.DELETE,
+                url, null, // IF YOU WANT TO SEND A JSONOBJECT WITH POST THEN PASS IT HERE
+                new Response.Listener<JSONObject>() {
+
+                    @Override
+                    public void onResponse(JSONObject response) {
+                        Log.d("VOLLEY", "SERVER RESPONSE: " + response);
+                        try {
+                            myListener.onSuccess(response);
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                }, new Response.ErrorListener()
+        {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                VolleyLog.d("VOLLEY", "Error: " + error.getMessage());
+                //Label stating failed username or password
+                myListener.onError();
+            }
+
+        }
+
+        )
+        {
+            @Override
+            public Map<String, String> getHeaders() throws AuthFailureError {
+                Map<String, String>  params = new HashMap<String, String>();
+                String credentials = UserInformation.username+":"+UserInformation.password;
+                String auth = "Basic "
+                        + Base64.encodeToString(credentials.getBytes(),
+                        Base64.NO_WRAP);
+                params.put("Authorization", auth);
+
+                return params;
+            }
+        };
+
+        // Adding request to request queue
+        //AppController.getInstance().addToRequestQueue(jsonObjReq, tag_json_req);
+        Volley.newRequestQueue(context).add(jsonObjReq);
+    }
+
+
 
 
 }

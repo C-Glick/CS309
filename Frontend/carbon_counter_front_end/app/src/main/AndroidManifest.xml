@@ -13,8 +13,8 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true">
-        <activity android:name=".data.view.ManageUser"></activity>
-        <activity android:name=".data.view.UserManagement" />
+        <activity android:name=".data.view.AdminUpdateUser"></activity>
+        <activity android:name=".data.view.FriendsActivity"></activity>
         <activity android:name=".data.view.TipCategoryActivity" />
         <activity
             android:name=".data.view.AdminTipApprovalActivity"

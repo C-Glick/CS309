@@ -21,13 +21,6 @@ public class AdminOverview extends AppCompatActivity {
         Button manageUser = (Button) findViewById(R.id.ManageUser);
         //Button tipApproval = (Button) findViewById(R.id.tipApprovalbutton);
         Button tip = (Button) findViewById(R.id.tipbutton);
-        manageUser.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-
-
-            }
-        });
 
         tip.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -36,6 +29,16 @@ public class AdminOverview extends AppCompatActivity {
                 startActivity(i);
             }
         });
+
+        manageUser.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent i = new Intent(AdminOverview.this, AdminUpdateUser.class );
+                startActivity(i);
+            }
+            });
+
+        ;
 
     }
 

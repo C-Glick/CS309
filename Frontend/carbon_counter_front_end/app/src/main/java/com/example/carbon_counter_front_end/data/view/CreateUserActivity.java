@@ -54,11 +54,7 @@ public class CreateUserActivity extends AppCompatActivity {
         final TextView password = (TextView) findViewById(R.id.et_password);
         final TextView email = (TextView) findViewById(R.id.et_email);
         Button createAccount = (Button) findViewById(R.id.btn_register);;
-        //Username = findViewById(R.id.et_name);
-      //  email = findViewById(R.id.et_email);
-        //password = findViewById(R.id.et_password);
-      //  passwordCheck = findViewById(R.id.et_repassword);
-        // createAccount = findViewById(R.id.btn_register);
+
 
 
 

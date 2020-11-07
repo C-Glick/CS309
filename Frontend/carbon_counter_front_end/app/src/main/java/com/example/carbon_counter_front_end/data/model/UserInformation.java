@@ -5,3 +5,5 @@ public class UserInformation {
     public static String password;
     public static String role;
 }
+
+
