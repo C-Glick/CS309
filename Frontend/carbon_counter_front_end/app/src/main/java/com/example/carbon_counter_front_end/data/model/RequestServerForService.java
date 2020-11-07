@@ -54,7 +54,7 @@ public class RequestServerForService {
                     public void onResponse(JSONObject response) {
                         Log.d("VOLLEY", "SERVER RESPONSE: " + response);
                         try {
-                            myListener.onSuccess(response);
+                            myListener.onSuccess(response) ;
                         } catch (JSONException e) {
                             e.printStackTrace();
                         }
@@ -90,19 +90,6 @@ public class RequestServerForService {
         Volley.newRequestQueue(context).add(jsonObjReq);
     }
 
-<<<<<<< HEAD
-    /**
-     * Method for get server requests to return a JSONArray
-     * @param url server url to contact
-     */
-    public void contactServerArray(String url) {
-        JsonArrayRequest jsonArrReq = new JsonArrayRequest(Request.Method.GET, url, null, new Response.Listener<JSONArray>() {
-            @Override
-            public void onResponse(JSONArray response) {
-                myListener.onSuccessJSONArray(response);
-            }
-        }, new Response.ErrorListener() {
-=======
     public void postServer(String url, JSONObject stats) throws JSONException {
 
 
@@ -121,7 +108,6 @@ public class RequestServerForService {
                     }
                 }, new Response.ErrorListener()
         {
->>>>>>> 28-debugging-currentpages
             @Override
             public void onErrorResponse(VolleyError error) {
                 VolleyLog.d("VOLLEY", "Error: " + error.getMessage());
@@ -180,8 +166,10 @@ public class RequestServerForService {
 
         Volley.newRequestQueue(context).add(imageRequest);
     }
-
-
+            /**
+             * Method for get server requests to return a JSONArray
+             * @param url server url to contact
+             */
     public void contactServerArray(String url) {
         JsonArrayRequest jsonArrReq = new JsonArrayRequest(Request.Method.GET, url, null, new Response.Listener<JSONArray>() {
             @Override

@@ -34,7 +34,7 @@ public class AdminUpdateUser extends AppCompatActivity {
         final TextView UpdatedEmail = (TextView) findViewById(R.id.UpdatedEmail);
         final TextView UpdatedPassword = (TextView) findViewById(R.id.updatedPassword);
         final TextView UpdatedRole = (TextView) findViewById(R.id.updatedRole);
-        final TextView SelectedUser = (TextView) findViewById(R.id.textView12);
+        final TextView SelectedUser = (TextView) findViewById(R.id.TargetUser);
 
 
         Button updateUser = (Button) findViewById(R.id.UpdateUser);
@@ -64,7 +64,7 @@ public class AdminUpdateUser extends AppCompatActivity {
 
                     }
                     @Override
-                    public void onSuccess(JSONObject response) throws JSONException {
+                    public void onSuccess(JSONObject response) {
                         CurrUserInfo = response;
                     }
                     @Override
@@ -74,8 +74,8 @@ public class AdminUpdateUser extends AppCompatActivity {
                 adminLogic.getUser();
                 try {
                     UpdatedUsername.setText(CurrUserInfo.getString("username"));
-                    UpdatedEmail.setText(CurrUserInfo.getString("eamil"));
-                    UpdatedPassword.setText(CurrUserInfo.getString("password"));
+                    UpdatedEmail.setText(CurrUserInfo.getString("email"));
+                    UpdatedPassword.setText("");
                     UpdatedRole.setText(CurrUserInfo.getString("role"));
                 } catch (JSONException e) {
                     e.printStackTrace();
@@ -95,7 +95,14 @@ public class AdminUpdateUser extends AppCompatActivity {
                 try {
                     UpdateInfo.put("username", UpdatedUsername.getText().toString());
                     UpdateInfo.put("email", UpdatedEmail.getText().toString());
-                    UpdateInfo.put("password", UpdatedPassword.getText().toString());
+                    if (UpdatedPassword.getText().toString().equals(""))
+                    {
+                        //Do nothing
+                    }
+                    else
+                    {
+                        UpdateInfo.put("password", UpdatedPassword.getText().toString());
+                    }
                     UpdateInfo.put("role", UpdatedRole.getText().toString());
 
 
@@ -107,7 +114,7 @@ public class AdminUpdateUser extends AppCompatActivity {
                         public void onSuccessJSONArray(JSONArray response) {
                         }
                         @Override
-                        public void onSuccess(JSONObject response) throws JSONException {
+                        public void onSuccess(JSONObject response) {
                         }
                         @Override
                         public void onError() {
@@ -134,7 +141,7 @@ public class AdminUpdateUser extends AppCompatActivity {
                     public void onSuccessJSONArray(JSONArray response) {
                     }
                     @Override
-                    public void onSuccess(JSONObject response) throws JSONException {
+                    public void onSuccess(JSONObject response)  {
                     }
                     @Override
                     public void onError() {

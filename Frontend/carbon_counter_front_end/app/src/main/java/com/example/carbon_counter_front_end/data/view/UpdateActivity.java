@@ -127,7 +127,7 @@ public class UpdateActivity extends AppCompatActivity {
                         public void onSuccessJSONArray(JSONArray response) {
                         }
                         @Override
-                        public void onSuccess(JSONObject response) throws JSONException {
+                        public void onSuccess(JSONObject response) {
                         }
                         @Override
                         public void onError() {

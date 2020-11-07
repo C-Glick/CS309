@@ -24,7 +24,7 @@ public class AdminLogic {
 
     public void authenticate(JSONObject stats) {
         // String url = "http://10.24.227.38:8080/stats/addDaily";
-        String url = "http://10.24.227.38:8080/edit";
+        String url = "http://10.24.227.38:8080/user/edit";
         url += "/" + TargetUserInformation.username;
         try {
             model.postServer(url, stats);
