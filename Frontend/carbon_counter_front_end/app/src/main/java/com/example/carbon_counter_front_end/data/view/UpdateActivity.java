@@ -1,6 +1,7 @@
 package com.example.carbon_counter_front_end.data.view;
 
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.text.Editable;
 import android.util.Base64;
@@ -8,6 +9,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.LiveData;
@@ -20,9 +22,17 @@ import com.android.volley.VolleyLog;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.example.carbon_counter_front_end.R;
 import com.example.carbon_counter_front_end.app.AppController;
+
+import com.example.carbon_counter_front_end.data.logic.LoginLogic;
+import com.example.carbon_counter_front_end.data.logic.UpdateStatsLogic;
+import com.example.carbon_counter_front_end.data.model.AppDatabase;
+import com.example.carbon_counter_front_end.data.model.IVolleyListener;
+import com.example.carbon_counter_front_end.data.model.RequestServerForService;
+import com.example.carbon_counter_front_end.data.model.RetrieveUserInfoThread;
 import com.example.carbon_counter_front_end.data.model.User;
 import com.example.carbon_counter_front_end.data.model.UserInformation;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -30,6 +40,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import static android.widget.Toast.LENGTH_SHORT;
 import static java.lang.Double.parseDouble;
 
 /**
@@ -43,9 +54,15 @@ public class UpdateActivity extends AppCompatActivity {
     private String username;
     private String password;
     private LiveData<List<User>> myUser;
-
+    private String miles;
+    private String water;
+    private String power;
+    private String meat;
+    private String waste;
+    final JSONObject userUpdate = new JSONObject();
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_update);
 /*
@@ -62,6 +79,14 @@ public class UpdateActivity extends AppCompatActivity {
         Button viewButton = (Button) findViewById(R.id.buttonView2);
         Button submitButton = (Button) findViewById(R.id.buttonSubmit);
         final EditText milesPerWeek = (EditText) findViewById(R.id.milesPerWeek);
+        final EditText waterPerWeek = (EditText) findViewById(R.id.waterPerWeek);
+        final EditText meatPerWeek = (EditText) findViewById(R.id.meatPerWeek);
+        final EditText powerPerWeek = (EditText) findViewById(R.id.powerPerWeek);
+        final EditText wastePerWeek = (EditText) findViewById(R.id.wastePerWeek);
+
+
+
+
 
         backButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -83,18 +108,49 @@ public class UpdateActivity extends AppCompatActivity {
         submitButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                final UpdateStatsLogic updateStatsLogic = new UpdateStatsLogic(UpdateActivity.this, getApplicationContext());
                 try {
-                    updateInfo(milesPerWeek.getText());
+                    miles = milesPerWeek.getText().toString();
+                    water = waterPerWeek.getText().toString();
+                    meat = meatPerWeek.getText().toString();
+                    power = powerPerWeek.getText().toString();
+                    waste = wastePerWeek.getText().toString();
+
+
+                    updateInfo();
+
+                    updateStatsLogic.setModel(new RequestServerForService(getApplicationContext(), new IVolleyListener() {
+                        @Override
+                        public void onImageSuccess(Bitmap image) {
+                        }
+                        @Override
+                        public void onSuccessJSONArray(JSONArray response) {
+                        }
+                        @Override
+                        public void onSuccess(JSONObject response) {
+                        }
+                        @Override
+                        public void onError() {
+                        }
+                    }));
+                   // Toast.makeText(UpdateActivity.this, (CharSequence) userUpdate, LENGTH_SHORT).show();
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
+                updateStatsLogic.authenticate(userUpdate);
             }
+
         });
+
+
+
     }
 
-    private void updateInfo(Editable text) throws JSONException {
-            double milesDriven = parseDouble(text.toString());
-            String url = "http://10.24.227.38:8080/stats/addDaily";
+    private void updateInfo() throws JSONException {
+//            double milesDriven = parseDouble(miles);
+//            double waterUsed = parseDouble(water);
+
+            //String url = "http://10.24.227.38:8080/stats/addDaily";
 
             //url += "/" + username;
 //        "water": "test6@iastate.edu"
@@ -102,43 +158,25 @@ public class UpdateActivity extends AppCompatActivity {
 //        "milesDriven": 55.6
 //        "meat":
 //        "garbage": 34.6 (double)
-            final JSONObject userUpdate = new JSONObject();
-            userUpdate.put("username", username);
-            userUpdate.put("water", 0.0);
-            userUpdate.put("power", 0.0);
-            userUpdate.put("milesDriven", milesDriven);
-            //   Toast.makeText(CreateUserActivity.this, jsonParam.toString(), Toast.LENGTH_LONG).show(); For Debugging later
+
+           // final JSONObject userUpdate = new JSONObject();
+        double updateWater = parseDouble(water);
+        double updatePower = parseDouble(power);
+        double updateMiles = parseDouble(miles);
+        double updateWaste = parseDouble(waste);
+        double updateMeat = parseDouble(meat);
+
+        userUpdate.put("username", username);
+        userUpdate.put("water", updateWater);
+        userUpdate.put("power", updatePower);
+        userUpdate.put("milesDriven", updateMiles);
+        userUpdate.put("meat", updateMeat);
+        userUpdate.put("garbage", updateWaste);
 
 
-            JsonObjectRequest jsonObjReq = new JsonObjectRequest(Request.Method.POST,
-                    url, userUpdate, // IF YOU WANT TO SEND A JSONOBJECT WITH POST THEN PASS IT HERE
-                    new Response.Listener<JSONObject>() {
 
-                        @Override
-                        public void onResponse(JSONObject response) {
-                            Log.d(TAG, response.toString());
-                        }
-                    }, new Response.ErrorListener() {
-                @Override
-                public void onErrorResponse(VolleyError error) {
-                    VolleyLog.d(TAG, "Error: " + error.getMessage());
-                    System.out.println(error.getMessage());
-                    System.out.println(username);
-                    System.out.println(password);
-                }
-            }){
-                @Override
-                public Map<String, String> getHeaders() throws AuthFailureError {
-                    Map<String, String>  params = new HashMap<String, String>();
-                    String credentials = username+":"+password;
-                    String auth = "Basic "
-                            + Base64.encodeToString(credentials.getBytes(),
-                            Base64.NO_WRAP);
-                    params.put("Authorization", auth);
 
-                    return params;
-                }
-            };
-            AppController.getInstance().addToRequestQueue(jsonObjReq, tag_json_POST);
     }
+
+
 }

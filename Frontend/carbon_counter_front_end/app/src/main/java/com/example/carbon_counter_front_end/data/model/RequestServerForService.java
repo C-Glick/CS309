@@ -14,9 +14,11 @@ import com.android.volley.VolleyLog;
 import com.android.volley.toolbox.ImageRequest;
 import com.android.volley.toolbox.JsonArrayRequest;
 import com.android.volley.toolbox.JsonObjectRequest;
+import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 
 import org.json.JSONArray;
+import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.HashMap;
@@ -51,14 +53,17 @@ public class RequestServerForService {
                     @Override
                     public void onResponse(JSONObject response) {
                         Log.d("VOLLEY", "SERVER RESPONSE: " + response);
-                        myListener.onSuccess(response);
+                        try {
+                            myListener.onSuccess(response) ;
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
                     }
                 }, new Response.ErrorListener()
         {
             @Override
             public void onErrorResponse(VolleyError error) {
                 VolleyLog.d("VOLLEY", "Error: " + error.getMessage());
-                System.out.println(error.getMessage());
                 //Label stating failed username or password
                 myListener.onError();
             }
@@ -85,26 +90,37 @@ public class RequestServerForService {
         Volley.newRequestQueue(context).add(jsonObjReq);
     }
 
-    /**
-     * Method for get server requests to return a JSONArray
-     * @param url server url to contact
-     */
-    public void contactServerArray(String url) {
-        JsonArrayRequest jsonArrReq = new JsonArrayRequest(Request.Method.GET, url, null, new Response.Listener<JSONArray>() {
-            @Override
-            public void onResponse(JSONArray response) {
-                myListener.onSuccessJSONArray(response);
-            }
-        }, new Response.ErrorListener() {
+    public void postServer(String url, JSONObject stats) throws JSONException {
+
+
+        JsonObjectRequest jsonObjReq = new JsonObjectRequest(Request.Method.POST,
+                url, stats, // IF YOU WANT TO SEND A JSONOBJECT WITH POST THEN PASS IT HERE
+                new Response.Listener<JSONObject>() {
+
+                    @Override
+                    public void onResponse(JSONObject response) {
+                        Log.d("VOLLEY", "SERVER RESPONSE: " + response);
+                        try {
+                            myListener.onSuccess(response);
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                }, new Response.ErrorListener()
+        {
             @Override
             public void onErrorResponse(VolleyError error) {
+                VolleyLog.d("VOLLEY", "Error: " + error.getMessage());
+                //Label stating failed username or password
                 myListener.onError();
             }
-        }) {
+        }){
+
+
             @Override
             public Map<String, String> getHeaders() throws AuthFailureError {
-                Map<String, String> params = new HashMap<String, String>();
-                String credentials = UserInformation.username + ":" + UserInformation.password;
+                Map<String, String>  params = new HashMap<String, String>();
+                String credentials = UserInformation.username+":"+UserInformation.password;
                 String auth = "Basic "
                         + Base64.encodeToString(credentials.getBytes(),
                         Base64.NO_WRAP);
@@ -113,8 +129,7 @@ public class RequestServerForService {
                 return params;
             }
         };
-
-        Volley.newRequestQueue(context).add(jsonArrReq);
+        Volley.newRequestQueue(context).add(jsonObjReq);
     }
 
     /**
@@ -151,6 +166,86 @@ public class RequestServerForService {
 
         Volley.newRequestQueue(context).add(imageRequest);
     }
+            /**
+             * Method for get server requests to return a JSONArray
+             * @param url server url to contact
+             */
+    public void contactServerArray(String url) {
+        JsonArrayRequest jsonArrReq = new JsonArrayRequest(Request.Method.GET, url, null, new Response.Listener<JSONArray>() {
+            @Override
+            public void onResponse(JSONArray response) {
+                myListener.onSuccessJSONArray(response);
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                myListener.onError();
+            }
+        }) {
+            @Override
+            public Map<String, String> getHeaders() throws AuthFailureError {
+                Map<String, String> params = new HashMap<String, String>();
+                String credentials = UserInformation.username + ":" + UserInformation.password;
+                String auth = "Basic "
+                        + Base64.encodeToString(credentials.getBytes(),
+                        Base64.NO_WRAP);
+                params.put("Authorization", auth);
+
+                return params;
+            }
+        };
+
+        Volley.newRequestQueue(context).add(jsonArrReq);
+    }
+
+    public void deleteRequest(String url)
+    {
+        JsonObjectRequest jsonObjReq = new JsonObjectRequest(Request.Method.DELETE,
+                url, null, // IF YOU WANT TO SEND A JSONOBJECT WITH POST THEN PASS IT HERE
+                new Response.Listener<JSONObject>() {
+
+                    @Override
+                    public void onResponse(JSONObject response) {
+                        Log.d("VOLLEY", "SERVER RESPONSE: " + response);
+                        try {
+                            myListener.onSuccess(response);
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                }, new Response.ErrorListener()
+        {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                VolleyLog.d("VOLLEY", "Error: " + error.getMessage());
+                //Label stating failed username or password
+                myListener.onError();
+            }
+
+        }
+
+        )
+        {
+            @Override
+            public Map<String, String> getHeaders() throws AuthFailureError {
+                Map<String, String>  params = new HashMap<String, String>();
+                String credentials = UserInformation.username+":"+UserInformation.password;
+                String auth = "Basic "
+                        + Base64.encodeToString(credentials.getBytes(),
+                        Base64.NO_WRAP);
+                params.put("Authorization", auth);
+
+                return params;
+            }
+        };
+
+        // Adding request to request queue
+        //AppController.getInstance().addToRequestQueue(jsonObjReq, tag_json_req);
+        Volley.newRequestQueue(context).add(jsonObjReq);
+    }
+
+
+
 
 }
 

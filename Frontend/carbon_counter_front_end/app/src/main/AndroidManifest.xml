@@ -15,6 +15,7 @@
         android:usesCleartextTraffic="true">
         <activity android:name=".data.view.AddTipActivity"></activity>
         <activity android:name=".data.view.ViewCategoryResults" />
+        <activity android:name=".data.view.AdminUpdateUser"></activity>
         <activity android:name=".data.view.TipCategoryActivity" />
         <activity
             android:name=".data.view.AdminTipApprovalActivity"

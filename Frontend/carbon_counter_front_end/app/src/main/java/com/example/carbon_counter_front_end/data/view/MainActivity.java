@@ -8,6 +8,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -42,6 +43,8 @@ public class MainActivity extends AppCompatActivity {
         Button updateStats = (Button) findViewById(R.id.buttonUpdate);
         Button viewTips = (Button) findViewById(R.id.buttonViewTip);
         Button addTip = (Button) findViewById(R.id.buttonAddTip);
+        Button Admin = (Button) findViewById(R.id.AdminLogin);
+
         final MainActivityLogic mainLogic = new MainActivityLogic(this, this.getApplicationContext());
 
         final ImageView display = (ImageView) findViewById(R.id.imageView);
@@ -73,6 +76,24 @@ public class MainActivity extends AppCompatActivity {
                 Intent intent = new Intent(Intent.ACTION_VIEW, uri);
                 startActivity(intent);
             }
+        });
+
+        Admin.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View view) {
+                if(mainLogic.Permissions(UserInformation.role))
+                {
+                    Intent i = new Intent(MainActivity.this, AdminOverview.class);
+                    startActivity(i);
+                }
+                else
+                {
+                    Toast.makeText(MainActivity.this, "Insufficient Permissions", Toast.LENGTH_SHORT).show();
+                }
+
+
+            }
+
         });
 
         mainLogic.setModel(new RequestServerForService(this.getApplicationContext(), new IVolleyListener() {

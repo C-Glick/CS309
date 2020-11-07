@@ -1,8 +1,10 @@
 package com.example.carbon_counter_front_end.data.model;
 
+
 import android.graphics.Bitmap;
 
 import org.json.JSONArray;
+import org.json.JSONException;
 import org.json.JSONObject;
 
 /**
@@ -25,10 +27,11 @@ public interface IVolleyListener {
      * To hanle JSONObject responses.
      * @param response JSONObject response
      */
-    public void onSuccess(JSONObject response);
+    public void onSuccess(JSONObject response) throws JSONException;
 
     /**
      * To handle server connection errors
      */
+
     public void onError();
 }
