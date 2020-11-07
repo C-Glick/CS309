@@ -1,5 +1,10 @@
 package com.example.carbon_counter_front_end.data.view;
 
+
+import androidx.appcompat.app.AppCompatActivity;
+
+import android.content.Intent;
+import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.util.Log;
 import android.widget.TextView;
@@ -13,8 +18,12 @@ import com.android.volley.VolleyLog;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.example.carbon_counter_front_end.R;
 import com.example.carbon_counter_front_end.app.AppController;
+import com.example.carbon_counter_front_end.data.logic.ViewLogic;
+import com.example.carbon_counter_front_end.data.model.IVolleyListener;
+import com.example.carbon_counter_front_end.data.model.RequestServerForService;
 import com.example.carbon_counter_front_end.data.model.UserInformation;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -24,7 +33,13 @@ import org.json.JSONObject;
 public class ViewActivity extends AppCompatActivity {
     private String TAG = ViewActivity.class.getSimpleName();
     private String tag_json_get= "json_obj_get";
+
     private String milesDriven;
+    private String waterUsed;
+    private String powerUsed;
+    private String MeatConsumed;
+    private String WasteProduced;
+
     private String username;
     private String password;
     private JSONObject UserInfo = new JSONObject();
@@ -32,63 +47,63 @@ public class ViewActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        final ViewLogic viewLogic = new ViewLogic(ViewActivity.this, getApplicationContext());
         setContentView(R.layout.activity_view);
         username = UserInformation.username;
-        password = UserInformation.password;
 
-        try {
-            getMiles(username);
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
-
-
-
-    }
-
-
-    private void getMiles(final String username) throws JSONException {
-     //  final TextView failedUsername = (TextView) findViewById(R.id.failedLogin);
-
-        String url = "http://10.24.227.38:8080/stats/today";
-
-        url += "/" + username;
-
-        JsonObjectRequest jsonObjReq = new JsonObjectRequest(Request.Method.GET,
-                url, null, // IF YOU WANT TO SEND A JSONOBJECT WITH POST THEN PASS IT HERE
-                new Response.Listener<JSONObject>() {
-
-                    @Override
-                    public void onResponse(JSONObject response) {
-                       // Toast.makeText(ViewActivity.this, "We in the response thing", LENGTH_SHORT).show();
-                        UserInfo = response;
-
-                            try {
-                               // CurrentData = UserInfo.getJSONObject(UserInfo.length()-1);
-                                milesDriven = UserInfo.getString("milesDriven");
-
-                                TextView mDriven = findViewById(R.id.milesDriven);
-                                mDriven.setText(milesDriven);
-
-                            } catch (JSONException e) {
-                                e.printStackTrace();
-                            }
-
-                        Log.d(TAG, response.toString());
-                        //Label stating failed username or password
-                        // failedUsername.setText("Invalid username ");
-
-                    }
-                }, new Response.ErrorListener() {
+        // getMiles(username);
+        viewLogic.setModel(new RequestServerForService(getApplicationContext(), new IVolleyListener() {
             @Override
-            public void onErrorResponse(VolleyError error) {
-                VolleyLog.d(TAG, "Error: " + error.getMessage());
-                System.out.println(error.getMessage());
+            public void onImageSuccess(Bitmap image) {
+
             }
-        });
-        // Adding request to request queue
-        AppController.getInstance().addToRequestQueue(jsonObjReq, tag_json_get);
+
+            @Override
+            public void onSuccessJSONArray(JSONArray response) {
+
+            }
+
+            @Override
+            public void onSuccess(JSONObject response) throws JSONException {
+                 //viewLogic.getStats(response);
+
+                milesDriven = response.getString("milesDriven");
+                waterUsed = response.getString("water");
+                powerUsed = response.getString("power");
+                MeatConsumed = response.getString("meat");
+                WasteProduced = response.getString("garbage");
+
+                TextView mDriven = findViewById(R.id.milesDriven);
+                mDriven.setText(milesDriven);
+                TextView wUsed = findViewById(R.id.water);
+                wUsed.setText(waterUsed);
+                TextView pUsed = findViewById(R.id.power);
+                pUsed.setText(powerUsed);
+                TextView wProduced = findViewById(R.id.waste);
+                wProduced.setText(WasteProduced);
+                TextView mConsumed = findViewById(R.id.meat);
+                mConsumed.setText(MeatConsumed);
+            }
+
+            @Override
+            public void onError() {
+
+            }
+        }));
+
+        viewLogic.authenticate();
+
+
     }
+
+//
+//    private void getMiles(final String username) throws JSONException {
+//     //  final TextView failedUsername = (TextView) findViewById(R.id.failedLogin);
+//
+//
+//
+//
+//    }
 
 
 
