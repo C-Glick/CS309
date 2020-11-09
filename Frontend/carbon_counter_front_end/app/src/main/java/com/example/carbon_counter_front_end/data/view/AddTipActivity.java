@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.Spinner;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -25,7 +26,7 @@ public class AddTipActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_tip);
 
-        Spinner spinner = (Spinner) findViewById(R.id.spinner);
+        final Spinner spinner = (Spinner) findViewById(R.id.spinner);
         ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this,
                 R.array.categories_array, android.R.layout.simple_spinner_item);
 
@@ -35,8 +36,10 @@ public class AddTipActivity extends AppCompatActivity {
 
         Button submit = (Button) findViewById(R.id.buttonSubmitTip);
         Button back = (Button) findViewById(R.id.buttonBackTip);
+        final EditText subject = (EditText) findViewById(R.id.editTextSubject);
+        final EditText description = (EditText) findViewById(R.id.editTextDescription);
 
-        AddTipLogic addTipLogic = new AddTipLogic(this, getApplicationContext());
+        final AddTipLogic addTipLogic = new AddTipLogic(this, getApplicationContext());
         addTipLogic.setModel(new RequestServerForService(getApplicationContext(), new IVolleyListener() {
             @Override
             public void onImageSuccess(Bitmap image) {
@@ -71,7 +74,17 @@ public class AddTipActivity extends AppCompatActivity {
         submit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
+                String category = "";
+                if(spinner.getSelectedItem().toString().equals("Emissions")){
+                    category = "CARBON";
+                } else if(spinner.getSelectedItem().toString().equals("Water")){
+                    category = "WATER";
+                } else if(spinner.getSelectedItem().toString().equals("Energy")){
+                    category = "ENERGY";
+                } else {
+                    category = "GARBAGE";
+                }
+                addTipLogic.addTip(category, description.getText().toString(), subject.getText().toString());
             }
         });
     }

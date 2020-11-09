@@ -5,6 +5,9 @@ import android.content.Context;
 import com.example.carbon_counter_front_end.data.model.RequestServerForService;
 import com.example.carbon_counter_front_end.data.view.AddTipActivity;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 /**
  * Logic class to take care of the logic for AddTipActivity
  * @author Zachary Current
@@ -30,7 +33,19 @@ public class AddTipLogic {
      */
     public void setModel(RequestServerForService m) { this.model = m; }
 
-    public void addTip(){
+    public void addTip(String category, String description, String subject){
+        String url = "http://10.24.227.38:8080/tip/addTip";
+
+        JSONObject newTip = new JSONObject();
+        try {
+            newTip.put("category", category);
+            newTip.put("body", description);
+            newTip.put("title", subject);
+
+            model.postServer(url, newTip);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
 
     }
 }
