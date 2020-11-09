@@ -9,12 +9,20 @@ import com.example.carbon_counter_front_end.data.view.AdminUpdateUser;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+/**
+ * Logic Utilized in Admin Views
+ * @author Morgan Funk
+ */
 public class AdminLogic {
 
     private RequestServerForService model;
     private AdminUpdateUser view;
     private Context context;
-
+    /**
+     * AdminLogic Constructor - To take care of logic for the loginActivity
+     * @param view view of AdminUpdateUser
+     * @param context context of AdminUpdateUser
+     */
     public AdminLogic(AdminUpdateUser view, Context context){
         this.view = view;
         this.context = context;

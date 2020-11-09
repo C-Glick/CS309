@@ -29,6 +29,7 @@ import org.json.JSONObject;
 
 /**
  * View user's stats
+ * @author Morgan Funk & Zachary Current
  */
 public class ViewActivity extends AppCompatActivity {
     private String TAG = ViewActivity.class.getSimpleName();
