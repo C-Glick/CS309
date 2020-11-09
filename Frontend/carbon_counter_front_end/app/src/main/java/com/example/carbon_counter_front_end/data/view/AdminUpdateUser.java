@@ -19,8 +19,10 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-
-
+/**
+ * Admin Tip Approval page
+ * @author Morgan Funk
+ */
 public class AdminUpdateUser extends AppCompatActivity {
     JSONObject CurrUserInfo = new JSONObject();
 
