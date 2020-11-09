@@ -33,6 +33,12 @@ public class AddTipLogic {
      */
     public void setModel(RequestServerForService m) { this.model = m; }
 
+    /**
+     * Add tip to server, will be unapproved
+     * @param category category of tip
+     * @param description description of tip
+     * @param subject subject of tip
+     */
     public void addTip(String category, String description, String subject){
         String url = "http://10.24.227.38:8080/tip/addTip";
 

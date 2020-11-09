@@ -19,6 +19,10 @@ import com.example.carbon_counter_front_end.data.model.RequestServerForService;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
+/**
+ * Activity to add a tip to the server
+ * @author Zachary Current
+ */
 public class AddTipActivity extends AppCompatActivity {
 
     @Override
