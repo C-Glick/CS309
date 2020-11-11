@@ -2,7 +2,6 @@ package com.example.carbon_counter_front_end.data.logic;
 
 import android.content.Context;
 
-import com.example.carbon_counter_front_end.R;
 import com.example.carbon_counter_front_end.data.model.RequestServerForService;
 import com.example.carbon_counter_front_end.data.model.UserInformation;
 import com.example.carbon_counter_front_end.data.view.TipCategoryActivity;
@@ -12,7 +11,10 @@ import org.json.JSONObject;
 
 import java.util.Stack;
 
-
+/**
+ * Logic class to take care of the logic for TipCategoryActivity
+ * @author Zachary Current
+ */
 public class TipCategoryLogic {
     private RequestServerForService model;
     private TipCategoryActivity view;
@@ -23,13 +25,25 @@ public class TipCategoryLogic {
     private int meat;
     private int garbage;
 
+    /**
+     * TipCategoryLogic Constructor - to take care of the TipCategoryActivity logic
+     * @param view view of TipCategoryActivity
+     * @param context context of TipCategoryActivity
+     */
     public TipCategoryLogic(TipCategoryActivity view, Context context){
         this.view = view;
         this.context = context;
     }
 
+    /**
+     * To set the model of this logic to take care of contacting the server.
+     * @param m model to contact the server
+     */
     public void setModel(RequestServerForService m){ this.model = m; }
 
+    /**
+     * Contacts the server and calls setLayout(response) on successful connection
+     */
     public void contactServer() {
         String url = "http://10.24.227.38:8080/stats/today";
 
@@ -39,7 +53,8 @@ public class TipCategoryLogic {
         model.contactServer(url);
     }
 
-    public void getStats(JSONObject response) {
+
+    private void setStats(JSONObject response) {
         try {
             milesDriven = response.getInt("milesDriven");
             water = response.getInt("water");
@@ -51,12 +66,14 @@ public class TipCategoryLogic {
         }
     }
 
-    public int getMiles() {
-        return milesDriven;
-    }
-
+    /**
+     * Called on successful contact to the server. Sets the stats of the user
+     * Formats a stack of characters with the order of how TipCategoryActivity should be layed out
+     * @param response response from server
+     * @return Stack with the order of the layout
+     */
     public Stack<Character> setLayout(JSONObject response) {
-        getStats(response);
+        setStats(response);
 
         final int milesIndex = 0;
         final int waterIndex = 1;
@@ -100,9 +117,5 @@ public class TipCategoryLogic {
 
         return allStack;
 
-    }
-
-    public void setRecommendedEmissions() {
-        view.setContentView(R.layout.activity_recommended_emissions);
     }
 }

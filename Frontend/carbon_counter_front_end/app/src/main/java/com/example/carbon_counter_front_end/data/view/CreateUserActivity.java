@@ -1,7 +1,5 @@
 package com.example.carbon_counter_front_end.data.view;
 
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.util.Log;
@@ -10,6 +8,8 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
+
+import androidx.appcompat.app.AppCompatActivity;
 
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
@@ -25,6 +25,10 @@ import org.json.JSONObject;
 
 import java.io.IOException;
 
+/**
+ * Registration page
+ * @author Morgan Funk
+ */
 public class CreateUserActivity extends AppCompatActivity {
 //    EditText Username;
 //    EditText email;
@@ -54,11 +58,7 @@ public class CreateUserActivity extends AppCompatActivity {
         final TextView password = (TextView) findViewById(R.id.et_password);
         final TextView email = (TextView) findViewById(R.id.et_email);
         Button createAccount = (Button) findViewById(R.id.btn_register);;
-        //Username = findViewById(R.id.et_name);
-      //  email = findViewById(R.id.et_email);
-        //password = findViewById(R.id.et_password);
-      //  passwordCheck = findViewById(R.id.et_repassword);
-        // createAccount = findViewById(R.id.btn_register);
+
 
 
 
@@ -128,11 +128,11 @@ public class CreateUserActivity extends AppCompatActivity {
 //    }
 
     private void PostUser(String user, String email, String pass) throws JSONException {
-        String url = "http://10.24.227.38:8080/addUser";
+        String url = "http://10.24.227.38:8080/user/add";
 
         //url += "/" + username;
         final JSONObject jsonParam = new JSONObject();
-        jsonParam.put("userName", user);
+        jsonParam.put("username", user);
         jsonParam.put("email", email);
         jsonParam.put("password", pass);
         jsonParam.put("role", "USER");
@@ -146,7 +146,6 @@ public class CreateUserActivity extends AppCompatActivity {
                     @Override
                     public void onResponse(JSONObject response) {
                         Log.d(TAG, response.toString());
-
                         System.out.println(response);
 
 

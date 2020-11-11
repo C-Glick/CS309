@@ -19,11 +19,20 @@ import org.json.JSONObject;
 
 import java.util.Stack;
 
+/**
+ * Tip Category page - Displays recommended categories based on user's stats.
+ * @author Zachary Current
+ */
 public class TipCategoryActivity extends AppCompatActivity {
     private String TAG = ViewActivity.class.getSimpleName();
     private String tag_json_get = "json_obj_get";
     private String username;
     private String password;
+
+    private final String emissions = "CARBON";
+    private final String water = "WATER";
+    private final String waste = "GARBAGE";
+    private final String energy = "ENERGY";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,7 +50,7 @@ public class TipCategoryActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 Intent i = new Intent(TipCategoryActivity.this, ViewCategoryResults.class);
-                i.putExtra("category", "emissions");
+                i.putExtra("category", emissions);
                 startActivity(i);
             }
         });
@@ -50,7 +59,7 @@ public class TipCategoryActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 Intent i = new Intent(TipCategoryActivity.this, ViewCategoryResults.class);
-                i.putExtra("category", "water");
+                i.putExtra("category", water);
                 startActivity(i);
             }
         });
@@ -59,7 +68,7 @@ public class TipCategoryActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 Intent i = new Intent(TipCategoryActivity.this, ViewCategoryResults.class);
-                i.putExtra("category", "waste");
+                i.putExtra("category", waste);
                 startActivity(i);
             }
         });
@@ -68,7 +77,7 @@ public class TipCategoryActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 Intent i = new Intent(TipCategoryActivity.this, ViewCategoryResults.class);
-                i.putExtra("category", "energy");
+                i.putExtra("category", energy);
                 startActivity(i);
             }
         });
@@ -136,9 +145,8 @@ public class TipCategoryActivity extends AppCompatActivity {
 
             }
         }));
-        //Add code to pull from server the users stats and but topics in recommended, if any
+
         tipCategoryLogic.contactServer();
-        //Buttons to activities for their specific type
 
 
     }

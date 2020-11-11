@@ -9,10 +9,10 @@ import com.tc_4.carbon_counter.models.DailyStats;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface DailyStatsDatabase extends JpaRepository<DailyStats, Long> {
-    List<DailyStats> findByUsername(String userName);
+    List<DailyStats> findByUsername(String username);
 
-    Optional<DailyStats> findTopByUsernameAndDateOrderByIdDesc(String userName, LocalDate date);
+    Optional<DailyStats> findTopByUsernameAndDateOrderByIdDesc(String username, LocalDate date);
 
-    List<DailyStats> findByUsernameAndDateGreaterThanOrderByDateAsc(String userName, LocalDate date);
+    List<DailyStats> findByUsernameAndDateGreaterThanOrderByDateAsc(String username, LocalDate date);
 
 }

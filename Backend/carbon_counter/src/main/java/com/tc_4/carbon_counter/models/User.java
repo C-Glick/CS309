@@ -126,6 +126,7 @@ public class User{
     /**
      * Copies the details from the other user into this user.
      * DOES NOT COPY PASSWORD!
+     * DOES NOT COPY ID!
      * Skips null variables effectively updating this user with the 
      * changes from the other user.
      * 

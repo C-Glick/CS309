@@ -27,12 +27,28 @@ public class LoginLogicTest {
 
     @Test
     public void testStoredUserInformation(){
-
-
         LoginLogic loginLogic = new LoginLogic(loginActivity, context);
         loginLogic.setModel(model);
+
         loginLogic.authenticate("test user", "password");
+
         assertEquals("test user", UserInformation.username);
         assertEquals("password", UserInformation.password);
+    }
+
+    @Test
+    public void testChangingStoredUserInformation(){
+        LoginLogic loginLogic = new LoginLogic(loginActivity, context);
+        loginLogic.setModel(model);
+
+        loginLogic.authenticate("test user", "password");
+
+        assertEquals("test user", UserInformation.username);
+        assertEquals("password", UserInformation.password);
+
+        loginLogic.authenticate("zcurrent", "this is my password yo");
+
+        assertEquals("zcurrent", UserInformation.username);
+        assertEquals("this is my password yo", UserInformation.password);
     }
 }

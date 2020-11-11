@@ -86,20 +86,21 @@ public class UserController {
     }
 
     /**
-     * Edit a user's information. Overwrites the user with the username given with
-     * the user object passed in the request body. All user variables are optional
-     * only specified values will be updated. Must be authenticated with at least
-     * admin permissions or authenticated as the user to change.
+     * Edit a user's information. Overwrites the user that has the username given in the path,
+     * with the information passed in the JSON object. All user variables are optional
+     * only specified values will be updated. ID cannot be edited. Must be authenticated with at least admin
+     * permissions or authenticated as the user to change.
      * 
-     * @param username provide as a path variable. The current username of the user
-     *                 to change
-     * @param user     provide in the request body as a json object. This contains
-     *                 the new values to change to.
-     * @return The updated user.
+     * example: authenticated as admin user or userToEdit. 
+     * path= /user/edit/userToEdit body = {"email":"EditedEmail","username":"EditedUsername"} 
+     * 
+     * @param username  provide as a path variable. The current username of the user to change
+     * @param changes   provide in the request body as a json object. This contains the new values to change to.
+     * @return          The updated user.
      */
     @PostMapping("/user/edit/{username}")
-    public User editUser(@PathVariable String username, @RequestBody User user) {
-        return userService.editUser(username, user);
+    public User editUser(@PathVariable String username, @RequestBody User changes){
+        return userService.editUser(username, changes);
     }
 
     /**
@@ -159,7 +160,7 @@ public class UserController {
      * @param username  provide as a path variable. The current username of the user to remove
      * @return          boolean, true if the user was successfully removed
      */
-    @DeleteMapping("/user/remove/{username}")
+    @DeleteMapping("/user/{username}")
     public Boolean removeUser(@PathVariable String username){
         return userService.removeUser(username);
     }

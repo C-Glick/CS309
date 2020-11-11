@@ -6,6 +6,10 @@ import androidx.lifecycle.LiveData;
 
 import java.util.List;
 
+/**
+ * Not in service
+ * @author Zachary Current
+ */
 public class UserRepository {
     private UserDao mUserDao;
     private LiveData<List<User>> mAllUsers;

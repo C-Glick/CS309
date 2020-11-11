@@ -1,10 +1,13 @@
 package com.example.carbon_counter_front_end.net_utils;
 
-import com.android.volley.toolbox.ImageLoader.ImageCache;
-
 import android.graphics.Bitmap;
 import android.util.LruCache;
 
+import com.android.volley.toolbox.ImageLoader.ImageCache;
+
+/**
+ * Used by AppController to retrieve images.
+ */
 public class LruBitmapCache extends LruCache<String, Bitmap> implements ImageCache {
     public static int getDefaultLruCacheSize() {
         final int maxMemory = (int) (Runtime.getRuntime().maxMemory() / 1024);

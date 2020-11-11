@@ -2,12 +2,14 @@ package com.example.carbon_counter_front_end.data.model;
 
 import android.content.Context;
 
-import androidx.annotation.NonNull;
 import androidx.room.Database;
 import androidx.room.Room;
 import androidx.room.RoomDatabase;
-import androidx.sqlite.db.SupportSQLiteDatabase;
 
+/**
+ * Not in service
+ * @author Zachary Current
+ */
 @Database(entities = {User.class}, version = 1)
 public abstract class AppDatabase extends RoomDatabase {
     public abstract UserDao userDao();

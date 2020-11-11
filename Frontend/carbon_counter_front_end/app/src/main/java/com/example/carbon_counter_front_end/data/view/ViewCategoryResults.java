@@ -17,6 +17,10 @@ import com.example.carbon_counter_front_end.data.model.RequestServerForService;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
+/**
+ * View Tip page - based on the category you selected on the Tips Category page.
+ * @author Zachary Current
+ */
 public class ViewCategoryResults extends AppCompatActivity {
     private String category;
 
@@ -28,26 +32,14 @@ public class ViewCategoryResults extends AppCompatActivity {
         Intent temp = getIntent();
         category = temp.getStringExtra("category");
 
-        TextView subject = (TextView) findViewById(R.id.editTextSubject);
-        TextView description = (TextView) findViewById(R.id.textViewDescription);
+        final TextView subject = (TextView) findViewById(R.id.textViewSubject);
+        final TextView description = (TextView) findViewById(R.id.textViewDescription);
         Button next = (Button) findViewById(R.id.buttonNext);
         Button prev = (Button) findViewById(R.id.buttonPrev);
 
-        next.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                //Call logic for the tip to be displayed
-            }
-        });
 
-        prev.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                //Call logic for the tip to be displayed
-            }
-        });
 
-        ViewCategoryResultsLogic resultsLogic = new ViewCategoryResultsLogic(this, getApplicationContext());
+        final ViewCategoryResultsLogic resultsLogic = new ViewCategoryResultsLogic(this, getApplicationContext());
         resultsLogic.setModel(new RequestServerForService(getApplicationContext(), new IVolleyListener() {
             @Override
             public void onImageSuccess(Bitmap image) {
@@ -56,7 +48,13 @@ public class ViewCategoryResults extends AppCompatActivity {
 
             @Override
             public void onSuccessJSONArray(JSONArray response) {
+                System.out.println(response);
+                resultsLogic.setTips(response);
+                String subjectInfo = resultsLogic.getSubject();
+                String descriptionInfo = resultsLogic.getDescription();
 
+                subject.setText(subjectInfo);
+                description.setText(descriptionInfo);
             }
 
             @Override
@@ -69,6 +67,32 @@ public class ViewCategoryResults extends AppCompatActivity {
 
             }
         }));
+
+        next.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                //Call logic for the tip to be displayed
+                resultsLogic.setNextTip();
+                String subjectInfo = resultsLogic.getSubject();
+                String descriptionInfo = resultsLogic.getDescription();
+
+                subject.setText(subjectInfo);
+                description.setText(descriptionInfo);
+            }
+        });
+
+        prev.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                //Call logic for the tip to be displayed
+                resultsLogic.setPrevTip();
+                String subjectInfo = resultsLogic.getSubject();
+                String descriptionInfo = resultsLogic.getDescription();
+
+                subject.setText(subjectInfo);
+                description.setText(descriptionInfo);
+            }
+        });
 
         resultsLogic.getTips(category);
 

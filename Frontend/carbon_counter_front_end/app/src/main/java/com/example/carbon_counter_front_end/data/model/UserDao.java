@@ -9,6 +9,10 @@ import androidx.room.Query;
 
 import java.util.List;
 
+/**
+ * Not in service
+ * @author Zachary Current
+ */
 @Dao
 public interface UserDao {
     @Query("SELECT * FROM user")

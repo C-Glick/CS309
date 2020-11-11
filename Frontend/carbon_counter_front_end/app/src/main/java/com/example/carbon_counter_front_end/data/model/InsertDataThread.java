@@ -1,12 +1,13 @@
 package com.example.carbon_counter_front_end.data.model;
 
 import android.content.Context;
-import android.provider.ContactsContract;
 
 import androidx.room.Room;
 
-import com.android.volley.toolbox.StringRequest;
-
+/**
+ * Not in service
+ * @author Zachary Current
+ */
 public class InsertDataThread implements Runnable {
     private String password;
     private String username;

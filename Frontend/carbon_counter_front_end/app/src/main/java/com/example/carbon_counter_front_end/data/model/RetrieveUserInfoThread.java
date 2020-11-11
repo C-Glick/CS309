@@ -2,10 +2,10 @@ package com.example.carbon_counter_front_end.data.model;
 
 import android.content.Context;
 
-import androidx.room.Room;
-
-import java.util.List;
-
+/**
+ * Not in service
+ * @author Zachary Current
+ */
 public class RetrieveUserInfoThread implements Runnable{
     private String username;
     private String password;

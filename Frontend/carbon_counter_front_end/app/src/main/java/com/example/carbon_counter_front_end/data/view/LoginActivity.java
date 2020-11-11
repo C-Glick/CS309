@@ -18,8 +18,13 @@ import com.example.carbon_counter_front_end.data.model.UserInformation;
 
 import org.json.JSONArray;
 
+import org.json.JSONException;
 import org.json.JSONObject;
 
+/**
+ * Login Screen for Carbon Counter
+ * @author Zachary Current
+ */
 public class LoginActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -57,13 +62,17 @@ public class LoginActivity extends AppCompatActivity {
 
                     @Override
                     public void onSuccess(JSONObject response) {
-                        loginLogic.clearError(failedLogin, failedLogin2);
-                        Intent i = new Intent(LoginActivity.this, MainActivity.class);
-                        if(UserInformation.role.equals("ADMIN"))
-                        {
-                            i = new Intent(LoginActivity.this, AdminOverview.class);
+                        try {
+                            UserInformation.role = response.getString("role");
+                        } catch (JSONException e) {
+                            e.printStackTrace();
                         }
-                        startActivity(i);
+                        loginLogic.clearError(failedLogin, failedLogin2);
+                            Intent i = new Intent(LoginActivity.this, MainActivity.class);
+                            startActivity(i);
+
+
+
                     }
 
                     @Override
@@ -85,6 +94,9 @@ public class LoginActivity extends AppCompatActivity {
             }
         });
     }
+
+
+
 
 }
 

@@ -4,7 +4,10 @@ import androidx.annotation.NonNull;
 import androidx.room.ColumnInfo;
 import androidx.room.Entity;
 import androidx.room.PrimaryKey;
-
+/**
+ * Not in service
+ * @author Zachary Current
+ */
 @Entity
 public class User {
     @PrimaryKey @NonNull
