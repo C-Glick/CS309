@@ -1,4 +1,12 @@
 <resources>
+
+    <string-array name="categories_array">
+        <item>Emissions</item>
+        <item>Energy</item>
+        <item>Waste</item>
+        <item>Water</item>
+    </string-array>
+
     <string name="app_name">carbon_counter_front_end</string>
     <string name="login">Login</string>
     <string name="register">Create Account</string>
@@ -28,4 +36,11 @@
     <string name="title_activity_admin_tip_approval">AdminTipApprovalActivity</string>
     <string name="tab_text_1">Tab 1</string>
     <string name="tab_text_2">Tab 2</string>
+    <string name="hello_world" />
+    <string name="estimate_how_many_lbs_of_trash_you_ve_thrown_away_this_week">Estimate how many lbs of trash you\'ve thrown away this week:</string>
+    <string name="RemoveUser">Remove User</string>
+    <string name="AdminExplain">Please enter the user you wish to manage.</string>
+    <string name="ChangeUsername">Change Username</string>
+    <string name="InputUsername">Username</string>
+    <string name="usernameHolder">"Username: "</string>
 </resources>

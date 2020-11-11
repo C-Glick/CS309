@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 /**
@@ -95,6 +96,11 @@ public class StatsController {
     @PostMapping("/stats/addDaily")
     public DailyStats addDailyStats(@RequestBody DailyStats dailyStats){
         return statsService.addDailyStats(dailyStats);
+    }
+
+    @RequestMapping("/stats/delete/{username}")
+    public Boolean deleteDailyStats(@PathVariable String username){
+        return statsService.deleteAllStatsByUser(username);
     }
     
 }

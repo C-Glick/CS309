@@ -8,6 +8,18 @@
     tools:context=".data.view.MainActivity">
 
     <Button
+        android:id="@+id/AdminLogin"
+        android:layout_width="127dp"
+        android:layout_height="77dp"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginStart="143dp"
+        android:layout_marginTop="611dp"
+        android:background="@drawable/mybutton"
+        android:text="Admin Page" />
+
+    <Button
         android:id="@+id/buttonView"
         android:layout_width="127dp"
         android:layout_height="77dp"
@@ -28,6 +40,17 @@
         android:layout_marginTop="491dp"
         android:background="@drawable/mybutton"
         android:text="@string/view_tip_categories" />
+
+    <Button
+        android:id="@+id/buttonAddTip"
+        android:layout_width="127dp"
+        android:layout_height="77dp"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+        android:layout_marginStart="230dp"
+        android:layout_marginTop="491dp"
+        android:background="@drawable/mybutton"
+        android:text="Add New Tip" />
 
     <Button
         android:id="@+id/buttonUpdate"

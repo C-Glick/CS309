@@ -22,6 +22,14 @@ public class User{
         ADMIN,
         DEV
     } 
+    public enum Mode{
+        LIGHT,
+        DARK
+    }
+    public enum Notifications{
+        ON,
+        OFF
+    }
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     Long id;
@@ -37,6 +45,12 @@ public class User{
 
     @Column(name="role")
     Role role;
+
+    @Column(name="mode")
+    Mode mode;
+
+    @Column(name="notifications")
+    Notifications notifications;
 
     public Long getId(){
         return id;
@@ -56,6 +70,12 @@ public class User{
     public Role getRole(){
         return role;
     }
+    public Mode getMode(){
+        return mode;
+    }
+    public Notifications getNotifications(){
+        return notifications;
+    }
     public void setUsername(String name){
         username = name;
     }
@@ -67,6 +87,12 @@ public class User{
     }
     public void setRole(Role newRole){
         role = newRole;
+    }
+    public void setMode(Mode newMode){
+        mode = newMode;
+    }
+    public void setNotifications(Notifications newNotifications){
+        notifications = newNotifications;
     }
     
     /**

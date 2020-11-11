@@ -33,6 +33,7 @@ import org.springframework.test.context.junit4.SpringRunner;
 
 /**
  * @author Colton Glick
+ * @author Andrew Pester
  */
 @RunWith(SpringRunner.class)
 @ContextConfiguration
@@ -100,15 +101,7 @@ public class UserServiceTest {
         testUser.setRole(Role.USER);
         testUser.setEmail("testEmail");
         userList.add(testUser);
-        //this cause tests to fail
-        /*
-        User testUser2 = new User();
-        testUser.setUsername("testUser2");
-        testUser.setPassword("password");
-        testUser.setRole(Role.USER);
-        testUser.setEmail("testEmail");
-        userList.add(testUser2);
-        */
+       
         //add test friends
         Friends testFriend1 = new Friends();
         testFriend1.setUserOne("testUsername");

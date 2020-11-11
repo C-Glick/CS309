@@ -68,12 +68,11 @@ public class LoginActivity extends AppCompatActivity {
                             e.printStackTrace();
                         }
                         loginLogic.clearError(failedLogin, failedLogin2);
-                        Intent i = new Intent(LoginActivity.this, MainActivity.class);
-                        if(UserInformation.role.equals("ADMIN"))
-                        {
-                            i = new Intent(LoginActivity.this, AdminOverview.class);
-                        }
-                        startActivity(i);
+                            Intent i = new Intent(LoginActivity.this, MainActivity.class);
+                            startActivity(i);
+
+
+
                     }
 
                     @Override
@@ -95,6 +94,9 @@ public class LoginActivity extends AppCompatActivity {
             }
         });
     }
+
+
+
 
 }
 
