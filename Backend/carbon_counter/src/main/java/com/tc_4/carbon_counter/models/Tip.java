@@ -10,8 +10,8 @@ public class Tip {
     public enum Category{
         WATER,
         CARBON,
-        ENERGY, 
-        GARBAGE 
+        ENERGY,
+        GARBAGE
 
     }
     public enum Status{

@@ -1,5 +1,6 @@
 package com.tc_4.carbon_counter.controllers;
 
+
 import java.util.List;
 
 import com.tc_4.carbon_counter.models.Friends;
@@ -17,17 +18,17 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 /**
- * The user controller provides an API to send commands to the back end.
- * The controller provides url mappings to specific logic in the service classes.
+ * The user controller provides an API to send commands to the back end. The
+ * controller provides url mappings to specific logic in the service classes.
  * The user controller deals with all mappings beginning with /user/. The server
- * may respond with a "401 unauthorized" status code if the authentication header
- * is not correct. It should be a string in the following format "username:password"
- * and it should be 64 bit encoded. This header must be attached to all requests
- * except /user/add. 
+ * may respond with a "401 unauthorized" status code if the authentication
+ * header is not correct. It should be a string in the following format
+ * "username:password" and it should be 64 bit encoded. This header must be
+ * attached to all requests except /user/add.
  * 
- * Some functions require elevated permissions to access, these 
- * are handled by the UnauthorizedException, the response body will contain a json
- * object with a message parameter with further details. 
+ * Some functions require elevated permissions to access, these are handled by
+ * the UnauthorizedException, the response body will contain a json object with
+ * a message parameter with further details.
  * 
  * @see UserService
  * 
@@ -38,12 +39,11 @@ import org.springframework.web.bind.annotation.RestController;
 public class UserController {
 
     /**
-     * The user service is called by the controller, it is what actually
-     * preforms the commands. 
+     * The user service is called by the controller, it is what actually preforms
+     * the commands.
      */
     @Autowired
     private UserService userService;
-
 
     /**
      * Get user info by username.
@@ -52,24 +52,23 @@ public class UserController {
      * @return The user's info as a JSON object
      */
     @GetMapping("/user/{username}")
-    public User getUserInfo(@PathVariable String username){
+    public User getUserInfo(@PathVariable String username) {
         return userService.getUser(username);
     }
 
     /**
-     * Add a user to the database, required fields: 
-     * username, email, password, role.
+     * Add a user to the database, required fields: username, email, password, role.
      * Does not require authentication.
      * 
      * @param user to add, pass as a JSON object in the request body.
-     * @return the user that has been added, may include additional
-     * details from the server.
+     * @return the user that has been added, may include additional details from the
+     *         server.
      * 
      * @see User
      * @see User.Role
      */
     @PostMapping("/user/add")
-    public User addUser(@RequestBody User user){
+    public User addUser(@RequestBody User user) {
         return userService.addUser(user);
     }
 
@@ -77,14 +76,12 @@ public class UserController {
      * Change a user's password. Must be authenticated with at least admin
      * permissions or authenticated as the user to change
      * 
-     * @param username      provide as a path variable
-     * @param newPassword   new password, provide as a request parameter
-     * @return boolean, if the password was set 
+     * @param username    provide as a path variable
+     * @param newPassword new password, provide as a request parameter
+     * @return boolean, if the password was set
      */
     @RequestMapping("/user/{username}/setPassword")
-    public boolean setUserPassword(@PathVariable String username, 
-        @RequestParam("newPassword") String newPassword)
-    {
+    public boolean setUserPassword(@PathVariable String username, @RequestParam("newPassword") String newPassword) {
         return userService.changePassword(username, newPassword);
     }
 
@@ -108,51 +105,54 @@ public class UserController {
 
     /**
      * 
-     * @param user the user sending the friend request
+     * @param user     the user sending the friend request
      * @param username the user being sent the friend request
-     * @return true if it sends the request otherwise throws userNotFoundException or RequestExistsException 
+     * @return true if it sends the request otherwise throws userNotFoundException
+     *         or RequestExistsException
      */
     @RequestMapping("/user/friend_request/{user}")
-    public boolean friendRequest(@PathVariable String user, @RequestParam String username){
-        //DONE
+    public boolean friendRequest(@PathVariable String user, @RequestParam String username) {
+        // DONE
         return userService.friendRequest(user, username);
     }
-    
+
     /**
      * 
      * @param username the user whos requests you would like
      * @return all the friend requests for that user
      */
     @RequestMapping("/user/requests/{username}")
-    public List<Friends> allFriendRequests(@PathVariable String username){
-        //DONE
+    public List<Friends> allFriendRequests(@PathVariable String username) {
+        // DONE
         return userService.allFriendRequests(username);
     }
 
     /**
      * 
      * @param username the user who was sent the request
-     * @param userOne the user who sent the request
-     * @return true if the request exists otherwise throws usernotfoundexception or requestnotfoundexception
+     * @param userOne  the user who sent the request
+     * @return true if the request exists otherwise throws usernotfoundexception or
+     *         requestnotfoundexception
      */
     @RequestMapping("/user/accept/{username}")
-    public boolean acceptFriend(@PathVariable String username, @RequestParam String userOne){
-        //DONE
+    public boolean acceptFriend(@PathVariable String username, @RequestParam String userOne) {
+        // DONE
         return userService.acceptFriend(username, userOne);
     }
 
     /**
      * 
      * @param username the user who was sent the request
-     * @param userOne the user who sent the request
-     * @return true if the request exists otherwise throws usernotfoundexception or requestnotfoundexception
+     * @param userOne  the user who sent the request
+     * @return true if the request exists otherwise throws usernotfoundexception or
+     *         requestnotfoundexception
      */
     @RequestMapping("/user/deny/{username}")
-    public boolean denyFriend(@PathVariable String username, @RequestParam String userOne){
-        //DONE
+    public boolean denyFriend(@PathVariable String username, @RequestParam String userOne) {
+        // DONE
         return userService.denyFriend(username, userOne);
     }
-
+ 
     /**
      * Remove this user from the database. Must be authenticated with at least admin
      * permissions or authenticated as the user to remove.
@@ -163,5 +163,11 @@ public class UserController {
     @DeleteMapping("/user/{username}")
     public Boolean removeUser(@PathVariable String username){
         return userService.removeUser(username);
+    }
+
+    @RequestMapping("/user/settings/{username}")
+    //DONE
+    public boolean setSettings(@PathVariable String username,@RequestBody String settings){
+        return userService.setSettings(username,settings);
     }
 }

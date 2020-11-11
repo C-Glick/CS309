@@ -42,7 +42,7 @@ public class TipsController {
     @GetMapping("/tip/{title}/admin")
     public Tip getTipByWorkingTitle(@PathVariable String title){
         //DONE
-        return tipsService.getTipByTitle(title);
+        return tipsService.getTipByWorkingTitle(title);
     }
     /**
      * 
