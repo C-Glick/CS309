@@ -1,5 +1,7 @@
 package com.tc_4.carbon_counter.services;
 
+import static org.junit.Assert.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.*;
 
 import java.util.ArrayList;
@@ -9,10 +11,12 @@ import java.util.Optional;
 import javax.annotation.PostConstruct;
 
 import com.tc_4.carbon_counter.databases.TipsDatabase;
+import com.tc_4.carbon_counter.exceptions.TipNotFoundException;
 import com.tc_4.carbon_counter.models.Tip;
 import com.tc_4.carbon_counter.models.Tip.Category;
 import com.tc_4.carbon_counter.models.Tip.Status;
 
+import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.TestConfiguration;
@@ -153,4 +157,21 @@ public class TipsServiceTest {
             return Optional.empty();
         });
     }
+
+    @Test
+    public void getTipByTitle(){
+        tipsService.setStatus("test1", Status.APPROVED);
+        tipsList.get(0).setStatus(Status.DENIED);
+        assertThrows(TipNotFoundException.class, () -> {tipsService.getTipByTitle("test2");});
+        assertThrows(TipNotFoundException.class, () -> {tipsService.getTipByTitle("test1");});
+        tipsList.get(0).setStatus(Status.APPROVED);
+        assertEquals(tipsList.get(0), tipsService.getTipByTitle("test1"));
+    }
+
+    @Test
+    public void getTipByWorkingTitle(){
+        assertThrows(TipNotFoundException.class, () ->{tipsService.getTipByWorkingTitle("test2");});
+        assertEquals(tipsList.get(0), tipsService.getTipByWorkingTitle("test1"));
+    }
+
 }
