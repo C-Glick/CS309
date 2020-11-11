@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.util.Hashtable;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 import javax.websocket.OnClose;
 import javax.websocket.OnError;
@@ -14,7 +15,11 @@ import javax.websocket.server.PathParam;
 import javax.websocket.server.ServerEndpoint;
 
 import com.tc_4.carbon_counter.databases.NotificationDatabase;
+import com.tc_4.carbon_counter.databases.UserDatabase;
+import com.tc_4.carbon_counter.exceptions.UserNotFoundException;
 import com.tc_4.carbon_counter.models.Notification;
+import com.tc_4.carbon_counter.models.User;
+import com.tc_4.carbon_counter.models.User.Notifications;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -25,9 +30,12 @@ import org.springframework.stereotype.Controller;
 @ServerEndpoint(value = "/notify/{username}")  // this is Websocket url
 public class NotificationSocket {
 
-  // cannot autowire static directly (instead we do it by the below
-  // method
-	private static NotificationDatabase notificationDatabase; 
+    // cannot autowire static directly (instead we do it by the below
+    // method
+    private static NotificationDatabase notificationDatabase; 
+    
+    @Autowired
+    private UserDatabase userDatabase;
 
 	/*
    * Grabs the MessageRepository singleton from the Spring Application
@@ -115,11 +123,24 @@ public class NotificationSocket {
 
 
 	public void sendNotificationToUser(Notification notification) {
+        Optional<User> optionalUser = userDatabase.findByUsername(notification.getUsername());
+        if(!optionalUser.isPresent()){
+            throw new UserNotFoundException(notification.getUsername());
+        }
+
+        User user = optionalUser.get();
+        //if notifications are off, dont save to database
+        if(user.getNotifications() == Notifications.OFF){
+            return;
+        }
+
         Session session = usernameSessionMap.get(notification.getUsername());
 
+        //user is not connected
         if(notification.getUsername() != "" && session == null){
             notification.setIsRead(false);
             notificationDatabase.save(notification);
+        //user is connected
         }else{
             try {
                 session.getBasicRemote().sendText(notification.getMessage());
