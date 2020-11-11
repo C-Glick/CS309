@@ -34,8 +34,7 @@ public class NotificationSocket {
     // method
     private static NotificationDatabase notificationDatabase; 
     
-    @Autowired
-    private UserDatabase userDatabase;
+    private static UserDatabase userDatabase;
 
 	/*
    * Grabs the MessageRepository singleton from the Spring Application
@@ -49,6 +48,11 @@ public class NotificationSocket {
 		notificationDatabase = database;  // we are setting the static variable
 	}
 
+    @Autowired
+	public void setUserDatabase(UserDatabase database) {
+		userDatabase = database;  // we are setting the static variable
+    }
+    
 	// Store all socket session and their corresponding username.
 	private static Map<Session, String> sessionUsernameMap = new Hashtable<>();
 	private static Map<String, Session> usernameSessionMap = new Hashtable<>();
@@ -120,7 +124,6 @@ public class NotificationSocket {
 		logger.info("Error");
 		throwable.printStackTrace();
 	}
-
 
 	public void sendNotificationToUser(Notification notification) {
         Optional<User> optionalUser = userDatabase.findByUsername(notification.getUsername());
