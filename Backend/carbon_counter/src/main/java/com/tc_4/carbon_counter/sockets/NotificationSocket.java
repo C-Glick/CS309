@@ -59,6 +59,14 @@ public class NotificationSocket {
 
 	private final Logger logger = LoggerFactory.getLogger(NotificationSocket.class);
 
+    /**
+     * Preform these actions when a user connections to the web socket.
+     * Send any unread notifications.
+     * 
+     * @param session the websocket session, automatically provided
+     * @param username username, provided as a path parameter in the websocket url
+     * @throws IOException if could not make a good connection
+     */
 	@OnOpen
 	public void onOpen(Session session, @PathParam("username") String username) 
       throws IOException {
@@ -73,7 +81,13 @@ public class NotificationSocket {
         sendUnreadNotificationsToUser(username);
 	}
 
-
+    /**
+     * Preform these actions when the server receives a message a message from a user
+     * 
+     * @param session websocket session, automatically provided
+     * @param message the message that has been received
+     * @throws IOException if connection error occurs
+     */
 	@OnMessage
 	public void onMessage(Session session, String message) throws IOException {
         String toUsername = "";
@@ -105,7 +119,12 @@ public class NotificationSocket {
 
 	}
 
-
+    /**
+     * Preform these actions when a user disconnects from the websocket
+     * 
+     * @param session   the websocket session, provided automatically
+     * @throws IOException if a communication error occurs
+     */
 	@OnClose
 	public void onClose(Session session) throws IOException {
         String username = sessionUsernameMap.get(session);
@@ -125,6 +144,29 @@ public class NotificationSocket {
 		throwable.printStackTrace();
 	}
 
+    /**
+     * Send a notification to a specific user if they have notifications turned on.
+     * If the user is not currently connected, will store the notification 
+     * until they next connect.
+     * 
+     * @param message the message to send
+     * @param username the name of the user to send the notification to
+     */
+    public void sendNotificationToUser(String message, String username){
+        Notification n = new Notification();
+        n.setIsRead(false);
+        n.setMessage(message);
+        n.setUsername(username);
+        sendNotificationToUser(n);
+    }
+
+    /**
+     * Send a notification to a specific user if they have notifications turned on.
+     * If the user is not currently connected, will store the notification 
+     * until they next connect.
+     * 
+     * @param notification The notification to send, holds username and message info
+     */
 	public void sendNotificationToUser(Notification notification) {
         Optional<User> optionalUser = userDatabase.findByUsername(notification.getUsername());
         if(!optionalUser.isPresent()){
@@ -157,8 +199,25 @@ public class NotificationSocket {
         }
 	}
 
+    /**
+     * Send a notification to all currently connected users
+     * 
+     * @param message the message to send
+     */
+    public void broadcast(String message) {
+        Notification n = new Notification();
+        n.setIsRead(false);
+        n.setUsername("");
+        n.setMessage(message);
+        broadcast(n);
+    }
 
-	private void broadcast(Notification notification) {
+    /**
+     * send a notification to all currently connected users
+     * 
+     * @param notification the notification to send, holds message info
+     */
+	public void broadcast(Notification notification) {
         notification.setUsername("");
         notificationDatabase.save(notification);
 		sessionUsernameMap.forEach((session, username) -> {
@@ -173,6 +232,12 @@ public class NotificationSocket {
 
     }
     
+    /**
+     * Send all unread notifications to a specific user if they 
+     * have notifications turned on.
+     * 
+     * @param username the name of the user to send the notifications to.
+     */
     private void sendUnreadNotificationsToUser(String username){
         List<Notification> notifications = notificationDatabase.findByUsernameAndIsRead(username, false);
         for(Notification n: notifications){
