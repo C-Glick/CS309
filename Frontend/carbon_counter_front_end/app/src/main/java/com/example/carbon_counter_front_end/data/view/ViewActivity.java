@@ -84,6 +84,7 @@ public class ViewActivity extends AppCompatActivity {
                 wProduced.setText(WasteProduced);
                 TextView mConsumed = findViewById(R.id.meat);
                 mConsumed.setText(MeatConsumed);
+                //create spinner with different graphs of each stat
             }
 
             @Override
