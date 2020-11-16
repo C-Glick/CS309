@@ -114,6 +114,9 @@ public class TipsService {
     public Tip setStatus(String title, Status status){
         //DONE
         //need to check the permission of the user then set the status
+        if(status == Status.DENIED){
+            tipsDatabase.delete(tipsDatabase.findByWorkingTitle(title).get());
+        }
         tipsDatabase.findByWorkingTitle(title).get().setStatus(status);
         return tipsDatabase.save(tipsDatabase.findByWorkingTitle(title).get());
     }
