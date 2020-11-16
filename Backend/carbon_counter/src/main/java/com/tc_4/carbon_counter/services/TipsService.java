@@ -111,14 +111,20 @@ public class TipsService {
      * @param status the new status of the tip either APPROVED, PENDING, DENIED or EDITING
      * @return
      */
-    public Tip setStatus(String title, Status status){
+    public JSONObject setStatus(String title, Status status){
         //DONE
         //need to check the permission of the user then set the status
+        JSONObject empty = new JSONObject();
+        if(!tipsDatabase.findByWorkingTitle(title).isPresent()){
+            throw new TipNotFoundException(title);
+        }
         if(status == Status.DENIED){
             tipsDatabase.delete(tipsDatabase.findByWorkingTitle(title).get());
+            
+            return empty;
         }
         tipsDatabase.findByWorkingTitle(title).get().setStatus(status);
-        return tipsDatabase.save(tipsDatabase.findByWorkingTitle(title).get());
+        return empty;
     }
     /**
      * 
