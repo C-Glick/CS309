@@ -30,12 +30,9 @@ public class ViewLogic {
     public void setModel(RequestServerForService m) { this.model = m;}
 
         public void authenticate() {
-        String url = "http://10.24.227.38:8080/stats/today";
+        String url = "http://10.24.227.38:8080/stats/lastMonth";
         url += "/" + UserInformation.username;
        // System.out.println(url);
         model.contactServer(url);
     }
-
-
-
 }
