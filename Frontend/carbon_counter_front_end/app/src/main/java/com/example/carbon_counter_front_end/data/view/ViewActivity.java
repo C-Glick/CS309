@@ -1,23 +1,13 @@
 package com.example.carbon_counter_front_end.data.view;
 
 
-import androidx.appcompat.app.AppCompatActivity;
-
-import android.content.Intent;
 import android.graphics.Bitmap;
 import android.os.Bundle;
-import android.util.Log;
 import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.android.volley.Request;
-import com.android.volley.Response;
-import com.android.volley.VolleyError;
-import com.android.volley.VolleyLog;
-import com.android.volley.toolbox.JsonObjectRequest;
 import com.example.carbon_counter_front_end.R;
-import com.example.carbon_counter_front_end.app.AppController;
 import com.example.carbon_counter_front_end.data.logic.ViewLogic;
 import com.example.carbon_counter_front_end.data.model.IVolleyListener;
 import com.example.carbon_counter_front_end.data.model.RequestServerForService;
@@ -84,6 +74,11 @@ public class ViewActivity extends AppCompatActivity {
                 wProduced.setText(WasteProduced);
                 TextView mConsumed = findViewById(R.id.meat);
                 mConsumed.setText(MeatConsumed);
+            }
+
+            @Override
+            public void onSuccess(String response) {
+
             }
 
             @Override
