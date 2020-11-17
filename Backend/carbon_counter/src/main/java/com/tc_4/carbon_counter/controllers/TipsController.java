@@ -84,9 +84,9 @@ public class TipsController {
      * @return the tip
      */
     @RequestMapping("/tip/setStatus/{title}")
-    public JSONObject setStatus(@PathVariable String title, @RequestParam Status newStatus){
+    public void setStatus(@PathVariable String title, @RequestParam Status newStatus){
         //DONE
-        return tipsService.setStatus(title, newStatus);
+        tipsService.setStatus(title, newStatus);
     }
     /**
      * this is for admins and requires authentication 
@@ -114,8 +114,8 @@ public class TipsController {
      * @return true if it is deleted else returns false
      */
     @RequestMapping("/tip/delete/{title}")
-    public boolean deleteTip(@PathVariable String title){
+    public void deleteTip(@PathVariable String title){
         //DONE
-        return tipsService.deleteTipByWorkingTitle(title);
+        tipsService.deleteTipByWorkingTitle(title);
     }    
 }

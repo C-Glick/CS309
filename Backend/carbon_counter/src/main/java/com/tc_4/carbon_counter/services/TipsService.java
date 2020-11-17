@@ -111,34 +111,33 @@ public class TipsService {
      * @param status the new status of the tip either APPROVED, PENDING, DENIED or EDITING
      * @return
      */
-    public JSONObject setStatus(String title, Status status){
+    public void setStatus(String title, Status status){
         //DONE
         //need to check the permission of the user then set the status
-        JSONObject empty = new JSONObject();
         if(!tipsDatabase.findByWorkingTitle(title).isPresent()){
             throw new TipNotFoundException(title);
         }
         if(status == Status.DENIED){
             tipsDatabase.delete(tipsDatabase.findByWorkingTitle(title).get());
-            
-            return empty;
+        }else{
+            tipsDatabase.findByWorkingTitle(title).get().setStatus(status);
         }
-        tipsDatabase.findByWorkingTitle(title).get().setStatus(status);
-        return empty;
+        
     }
     /**
      * 
      * @param title the working title of the tip
      * @return true if it is deleted else false
      */
-    public Boolean deleteTipByWorkingTitle(String title){
+    public void deleteTipByWorkingTitle(String title){
         //DONE
         //should also probably have permissions
         if(tipsDatabase.findByWorkingTitle(title).isPresent()){
             tipsDatabase.delete(tipsDatabase.findByWorkingTitle(title).get());
-            return true;
+            
+        }else{
+            throw new TipNotFoundException(title);
         }
-        return false;
     }
     /**
      * 
