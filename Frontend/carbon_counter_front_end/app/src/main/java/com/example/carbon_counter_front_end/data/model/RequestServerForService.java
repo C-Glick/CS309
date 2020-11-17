@@ -14,7 +14,6 @@ import com.android.volley.VolleyLog;
 import com.android.volley.toolbox.ImageRequest;
 import com.android.volley.toolbox.JsonArrayRequest;
 import com.android.volley.toolbox.JsonObjectRequest;
-import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 
 import org.json.JSONArray;
@@ -64,6 +63,7 @@ public class RequestServerForService {
             @Override
             public void onErrorResponse(VolleyError error) {
                 VolleyLog.d("VOLLEY", "Error: " + error.getMessage());
+                System.out.println(error.getMessage());
                 //Label stating failed username or password
                 myListener.onError();
             }
