@@ -70,6 +70,11 @@ public class ViewCategoryResults extends AppCompatActivity {
             }
 
             @Override
+            public void onSuccess(String response) {
+
+            }
+
+            @Override
             public void onError() {
 
             }

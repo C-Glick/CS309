@@ -17,6 +17,7 @@ import com.example.carbon_counter_front_end.data.model.IVolleyListener;
 import com.example.carbon_counter_front_end.data.model.RequestServerForService;
 
 import org.json.JSONArray;
+import org.json.JSONException;
 import org.json.JSONObject;
 
 /**
@@ -45,6 +46,7 @@ public class AddTipActivity extends AppCompatActivity {
 
         final AddTipLogic addTipLogic = new AddTipLogic(this, getApplicationContext());
         addTipLogic.setModel(new RequestServerForService(getApplicationContext(), new IVolleyListener() {
+
             @Override
             public void onImageSuccess(Bitmap image) {
 
@@ -56,9 +58,14 @@ public class AddTipActivity extends AppCompatActivity {
             }
 
             @Override
-            public void onSuccess(JSONObject response) {
+            public void onSuccess(JSONObject response) throws JSONException {
                 Intent i = new Intent(AddTipActivity.this, MainActivity.class);
                 startActivity(i);
+            }
+
+            @Override
+            public void onSuccess(String response) {
+
             }
 
             @Override

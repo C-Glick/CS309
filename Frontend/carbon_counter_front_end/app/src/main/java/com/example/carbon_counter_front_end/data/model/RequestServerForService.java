@@ -14,6 +14,7 @@ import com.android.volley.VolleyLog;
 import com.android.volley.toolbox.ImageRequest;
 import com.android.volley.toolbox.JsonArrayRequest;
 import com.android.volley.toolbox.JsonObjectRequest;
+import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 
 import org.json.JSONArray;
@@ -242,6 +243,36 @@ public class RequestServerForService {
         // Adding request to request queue
         //AppController.getInstance().addToRequestQueue(jsonObjReq, tag_json_req);
         Volley.newRequestQueue(context).add(jsonObjReq);
+    }
+
+    public void contactServerString(String url){
+        StringRequest stringRequest = new StringRequest(Request.Method.GET, url, new Response.Listener<String>() {
+            @Override
+            public void onResponse(String response) {
+                myListener.onSuccess(response);
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                myListener.onError();
+            }
+        }){
+
+
+            @Override
+            public Map<String, String> getHeaders() throws AuthFailureError {
+                Map<String, String>  params = new HashMap<String, String>();
+                String credentials = UserInformation.username+":"+UserInformation.password;
+                String auth = "Basic "
+                        + Base64.encodeToString(credentials.getBytes(),
+                        Base64.NO_WRAP);
+                params.put("Authorization", auth);
+
+                return params;
+            }
+        };
+
+        Volley.newRequestQueue(context).add(stringRequest);
     }
 
 

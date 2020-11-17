@@ -24,10 +24,16 @@ public interface IVolleyListener {
     public void onSuccessJSONArray(JSONArray response);
 
     /**
-     * To hanle JSONObject responses.
+     * To handle JSONObject responses.
      * @param response JSONObject response
      */
     public void onSuccess(JSONObject response) throws JSONException;
+
+    /**
+     * To handle String requests
+     * @param response String response
+     */
+    public void onSuccess(String response);
 
     /**
      * To handle server connection errors

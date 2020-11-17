@@ -76,6 +76,11 @@ public class LoginActivity extends AppCompatActivity {
                     }
 
                     @Override
+                    public void onSuccess(String response) {
+
+                    }
+
+                    @Override
                     public void onError() {
                         loginLogic.displayError(failedLogin, failedLogin2);
                     }
