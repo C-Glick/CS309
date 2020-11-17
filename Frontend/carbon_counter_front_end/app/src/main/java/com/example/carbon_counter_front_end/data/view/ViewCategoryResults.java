@@ -13,6 +13,7 @@ import com.example.carbon_counter_front_end.R;
 import com.example.carbon_counter_front_end.data.logic.ViewCategoryResultsLogic;
 import com.example.carbon_counter_front_end.data.model.IVolleyListener;
 import com.example.carbon_counter_front_end.data.model.RequestServerForService;
+import com.example.carbon_counter_front_end.data.model.UserInformation;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -36,8 +37,12 @@ public class ViewCategoryResults extends AppCompatActivity {
         final TextView description = (TextView) findViewById(R.id.textViewDescription);
         Button next = (Button) findViewById(R.id.buttonNext);
         Button prev = (Button) findViewById(R.id.buttonPrev);
+        Button delete = (Button) findViewById(R.id.buttonDelete);
+        Button back = (Button) findViewById(R.id.buttonCatResultsBack);
 
-
+        if(UserInformation.role.equals("USER")){
+            delete.setVisibility(View.GONE);
+        }
 
         final ViewCategoryResultsLogic resultsLogic = new ViewCategoryResultsLogic(this, getApplicationContext());
         resultsLogic.setModel(new RequestServerForService(getApplicationContext(), new IVolleyListener() {
@@ -59,7 +64,9 @@ public class ViewCategoryResults extends AppCompatActivity {
 
             @Override
             public void onSuccess(JSONObject response) {
-
+                Intent i = new Intent(ViewCategoryResults.this, ViewCategoryResults.class);
+                i.putExtra("category", category);
+                startActivity(i);
             }
 
             @Override
@@ -91,6 +98,21 @@ public class ViewCategoryResults extends AppCompatActivity {
 
                 subject.setText(subjectInfo);
                 description.setText(descriptionInfo);
+            }
+        });
+
+        delete.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                resultsLogic.deleteTip();
+            }
+        });
+
+        back.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent i = new Intent(ViewCategoryResults.this, TipCategoryActivity.class);
+                startActivity(i);
             }
         });
 

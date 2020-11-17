@@ -45,6 +45,11 @@ public class MainActivity extends AppCompatActivity {
         Button addTip = (Button) findViewById(R.id.buttonAddTip);
         Button Admin = (Button) findViewById(R.id.AdminLogin);
 
+        if(!UserInformation.role.equals("ADMIN")){
+            System.out.println(UserInformation.role);
+            Admin.setVisibility(View.GONE);
+        }
+
         final MainActivityLogic mainLogic = new MainActivityLogic(this, this.getApplicationContext());
 
         final ImageView display = (ImageView) findViewById(R.id.imageView);
