@@ -111,7 +111,7 @@ public class TipsService {
      * @param status the new status of the tip either APPROVED, PENDING, DENIED or EDITING
      * @return
      */
-    public void setStatus(String title, Status status){
+    public String setStatus(String title, Status status){
         //DONE
         //need to check the permission of the user then set the status
         if(!tipsDatabase.findByWorkingTitle(title).isPresent()){
@@ -119,8 +119,13 @@ public class TipsService {
         }
         if(status == Status.DENIED){
             tipsDatabase.delete(tipsDatabase.findByWorkingTitle(title).get());
-        }else{
+            return "Deleted";
+        }else if(status == Status.APPROVED){
             tipsDatabase.findByWorkingTitle(title).get().setStatus(status);
+            return "Approved";
+        }
+        else{
+            return null;
         }
         
     }
@@ -129,12 +134,12 @@ public class TipsService {
      * @param title the working title of the tip
      * @return true if it is deleted else false
      */
-    public void deleteTipByWorkingTitle(String title){
+    public String deleteTipByWorkingTitle(String title){
         //DONE
         //should also probably have permissions
         if(tipsDatabase.findByWorkingTitle(title).isPresent()){
             tipsDatabase.delete(tipsDatabase.findByWorkingTitle(title).get());
-            
+            return "Deleted";
         }else{
             throw new TipNotFoundException(title);
         }
