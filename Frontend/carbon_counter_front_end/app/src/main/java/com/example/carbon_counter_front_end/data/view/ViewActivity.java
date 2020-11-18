@@ -3,47 +3,33 @@ package com.example.carbon_counter_front_end.data.view;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.os.Bundle;
-import android.text.Html;
-import android.util.Log;
 import android.widget.TextView;
 
-import androidx.appcompat.app.AppCompatActivity;
-
-import com.android.volley.Request;
-import com.android.volley.Response;
-import com.android.volley.VolleyError;
-import com.android.volley.VolleyLog;
-import com.android.volley.toolbox.JsonObjectRequest;
 import com.example.carbon_counter_front_end.R;
-import com.example.carbon_counter_front_end.app.AppController;
 import com.example.carbon_counter_front_end.data.logic.ViewLogic;
 import com.example.carbon_counter_front_end.data.model.IVolleyListener;
 import com.example.carbon_counter_front_end.data.model.RequestServerForService;
 import com.example.carbon_counter_front_end.data.model.UserInformation;
 import com.github.mikephil.charting.charts.LineChart;
-import com.github.mikephil.charting.components.XAxis;
 import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.data.LineData;
 import com.github.mikephil.charting.data.LineDataSet;
-import com.github.mikephil.charting.interfaces.datasets.IDataSet;
+import com.github.mikephil.charting.formatter.ValueFormatter;
 import com.github.mikephil.charting.interfaces.datasets.ILineDataSet;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
+
 import java.util.ArrayList;
-import java.util.Date;
 
 /**
  * View user's stats
- * @author Morgan Funk & Zachary Current
+ * @author Morgan Funk & Zachary Current & Andrew Pester
  */
 public class ViewActivity extends AppCompatActivity {
     private String TAG = ViewActivity.class.getSimpleName();
@@ -54,7 +40,10 @@ public class ViewActivity extends AppCompatActivity {
     private ArrayList<String> powerUsed = new ArrayList<>();
     private ArrayList<String> meatConsumed = new ArrayList<>();
     private ArrayList<String> wasteProduced = new ArrayList<>();
-    private ArrayList<String> date= new ArrayList<>();
+    private ArrayList<String> date = new ArrayList<>();
+    private int startYear = 0;
+    private int startMonth = 0;
+    private int startDay = 0;
 
     private String username;
     private String password;
@@ -89,6 +78,8 @@ public class ViewActivity extends AppCompatActivity {
                         meatConsumed.add(temp.getString("meat"));
                         wasteProduced.add(temp.getString("garbage"));
                         date.add(temp.getString("date"));
+
+                        // get start date of data and increment by 2 days then
                     }catch (JSONException e){
                         e.printStackTrace();
                     }
@@ -159,7 +150,17 @@ public class ViewActivity extends AppCompatActivity {
                     lineDataSets.add(power);
                     lineDataSets.add(waste);
                     lineDataSets.add(meat);
-                    
+                    //sets x axis points
+                    /*
+                    startYear = Integer.parseInt(date.get(0).substring(0,4));
+                    startMonth = Integer.parseInt(date.get(0).substring(5,7));
+                    startDay = Integer.parseInt(date.get(0).substring(8,10));
+                    Calendar myCal = new GregorianCalendar(startYear,startMonth,startDay);
+                     */
+                    graph.getXAxis().setLabelCount(milesDriven.size(),true);
+                    graph.getXAxis().setValueFormatter(new MyValueFormatter());
+                    graph.getXAxis().setLabelRotationAngle(45f);
+                    graph.getAxisRight().setDrawLabels(false);
                     graph.setData(new LineData(lineDataSets));
                 }
 
@@ -179,5 +180,12 @@ public class ViewActivity extends AppCompatActivity {
         viewLogic.getMonthlyStats();
 
 
+    }
+    public class MyValueFormatter extends ValueFormatter {
+
+        @Override
+        public String getFormattedValue(float value) {
+            return date.get((int) value % date.size());
+        }
     }
 }
