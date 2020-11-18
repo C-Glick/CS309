@@ -104,6 +104,10 @@ public class UserController {
     }
 
     /**
+     * send a friend request to a user.
+     * 
+     * example path: 
+     * /user/friend_request/{from_username}?username={to_username}
      * 
      * @param user     the user sending the friend request
      * @param username the user being sent the friend request
@@ -117,6 +121,10 @@ public class UserController {
     }
 
     /**
+     * list all pending friend requests for a user to accept
+     * 
+     * example path:
+     * /user/requests/{to_username}
      * 
      * @param username the user whos requests you would like
      * @return all the friend requests for that user
@@ -128,6 +136,10 @@ public class UserController {
     }
 
     /**
+     * accept a friend request
+     * 
+     * example path:
+     * /user/accept/{to_username}?userOne={from_username}
      * 
      * @param username the user who was sent the request
      * @param userOne  the user who sent the request
@@ -141,6 +153,10 @@ public class UserController {
     }
 
     /**
+     * deny a request to a user
+     * 
+     * example path:
+     * /user/deny/{to_username}?userOne={from_username}
      * 
      * @param username the user who was sent the request
      * @param userOne  the user who sent the request
