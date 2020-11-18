@@ -122,6 +122,7 @@ public class TipsService {
             return "Deleted";
         }else if(status == Status.APPROVED){
             tipsDatabase.findByWorkingTitle(title).get().setStatus(status);
+            tipsDatabase.save(tipsDatabase.findByWorkingTitle(title).get());
             return "Approved";
         }
         else{
