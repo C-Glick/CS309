@@ -96,14 +96,13 @@ public class NotificationSocket {
 	@OnMessage
 	public void onMessage(Session session, String message) throws IOException {
         String toUsername = "";
-
+        // Handle new messages
+        logger.info("Received Message: " + message);
+        
         if (message.startsWith("@")) {
             toUsername = message.split(" ")[0].substring(1); 
             message = message.substring(toUsername.length() + 2);
         }
-
-		// Handle new messages
-		logger.info("Received Message: " + message);
 
         Notification n = new Notification();
 
