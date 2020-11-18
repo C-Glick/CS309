@@ -10,44 +10,33 @@ import android.widget.TextView;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.carbon_counter_front_end.R;
-import com.example.carbon_counter_front_end.data.logic.ViewCategoryResultsLogic;
+import com.example.carbon_counter_front_end.data.logic.TipApprovalLogic;
 import com.example.carbon_counter_front_end.data.model.IVolleyListener;
 import com.example.carbon_counter_front_end.data.model.RequestServerForService;
-import com.example.carbon_counter_front_end.data.model.UserInformation;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
 
-/**
- * View Tip page - based on the category you selected on the Tips Category page.
- * @author Zachary Current
- */
-public class ViewCategoryResults extends AppCompatActivity {
-    private String category;
+public class TipApprovalActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_view_category_results);
+        setContentView(R.layout.activity_tip_approval);
+
+
+        final TextView subject = (TextView) findViewById(R.id.textViewSubjectApprove);
+        final TextView description = (TextView) findViewById(R.id.textViewDescriptionApprove);
+        Button next = (Button) findViewById(R.id.buttonNextApprove);
+        Button prev = (Button) findViewById(R.id.buttonPrevApprove);
+        Button approve = (Button) findViewById(R.id.buttonApprove);
+        Button disapprove = (Button) findViewById(R.id.buttonDisapprove);
+        Button back = (Button) findViewById(R.id.buttonApprovalBack);
 
 
 
-        Intent temp = getIntent();
-        category = temp.getStringExtra("category");
-
-        final TextView subject = (TextView) findViewById(R.id.textViewSubject);
-        final TextView description = (TextView) findViewById(R.id.textViewDescription);
-        Button next = (Button) findViewById(R.id.buttonNext);
-        Button prev = (Button) findViewById(R.id.buttonPrev);
-        Button delete = (Button) findViewById(R.id.buttonDelete);
-        Button back = (Button) findViewById(R.id.buttonCatResultsBack);
-
-        if(UserInformation.role.equals("USER")){
-            delete.setVisibility(View.GONE);
-        }
-
-        final ViewCategoryResultsLogic resultsLogic = new ViewCategoryResultsLogic(this, getApplicationContext());
-        resultsLogic.setModel(new RequestServerForService(getApplicationContext(), new IVolleyListener() {
+        final TipApprovalLogic tipApprovalLogic = new TipApprovalLogic(this, getApplicationContext());
+        tipApprovalLogic.setModel(new RequestServerForService(getApplicationContext(), new IVolleyListener() {
             @Override
             public void onImageSuccess(Bitmap image) {
 
@@ -56,9 +45,9 @@ public class ViewCategoryResults extends AppCompatActivity {
             @Override
             public void onSuccessJSONArray(JSONArray response) {
                 System.out.println(response);
-                resultsLogic.setTips(response);
-                String subjectInfo = resultsLogic.getSubject();
-                String descriptionInfo = resultsLogic.getDescription();
+                tipApprovalLogic.setTips(response);
+                String subjectInfo = tipApprovalLogic.getSubject();
+                String descriptionInfo = tipApprovalLogic.getDescription();
 
                 subject.setText(subjectInfo);
                 description.setText(descriptionInfo);
@@ -71,8 +60,7 @@ public class ViewCategoryResults extends AppCompatActivity {
 
             @Override
             public void onSuccess(String response) {
-                Intent i = new Intent(ViewCategoryResults.this, ViewCategoryResults.class);
-                i.putExtra("category", category);
+                Intent i = new Intent(TipApprovalActivity.this, TipApprovalActivity.class);
                 startActivity(i);
             }
 
@@ -86,9 +74,9 @@ public class ViewCategoryResults extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 //Call logic for the tip to be displayed
-                resultsLogic.setNextTip();
-                String subjectInfo = resultsLogic.getSubject();
-                String descriptionInfo = resultsLogic.getDescription();
+                tipApprovalLogic.setNextTip();
+                String subjectInfo = tipApprovalLogic.getSubject();
+                String descriptionInfo = tipApprovalLogic.getDescription();
 
                 subject.setText(subjectInfo);
                 description.setText(descriptionInfo);
@@ -99,31 +87,38 @@ public class ViewCategoryResults extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 //Call logic for the tip to be displayed
-                resultsLogic.setPrevTip();
-                String subjectInfo = resultsLogic.getSubject();
-                String descriptionInfo = resultsLogic.getDescription();
+                tipApprovalLogic.setPrevTip();
+                String subjectInfo = tipApprovalLogic.getSubject();
+                String descriptionInfo = tipApprovalLogic.getDescription();
 
                 subject.setText(subjectInfo);
                 description.setText(descriptionInfo);
             }
         });
 
-        delete.setOnClickListener(new View.OnClickListener() {
+        approve.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                resultsLogic.deleteTip();
+                tipApprovalLogic.approveTip();
+            }
+        });
+
+        disapprove.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                tipApprovalLogic.deleteTip();
             }
         });
 
         back.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent i = new Intent(ViewCategoryResults.this, TipCategoryActivity.class);
+                Intent i = new Intent(TipApprovalActivity.this, AdminOverview.class);
                 startActivity(i);
             }
         });
 
-        resultsLogic.getTips(category);
+        tipApprovalLogic.getTips();
 
     }
 }

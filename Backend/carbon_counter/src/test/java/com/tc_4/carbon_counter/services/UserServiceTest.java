@@ -14,14 +14,19 @@ import java.util.Optional;
 import javax.annotation.PostConstruct;
 
 import com.tc_4.carbon_counter.databases.FriendsDatabase;
+import com.tc_4.carbon_counter.databases.NotificationDatabase;
 import com.tc_4.carbon_counter.databases.UserDatabase;
 import com.tc_4.carbon_counter.exceptions.RequestExistsException;
 import com.tc_4.carbon_counter.exceptions.RequestNotFoundException;
 import com.tc_4.carbon_counter.exceptions.UserNotFoundException;
 import com.tc_4.carbon_counter.models.Friends;
+import com.tc_4.carbon_counter.models.Notification;
 import com.tc_4.carbon_counter.models.User;
 import com.tc_4.carbon_counter.models.Friends.Status;
 import com.tc_4.carbon_counter.models.User.Role;
+import com.tc_4.carbon_counter.sockets.NotificationSocket;
+
+import org.aspectj.internal.lang.annotation.ajcDeclareAnnotation;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -42,6 +47,17 @@ public class UserServiceTest {
     @TestConfiguration
     static class configuration{
 
+        //mock notifications
+        @Bean
+        public NotificationDatabase notificationDatabaseConfig(){
+            return mock(NotificationDatabase.class);
+        }
+
+        @Bean
+        public NotificationSocket notificationSocketConfig(){
+            return mock(NotificationSocket.class);
+        }
+
         //system under test
         @Bean
         public UserService userServiceConfig(){
@@ -59,7 +75,6 @@ public class UserServiceTest {
             return mock(FriendsDatabase.class);
         }
 
-
         //needed for authentication to work correctly
         @Bean
         public CarbonUserDetailsService userDetails(){
@@ -75,6 +90,10 @@ public class UserServiceTest {
 
     @Autowired
     private FriendsDatabase friendsDatabase;
+
+    @Autowired NotificationDatabase notificationDatabase;
+
+    @Autowired NotificationSocket notificationSocket;
 
     private List<Friends> friendsList;
 
@@ -195,7 +214,71 @@ public class UserServiceTest {
             return requests;
         });
         
+        //notification mocking
+        /*
+        doAnswer((x) -> {
+			notificationSocket.setNotificationDatabase(x.getArgument(0));
+			return null;
+        }).when(notificationSocket).setNotificationDatabase(any());
 
+        doAnswer((x) -> {
+			notificationSocket.setUserDatabase(x.getArgument(0));
+			return null;
+        }).when(notificationSocket).setUserDatabase(any());
+
+        try{
+            doAnswer((x) -> {
+                notificationSocket.onOpen(x.getArgument(0), x.getArgument(1));
+                return null;
+            }).when(notificationSocket).onOpen(any(), any());
+        }catch(Exception e){
+            e.printStackTrace();
+        }
+
+        try{
+            doAnswer((x) -> {
+                notificationSocket.onMessage(x.getArgument(0), x.getArgument(1));
+                return null;
+            }).when(notificationSocket).onMessage(any(), any());
+        }catch(Exception e){
+            e.printStackTrace();
+        }
+        
+        try{
+            doAnswer((x) -> {
+                notificationSocket.onClose(x.getArgument(0));
+                return null;
+            }).when(notificationSocket).onClose(any());
+        }catch(Exception e){
+            e.printStackTrace();
+        }
+
+        doAnswer((x) -> {
+            notificationSocket.onError(x.getArgument(0), x.getArgument(1));
+            return null;
+        }).when(notificationSocket).onError(any(), any());
+
+        doAnswer((x) -> {
+            notificationSocket.sendNotificationToUser(x.getArgument(0), x.getArgument(1));
+            return null;
+        }).when(notificationSocket).sendNotificationToUser(any(), any());
+
+        doAnswer((x) -> {
+            notificationSocket.sendNotificationToUser(x.getArgument(0));
+            return null;
+        }).when(notificationSocket).sendNotificationToUser(any());
+
+        doAnswer((x) -> {
+            notificationSocket.broadcast((String) x.getArgument(0));
+            return null;
+        }).when(notificationSocket).broadcast(any(String.class));
+
+        doAnswer((x) -> {
+            notificationSocket.broadcast((Notification) x.getArgument(0));
+            return null;
+        }).when(notificationSocket).broadcast(any(Notification.class));
+
+        */
     }
 
     // withUserDetails annotation tells spring to authenticate as this user when 

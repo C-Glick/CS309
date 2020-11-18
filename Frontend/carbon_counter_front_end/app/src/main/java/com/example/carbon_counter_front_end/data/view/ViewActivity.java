@@ -49,12 +49,15 @@ public class ViewActivity extends AppCompatActivity {
     private String password;
     private JSONObject UserInfo = new JSONObject();
 
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         final ViewLogic viewLogic = new ViewLogic(ViewActivity.this, getApplicationContext());
         setContentView(R.layout.activity_view);
         username = UserInformation.username;
+
 
         // getMiles(username);
         viewLogic.setModel(new RequestServerForService(getApplicationContext(), new IVolleyListener() {
@@ -168,6 +171,11 @@ public class ViewActivity extends AppCompatActivity {
 
             @Override
             public void onSuccess(JSONObject response) throws JSONException {
+
+            }
+
+            @Override
+            public void onSuccess(String response) {
 
             }
 

@@ -7,6 +7,7 @@ import com.tc_4.carbon_counter.models.Tip.Category;
 import com.tc_4.carbon_counter.models.Tip.Status;
 import com.tc_4.carbon_counter.services.TipsService;
 
+import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -83,7 +84,7 @@ public class TipsController {
      * @return the tip
      */
     @RequestMapping("/tip/setStatus/{title}")
-    public Tip setStatus(@PathVariable String title, @RequestParam Status newStatus){
+    public String setStatus(@PathVariable String title, @RequestParam Status newStatus){
         //DONE
         return tipsService.setStatus(title, newStatus);
     }
@@ -113,7 +114,7 @@ public class TipsController {
      * @return true if it is deleted else returns false
      */
     @RequestMapping("/tip/delete/{title}")
-    public boolean deleteTip(@PathVariable String title){
+    public String deleteTip(@PathVariable String title){
         //DONE
         return tipsService.deleteTipByWorkingTitle(title);
     }    

@@ -64,6 +64,7 @@ public class RequestServerForService {
             @Override
             public void onErrorResponse(VolleyError error) {
                 VolleyLog.d("VOLLEY", "Error: " + error.getMessage());
+                System.out.println(error.getMessage());
                 //Label stating failed username or password
                 myListener.onError();
             }
@@ -224,6 +225,7 @@ public class RequestServerForService {
 
         }
 
+
         )
         {
             @Override
@@ -243,6 +245,38 @@ public class RequestServerForService {
         //AppController.getInstance().addToRequestQueue(jsonObjReq, tag_json_req);
         Volley.newRequestQueue(context).add(jsonObjReq);
     }
+
+    public void contactServerString(String url){
+        StringRequest stringRequest = new StringRequest(Request.Method.GET, url, new Response.Listener<String>() {
+            @Override
+            public void onResponse(String response) {
+                myListener.onSuccess(response);
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                myListener.onError();
+            }
+        }){
+
+
+            @Override
+            public Map<String, String> getHeaders() throws AuthFailureError {
+                Map<String, String>  params = new HashMap<String, String>();
+                String credentials = UserInformation.username+":"+UserInformation.password;
+                String auth = "Basic "
+                        + Base64.encodeToString(credentials.getBytes(),
+                        Base64.NO_WRAP);
+                params.put("Authorization", auth);
+
+                return params;
+            }
+        };
+
+        Volley.newRequestQueue(context).add(stringRequest);
+    }
+
+
 
 
 

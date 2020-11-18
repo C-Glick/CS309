@@ -1,6 +1,8 @@
 package com.tc_4.carbon_counter.services;
 
 import java.util.List;
+import java.util.Set;
+import java.util.TreeSet;
 
 import com.tc_4.carbon_counter.databases.FriendsDatabase;
 import com.tc_4.carbon_counter.databases.UserDatabase;
@@ -14,6 +16,7 @@ import com.tc_4.carbon_counter.models.Friends.Status;
 import com.tc_4.carbon_counter.models.User.Mode;
 import com.tc_4.carbon_counter.models.User.Notifications;
 import com.tc_4.carbon_counter.models.User.Role;
+import com.tc_4.carbon_counter.sockets.NotificationSocket;
 
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -36,6 +39,9 @@ public class UserService {
 
     @Autowired
     private FriendsDatabase friendsDatabase;
+
+    @Autowired
+    private NotificationSocket notification;
 
     /** Password encoder used when making a new user or changing a password */
     private BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
@@ -107,7 +113,7 @@ public class UserService {
     /**
      * 
      * @param user     the user sending the friend request
-     * @param username the user recieveing the request
+     * @param username the user receiving the request
      * @return true if it sends the request otherwise throws userNotFoundException
      *         or RequestExistsException
      */
@@ -122,8 +128,15 @@ public class UserService {
         temp.setUserOne(user);
         temp.setUserTwo(username);
         temp.setStatus(Status.REQUESTED);
+        if(friendsDatabase.findByUserOneAndUserTwo(user, username).isPresent()){
+            throw new RequestExistsException();
+        }else if(friendsDatabase.findByUserOneAndUserTwo(username, user).isPresent()){
+            throw new RequestExistsException();
+        }
+
         if (!friendsDatabase.findByUserOneAndUserTwo(user, username).isPresent()) {
             friendsDatabase.save(temp);
+            notification.sendNotificationToUser(user + " has sent you a friend request!", username);
             return true;
         }
         throw new RequestExistsException();
@@ -139,6 +152,29 @@ public class UserService {
     }
 
     /**
+     * Get a set of all approved friends for the currently 
+     * authenticated user.
+     * 
+     * @return A set of usernames
+     */
+    public Set<String> getFriendList(){
+        String thisUsername = SecurityContextHolder.getContext().getAuthentication().getName();
+        Set<String> result = new TreeSet<String>();
+
+        List<Friends> list1 = friendsDatabase.findByUserOneAndStatus(thisUsername, Status.APPROVED);
+        for(Friends f : list1){
+            result.add(f.getUserTwo());
+        }
+
+        List<Friends> list2 = friendsDatabase.findByUserTwoAndStatus(thisUsername, Status.APPROVED);
+        for(Friends f : list2){
+            result.add(f.getUserOne());
+        }
+        
+        return result;
+    }
+
+    /**
      * 
      * @param username the user who is accepting the friend request
      * @param userOne  the user who sent the friend request
@@ -150,6 +186,7 @@ public class UserService {
             Friends temp = friendsDatabase.findByUserOneAndUserTwo(userOne, username).get();
             temp.setStatus(Status.APPROVED);
             friendsDatabase.save(temp);
+            notification.sendNotificationToUser(username + " has accepted your friend request!", userOne);
             return true;
         } else if (!userDatabase.existsByUsername(username)) {
             throw new UserNotFoundException(username);
@@ -172,6 +209,7 @@ public class UserService {
             Friends temp = friendsDatabase.findByUserOneAndUserTwo(userOne, username).get();
             temp.setStatus(Status.DENIED);
             friendsDatabase.save(temp);
+            notification.sendNotificationToUser(username + " has denied your friend request", userOne);
             return true;
         } else if (!userDatabase.existsByUsername(username)) {
             throw new UserNotFoundException(username);

@@ -15,8 +15,10 @@ import com.example.carbon_counter_front_end.R;
 import com.example.carbon_counter_front_end.data.logic.AddTipLogic;
 import com.example.carbon_counter_front_end.data.model.IVolleyListener;
 import com.example.carbon_counter_front_end.data.model.RequestServerForService;
+import com.example.carbon_counter_front_end.data.model.UserInformation;
 
 import org.json.JSONArray;
+import org.json.JSONException;
 import org.json.JSONObject;
 
 /**
@@ -25,10 +27,13 @@ import org.json.JSONObject;
  */
 public class AddTipActivity extends AppCompatActivity {
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_tip);
+
+
 
         final Spinner spinner = (Spinner) findViewById(R.id.spinner);
         ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this,
@@ -45,6 +50,7 @@ public class AddTipActivity extends AppCompatActivity {
 
         final AddTipLogic addTipLogic = new AddTipLogic(this, getApplicationContext());
         addTipLogic.setModel(new RequestServerForService(getApplicationContext(), new IVolleyListener() {
+
             @Override
             public void onImageSuccess(Bitmap image) {
 
@@ -56,9 +62,15 @@ public class AddTipActivity extends AppCompatActivity {
             }
 
             @Override
-            public void onSuccess(JSONObject response) {
+            public void onSuccess(JSONObject response) throws JSONException {
+                UserInformation.ws.send("@ADMIN " + subject.getText().toString() + " has been added for approval!");
                 Intent i = new Intent(AddTipActivity.this, MainActivity.class);
                 startActivity(i);
+            }
+
+            @Override
+            public void onSuccess(String response) {
+
             }
 
             @Override

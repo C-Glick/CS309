@@ -15,6 +15,8 @@ import com.example.carbon_counter_front_end.R;
  */
 public class AdminOverview extends AppCompatActivity {
 
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -24,11 +26,20 @@ public class AdminOverview extends AppCompatActivity {
         Button manageUser = (Button) findViewById(R.id.ManageUser);
         //Button tipApproval = (Button) findViewById(R.id.tipApprovalbutton);
         Button tip = (Button) findViewById(R.id.tipbutton);
+        Button home = (Button) findViewById(R.id.buttonHome);
+
+        home.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent i = new Intent(AdminOverview.this, MainActivity.class);
+                startActivity(i);
+            }
+        });
 
         tip.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent i = new Intent(AdminOverview.this, AdminTipApprovalActivity.class);
+                Intent i = new Intent(AdminOverview.this, TipApprovalActivity.class);
                 startActivity(i);
             }
         });

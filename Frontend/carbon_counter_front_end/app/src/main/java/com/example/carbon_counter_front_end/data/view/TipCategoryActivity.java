@@ -34,10 +34,14 @@ public class TipCategoryActivity extends AppCompatActivity {
     private final String waste = "GARBAGE";
     private final String energy = "ENERGY";
 
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_tip_category);
+
+
 
         final TextView recommended = (TextView) findViewById(R.id.textViewRecommended);
         final TextView all = (TextView) findViewById(R.id.textViewAll);
@@ -45,6 +49,15 @@ public class TipCategoryActivity extends AppCompatActivity {
         final Button viewWater = (Button) findViewById(R.id.buttonWater);
         final Button viewWaste = (Button) findViewById(R.id.buttonWaste);
         final Button viewEnergy = (Button) findViewById(R.id.buttonEnergy);
+        Button back = (Button) findViewById(R.id.buttonTipCatBack);
+
+        back.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent i = new Intent(TipCategoryActivity.this, MainActivity.class);
+                startActivity(i);
+            }
+        });
 
         viewEmissions.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -99,7 +112,7 @@ public class TipCategoryActivity extends AppCompatActivity {
                 Stack<Character> allStack = tipCategoryLogic.setLayout(response);
 
                 Button last = null;
-                int marginTop = 110;
+                int marginTop = 230;
                 int allStackSize = allStack.size();
 
                 for(int i = 0; i < allStackSize; i++){
@@ -130,14 +143,26 @@ public class TipCategoryActivity extends AppCompatActivity {
                             last = viewWaste;
                             break;
                         case 'a':
-                            all.setTop(marginTop);
-                            last = null;
-                            marginTop = all.getTop() + 80;
+                            if(i == 0){
+                                recommended.setVisibility(View.GONE);
+                                last = null;
+                                marginTop = 230;
+                            } else {
+                                all.setY(marginTop);
+                                last = null;
+                                marginTop += 110;
+                            }
+
                             break;
                         default:
                             break;
                     }
                 }
+            }
+
+            @Override
+            public void onSuccess(String response) {
+
             }
 
             @Override

@@ -3,7 +3,7 @@ package com.example.carbon_counter_front_end.data.logic;
 import android.content.Context;
 
 import com.example.carbon_counter_front_end.data.model.RequestServerForService;
-import com.example.carbon_counter_front_end.data.view.ViewCategoryResults;
+import com.example.carbon_counter_front_end.data.view.TipApprovalActivity;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -11,13 +11,9 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 
-/**
- * Logic class to take care of the logic for ViewCategoryResults Activity.
- * @author Zachary Current
- */
-public class ViewCategoryResultsLogic {
+public class TipApprovalLogic {
     private RequestServerForService model;
-    private ViewCategoryResults view;
+    private TipApprovalActivity view;
     private Context context;
     private ArrayList<JSONObject> myTips;
     private int tipsIndex;
@@ -27,7 +23,7 @@ public class ViewCategoryResultsLogic {
      * @param view view of ViewCategoryResults
      * @param context context of ViewCategoryResults
      */
-    public ViewCategoryResultsLogic(ViewCategoryResults view, Context context){
+    public TipApprovalLogic(TipApprovalActivity view, Context context){
         this.view = view;
         this.context = context;
         this.myTips = new ArrayList<>();
@@ -42,12 +38,10 @@ public class ViewCategoryResultsLogic {
 
     /**
      * Used to contact the server, the response returns the tips based on the category supplied, if valid.
-     * @param category category of tips to be accessed
+     *
      */
-    public void getTips(String category){
-        String url = "http://10.24.227.38:8080/tips";
-
-        url += "/" + category;
+    public void getTips(){
+        String url = "http://10.24.227.38:8080/tips/all/admin";
 
         model.contactServerArray(url);
     }
@@ -105,9 +99,9 @@ public class ViewCategoryResultsLogic {
 
         try {
             if(myTips.size() > 0) {
-                subject = myTips.get(tipsIndex).getString("title");
+                subject = myTips.get(tipsIndex).getString("workingTitle");
             } else {
-                subject = "No tips to be displayed";
+                subject = "No tips to approve";
             }
         } catch (JSONException e) {
             e.printStackTrace();
@@ -126,8 +120,9 @@ public class ViewCategoryResultsLogic {
 
         try {
             if(myTips.size() > 0) {
-                description = myTips.get(tipsIndex).getString("body");
+                description = myTips.get(tipsIndex).getString("workingBody");
             }
+
         } catch (JSONException e) {
             e.printStackTrace();
         }
@@ -135,20 +130,34 @@ public class ViewCategoryResultsLogic {
         return description;
     }
 
-    public void deleteTip(){
+    public void approveTip(){
         if(myTips.size() == 0){
             return;
         }
 
-        String url = "http://10.24.227.38:8080/tip/delete/";
+        String url = "http://10.24.227.38:8080/tip/setStatus/";
 
-        try {
-            String title = myTips.get(tipsIndex).getString("workingTitle");
-            url += title;
 
-            model.contactServerString(url);
-        } catch (JSONException e) {
-            e.printStackTrace();
+        String title = getSubject();
+        url +=  title + "?newStatus=APPROVED";
+
+
+        model.contactServerString(url);
+
+
+    }
+
+    public void deleteTip(){
+        if(myTips.size() == 0){
+            return;
         }
+        String url = "http://10.24.227.38:8080/tip/setStatus/";
+
+
+        String title = getSubject();
+        url +=  title + "?newStatus=DENIED";
+
+
+        model.contactServerString(url);
     }
 }

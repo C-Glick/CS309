@@ -6,8 +6,9 @@
     android:layout_height="match_parent"
     tools:context=".data.view.ViewCategoryResults">
 
+
     <TextView
-        android:id="@+id/textViewDescription"
+        android:id="@+id/textViewDescriptionApprove"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="25dp"
@@ -17,7 +18,7 @@
         tools:layout_editor_absoluteY="113dp" />
 
     <Button
-        android:id="@+id/buttonPrev"
+        android:id="@+id/buttonPrevApprove"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="32dp"
@@ -28,7 +29,7 @@
         app:layout_constraintStart_toStartOf="parent" />
 
     <Button
-        android:id="@+id/buttonNext"
+        android:id="@+id/buttonNextApprove"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="268dp"
@@ -39,7 +40,7 @@
         app:layout_constraintStart_toStartOf="parent" />
 
     <TextView
-        android:id="@+id/textViewSubject"
+        android:id="@+id/textViewSubjectApprove"
         android:layout_width="205dp"
         android:layout_height="49dp"
         android:layout_marginStart="16dp"
@@ -49,25 +50,37 @@
         tools:layout_editor_absoluteY="25dp" />
 
     <Button
-        android:id="@+id/buttonDelete"
+        android:id="@+id/buttonDisapprove"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentStart="true"
         android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"
         android:layout_marginStart="151dp"
-        android:layout_marginBottom="56dp"
+        android:layout_marginBottom="20dp"
         android:background="@drawable/mybutton"
-        android:text="Delete" />
+        android:text="Disapprove" />
 
     <Button
-        android:id="@+id/buttonCatResultsBack"
+        android:id="@+id/buttonApprove"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginStart="151dp"
+        android:layout_marginBottom="85dp"
+        android:text="Approve"
+        android:background="@drawable/mybutton"/>
+
+    <Button
+        android:id="@+id/buttonApprovalBack"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentStart="true"
         android:layout_alignParentTop="true"
-        android:layout_marginStart="22dp"
-        android:layout_marginTop="25dp"
+        android:layout_marginStart="21dp"
+        android:layout_marginTop="22dp"
         android:text="Back"
         android:background="@drawable/mybutton"/>
 </RelativeLayout>
