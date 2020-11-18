@@ -19,6 +19,8 @@ import com.example.carbon_counter_front_end.data.model.RequestServerForService;
 import com.example.carbon_counter_front_end.data.model.UserInformation;
 
 import org.java_websocket.client.WebSocketClient;
+import org.java_websocket.drafts.Draft;
+import org.java_websocket.drafts.Draft_6455;
 import org.java_websocket.handshake.ServerHandshake;
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -38,8 +40,10 @@ public class AddTipActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_tip);
 
+        Draft[] drafts = {new Draft_6455()};
+
         try {
-            ws = new WebSocketClient(new URI("ws://coms-309-tc-04.cs.iastate.edu:8080/notify/" + UserInformation.username)) {
+            ws = new WebSocketClient(new URI("ws://coms-309-tc-04.cs.iastate.edu:8080/notify/" + UserInformation.username), (Draft) drafts[0]) {
 
 
                 @Override
@@ -49,8 +53,14 @@ public class AddTipActivity extends AppCompatActivity {
 
                 @Override
                 public void onMessage(String s) {
-                    Toast.makeText(getApplicationContext(), s, Toast.LENGTH_LONG).show();
-
+                    //Toast.makeText(getApplicationContext(), s, Toast.LENGTH_LONG).show();
+                    AddTipActivity.this.runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            Toast.makeText(getApplicationContext(), s, Toast.LENGTH_LONG).show();
+                        }
+                    });
+                    System.out.println(s);
                 }
 
                 @Override
@@ -97,7 +107,7 @@ public class AddTipActivity extends AppCompatActivity {
 
             @Override
             public void onSuccess(JSONObject response) throws JSONException {
-                ws.send(subject.getText().toString() + "has been added for approval!");
+                ws.send(subject.getText().toString() + " has been added for approval!");
                 Intent i = new Intent(AddTipActivity.this, MainActivity.class);
                 startActivity(i);
             }

@@ -19,6 +19,8 @@ import com.example.carbon_counter_front_end.data.model.RequestServerForService;
 import com.example.carbon_counter_front_end.data.model.UserInformation;
 
 import org.java_websocket.client.WebSocketClient;
+import org.java_websocket.drafts.Draft;
+import org.java_websocket.drafts.Draft_6455;
 import org.java_websocket.handshake.ServerHandshake;
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -36,8 +38,10 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        Draft[] drafts = {new Draft_6455()};
+
         try {
-            ws = new WebSocketClient(new URI("ws://coms-309-tc-04.cs.iastate.edu:8080/notify/" + UserInformation.username)) {
+            ws = new WebSocketClient(new URI("ws://coms-309-tc-04.cs.iastate.edu:8080/notify/" + UserInformation.username), (Draft) drafts[0]) {
 
 
                 @Override
@@ -47,8 +51,13 @@ public class MainActivity extends AppCompatActivity {
 
                 @Override
                 public void onMessage(String s) {
-                    Toast.makeText(getApplicationContext(), s, Toast.LENGTH_LONG).show();
-
+                    MainActivity.this.runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            Toast.makeText(getApplicationContext(), s, Toast.LENGTH_LONG).show();
+                        }
+                    });
+                    System.out.println(s);
                 }
 
                 @Override
