@@ -13,16 +13,20 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true">
+
         <activity android:name=".data.view.FriendListActivity"></activity>
         <activity android:name=".data.view.FriendPageActivity" />
         <activity android:name=".data.view.AddTipActivity" />
         <activity android:name=".data.view.ViewCategoryResults" />
         <activity android:name=".data.view.AdminUpdateUser" />
         <activity android:name=".data.view.TipCategoryActivity" />
+        <activity android:name=".data.view.TipApprovalActivity"></activity>
+
         <activity
             android:name=".data.view.AdminTipApprovalActivity"
             android:label="@string/title_activity_admin_tip_approval"
             android:theme="@style/AppTheme.NoActionBar" />
+
         <activity android:name=".data.view.AdminOverview" />
         <activity android:name=".data.view.CreateUserActivity" />
         <activity android:name=".data.view.ViewActivity" />

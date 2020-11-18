@@ -14,6 +14,7 @@ import com.tc_4.carbon_counter.models.Friends.Status;
 import com.tc_4.carbon_counter.models.User.Mode;
 import com.tc_4.carbon_counter.models.User.Notifications;
 import com.tc_4.carbon_counter.models.User.Role;
+import com.tc_4.carbon_counter.sockets.NotificationSocket;
 
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -36,6 +37,9 @@ public class UserService {
 
     @Autowired
     private FriendsDatabase friendsDatabase;
+
+    @Autowired
+    private NotificationSocket notification;
 
     /** Password encoder used when making a new user or changing a password */
     private BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
@@ -107,7 +111,7 @@ public class UserService {
     /**
      * 
      * @param user     the user sending the friend request
-     * @param username the user recieveing the request
+     * @param username the user receiving the request
      * @return true if it sends the request otherwise throws userNotFoundException
      *         or RequestExistsException
      */
@@ -124,6 +128,7 @@ public class UserService {
         temp.setStatus(Status.REQUESTED);
         if (!friendsDatabase.findByUserOneAndUserTwo(user, username).isPresent()) {
             friendsDatabase.save(temp);
+            notification.sendNotificationToUser(user + " has sent you a friend request!", username);
             return true;
         }
         throw new RequestExistsException();
@@ -150,6 +155,7 @@ public class UserService {
             Friends temp = friendsDatabase.findByUserOneAndUserTwo(userOne, username).get();
             temp.setStatus(Status.APPROVED);
             friendsDatabase.save(temp);
+            notification.sendNotificationToUser(username + " has accepted your friend request!", userOne);
             return true;
         } else if (!userDatabase.existsByUsername(username)) {
             throw new UserNotFoundException(username);
@@ -172,6 +178,7 @@ public class UserService {
             Friends temp = friendsDatabase.findByUserOneAndUserTwo(userOne, username).get();
             temp.setStatus(Status.DENIED);
             friendsDatabase.save(temp);
+            notification.sendNotificationToUser(username + " has denied your friend request", userOne);
             return true;
         } else if (!userDatabase.existsByUsername(username)) {
             throw new UserNotFoundException(username);

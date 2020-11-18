@@ -1,13 +1,13 @@
 package com.example.carbon_counter_front_end.data.view;
 
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
+
+import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.carbon_counter_front_end.R;
 import com.example.carbon_counter_front_end.data.logic.AdminLogic;
@@ -61,16 +61,25 @@ public class AdminUpdateUser extends AppCompatActivity {
                     public void onImageSuccess(Bitmap image) {
 
                     }
+
                     @Override
                     public void onSuccessJSONArray(JSONArray response) {
 
                     }
+
                     @Override
-                    public void onSuccess(JSONObject response) {
+                    public void onSuccess(JSONObject response) throws JSONException {
                         CurrUserInfo = response;
                     }
+
+                    @Override
+                    public void onSuccess(String response) {
+
+                    }
+
                     @Override
                     public void onError() {
+
                     }
                 }));
                 adminLogic.getUser();
@@ -111,15 +120,27 @@ public class AdminUpdateUser extends AppCompatActivity {
                     adminLogic.setModel(new RequestServerForService(getApplicationContext(), new IVolleyListener() {
                         @Override
                         public void onImageSuccess(Bitmap image) {
+
                         }
+
                         @Override
                         public void onSuccessJSONArray(JSONArray response) {
+
                         }
+
                         @Override
-                        public void onSuccess(JSONObject response) {
+                        public void onSuccess(JSONObject response) throws JSONException {
+
                         }
+
+                        @Override
+                        public void onSuccess(String response) {
+
+                        }
+
                         @Override
                         public void onError() {
+
                         }
                     }));
                     // Toast.makeText(UpdateActivity.this, (CharSequence) userUpdate, LENGTH_SHORT).show();
@@ -138,15 +159,27 @@ public class AdminUpdateUser extends AppCompatActivity {
                 adminLogic.setModel(new RequestServerForService(getApplicationContext(), new IVolleyListener() {
                     @Override
                     public void onImageSuccess(Bitmap image) {
+
                     }
+
                     @Override
                     public void onSuccessJSONArray(JSONArray response) {
+
                     }
+
                     @Override
-                    public void onSuccess(JSONObject response)  {
+                    public void onSuccess(JSONObject response) throws JSONException {
+
                     }
+
+                    @Override
+                    public void onSuccess(String response) {
+
+                    }
+
                     @Override
                     public void onError() {
+
                     }
                 }));
                 adminLogic.DeleteUser();

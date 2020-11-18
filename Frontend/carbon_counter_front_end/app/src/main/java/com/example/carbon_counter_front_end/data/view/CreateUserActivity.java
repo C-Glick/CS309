@@ -1,5 +1,6 @@
 package com.example.carbon_counter_front_end.data.view;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.util.Log;
@@ -73,6 +74,8 @@ public class CreateUserActivity extends AppCompatActivity {
                // Toast.makeText(CreateUserActivity.this, password.getText().toString(), LENGTH_SHORT).show();
                 try {
                     PostUser(Username.getText().toString(),email.getText().toString(),password.getText().toString());
+                    Intent i = new Intent(CreateUserActivity.this, LoginActivity.class);
+                    startActivity(i);
                   //  Toast.makeText(CreateUserActivity.this, "in the request", LENGTH_SHORT).show();
                 } catch (JSONException e) {
                     e.printStackTrace();

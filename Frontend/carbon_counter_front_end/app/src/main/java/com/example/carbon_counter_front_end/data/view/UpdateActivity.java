@@ -3,32 +3,17 @@ package com.example.carbon_counter_front_end.data.view;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.os.Bundle;
-import android.text.Editable;
-import android.util.Base64;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.LiveData;
 
-import com.android.volley.AuthFailureError;
-import com.android.volley.Request;
-import com.android.volley.Response;
-import com.android.volley.VolleyError;
-import com.android.volley.VolleyLog;
-import com.android.volley.toolbox.JsonObjectRequest;
 import com.example.carbon_counter_front_end.R;
-import com.example.carbon_counter_front_end.app.AppController;
-
-import com.example.carbon_counter_front_end.data.logic.LoginLogic;
 import com.example.carbon_counter_front_end.data.logic.UpdateStatsLogic;
-import com.example.carbon_counter_front_end.data.model.AppDatabase;
 import com.example.carbon_counter_front_end.data.model.IVolleyListener;
 import com.example.carbon_counter_front_end.data.model.RequestServerForService;
-import com.example.carbon_counter_front_end.data.model.RetrieveUserInfoThread;
 import com.example.carbon_counter_front_end.data.model.User;
 import com.example.carbon_counter_front_end.data.model.UserInformation;
 
@@ -36,11 +21,8 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
-import static android.widget.Toast.LENGTH_SHORT;
 import static java.lang.Double.parseDouble;
 
 /**
@@ -129,6 +111,12 @@ public class UpdateActivity extends AppCompatActivity {
                         @Override
                         public void onSuccess(JSONObject response) {
                         }
+
+                        @Override
+                        public void onSuccess(String response) {
+
+                        }
+
                         @Override
                         public void onError() {
                         }

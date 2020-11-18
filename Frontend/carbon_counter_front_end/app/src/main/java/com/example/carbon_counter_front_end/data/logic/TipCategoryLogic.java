@@ -111,11 +111,10 @@ public class TipCategoryLogic {
 
         allStack.push('a');
 
-        for(int i = 0; i < recommendStack.size(); i++){
-            allStack.push(recommendStack.pop());
-        }
+        recommendStack.addAll(0, allStack);
 
-        return allStack;
+
+        return recommendStack;
 
     }
 }

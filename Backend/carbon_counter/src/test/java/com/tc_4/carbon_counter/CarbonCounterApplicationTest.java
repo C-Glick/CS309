@@ -7,10 +7,10 @@ import org.springframework.boot.test.context.SpringBootTest;
 @SpringBootTest
 class CarbonCounterApplicationTest {
 
-	@Test
+	/*@Test
 	void contextLoads() {
 	}
-	/*@LocalServerPort
+	@LocalServerPort
     private int port;
 	
     @Autowired
