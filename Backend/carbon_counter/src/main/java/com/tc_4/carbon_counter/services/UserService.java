@@ -1,6 +1,8 @@
 package com.tc_4.carbon_counter.services;
 
 import java.util.List;
+import java.util.Set;
+import java.util.TreeSet;
 
 import com.tc_4.carbon_counter.databases.FriendsDatabase;
 import com.tc_4.carbon_counter.databases.UserDatabase;
@@ -141,6 +143,29 @@ public class UserService {
      */
     public List<Friends> allFriendRequests(String username) {
         return friendsDatabase.findByUserTwoAndStatus(username, Status.REQUESTED);
+    }
+
+    /**
+     * Get a set of all approved friends for the currently 
+     * authenticated user.
+     * 
+     * @return A set of usernames
+     */
+    public Set<String> getFriendList(){
+        String thisUsername = SecurityContextHolder.getContext().getAuthentication().getName();
+        Set<String> result = new TreeSet<String>();
+
+        List<Friends> list1 = friendsDatabase.findByUserOneAndStatus(thisUsername, Status.APPROVED);
+        for(Friends f : list1){
+            result.add(f.getUserTwo());
+        }
+
+        List<Friends> list2 = friendsDatabase.findByUserTwoAndStatus(thisUsername, Status.APPROVED);
+        for(Friends f : list2){
+            result.add(f.getUserOne());
+        }
+        
+        return result;
     }
 
     /**

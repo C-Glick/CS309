@@ -12,6 +12,7 @@ public interface FriendsDatabase extends JpaRepository<Friends, Long> {
     
     
     List<Friends> findByUserTwoAndStatus(String username, Status status);
+    List<Friends> findByUserOneAndStatus(String username, Status status);
     Optional<Friends> findByUserOneAndUserTwo(String userOne, String userTwo);
 
 
