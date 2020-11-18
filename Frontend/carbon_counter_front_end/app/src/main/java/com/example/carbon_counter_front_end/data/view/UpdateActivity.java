@@ -6,7 +6,6 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.LiveData;
@@ -18,15 +17,10 @@ import com.example.carbon_counter_front_end.data.model.RequestServerForService;
 import com.example.carbon_counter_front_end.data.model.User;
 import com.example.carbon_counter_front_end.data.model.UserInformation;
 
-import org.java_websocket.client.WebSocketClient;
-import org.java_websocket.drafts.Draft;
-import org.java_websocket.drafts.Draft_6455;
-import org.java_websocket.handshake.ServerHandshake;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.net.URI;
 import java.util.List;
 
 import static java.lang.Double.parseDouble;
@@ -49,7 +43,7 @@ public class UpdateActivity extends AppCompatActivity {
     private String waste;
     final JSONObject userUpdate = new JSONObject();
 
-    private WebSocketClient ws;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -57,43 +51,7 @@ public class UpdateActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_update);
 
-        Draft[] drafts = {new Draft_6455()};
 
-        try {
-            ws = new WebSocketClient(new URI("ws://coms-309-tc-04.cs.iastate.edu:8080/notify/" + UserInformation.username), (Draft) drafts[0]) {
-
-
-                @Override
-                public void onOpen(ServerHandshake serverHandshake) {
-
-                }
-
-                @Override
-                public void onMessage(String s) {
-                    UpdateActivity.this.runOnUiThread(new Runnable() {
-                        @Override
-                        public void run() {
-                            Toast.makeText(getApplicationContext(), s, Toast.LENGTH_LONG).show();
-                        }
-                    });
-                    System.out.println(s);
-                }
-
-                @Override
-                public void onClose(int i, String s, boolean b) {
-
-                }
-
-                @Override
-                public void onError(Exception e) {
-                    System.out.println(e.getMessage());
-                }
-            };
-        } catch (Exception e){
-            System.out.println(e.getMessage());
-        }
-
-        ws.connect();
 /*
         UserRepository mUserRepository = new UserRepository(getApplication());
         myUser = mUserRepository.getAllUsers();

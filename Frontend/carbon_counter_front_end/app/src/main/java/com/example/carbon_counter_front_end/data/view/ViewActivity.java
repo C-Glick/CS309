@@ -4,7 +4,6 @@ package com.example.carbon_counter_front_end.data.view;
 import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -14,15 +13,9 @@ import com.example.carbon_counter_front_end.data.model.IVolleyListener;
 import com.example.carbon_counter_front_end.data.model.RequestServerForService;
 import com.example.carbon_counter_front_end.data.model.UserInformation;
 
-import org.java_websocket.client.WebSocketClient;
-import org.java_websocket.drafts.Draft;
-import org.java_websocket.drafts.Draft_6455;
-import org.java_websocket.handshake.ServerHandshake;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
-
-import java.net.URI;
 
 /**
  * View user's stats
@@ -42,7 +35,7 @@ public class ViewActivity extends AppCompatActivity {
     private String password;
     private JSONObject UserInfo = new JSONObject();
 
-    private WebSocketClient ws;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -51,43 +44,6 @@ public class ViewActivity extends AppCompatActivity {
         setContentView(R.layout.activity_view);
         username = UserInformation.username;
 
-        Draft[] drafts = {new Draft_6455()};
-
-        try {
-            ws = new WebSocketClient(new URI("ws://coms-309-tc-04.cs.iastate.edu:8080/notify/" + UserInformation.username), (Draft) drafts[0]) {
-
-
-                @Override
-                public void onOpen(ServerHandshake serverHandshake) {
-
-                }
-
-                @Override
-                public void onMessage(String s) {
-                    ViewActivity.this.runOnUiThread(new Runnable() {
-                        @Override
-                        public void run() {
-                            Toast.makeText(getApplicationContext(), s, Toast.LENGTH_LONG).show();
-                        }
-                    });
-                    System.out.println(s);
-                }
-
-                @Override
-                public void onClose(int i, String s, boolean b) {
-
-                }
-
-                @Override
-                public void onError(Exception e) {
-                    System.out.println(e.getMessage());
-                }
-            };
-        } catch (Exception e){
-            System.out.println(e.getMessage());
-        }
-
-        ws.connect();
 
         // getMiles(username);
         viewLogic.setModel(new RequestServerForService(getApplicationContext(), new IVolleyListener() {

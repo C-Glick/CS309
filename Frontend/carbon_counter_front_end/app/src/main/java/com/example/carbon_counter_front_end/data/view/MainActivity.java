@@ -18,63 +18,20 @@ import com.example.carbon_counter_front_end.data.model.IVolleyListener;
 import com.example.carbon_counter_front_end.data.model.RequestServerForService;
 import com.example.carbon_counter_front_end.data.model.UserInformation;
 
-import org.java_websocket.client.WebSocketClient;
-import org.java_websocket.drafts.Draft;
-import org.java_websocket.drafts.Draft_6455;
-import org.java_websocket.handshake.ServerHandshake;
 import org.json.JSONArray;
 import org.json.JSONObject;
-
-import java.net.URI;
 
 /**
  * Main menu for Carbon Counter
  * @author Zachary Current
  */
 public class MainActivity extends AppCompatActivity {
-    private WebSocketClient ws;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        Draft[] drafts = {new Draft_6455()};
 
-        try {
-            ws = new WebSocketClient(new URI("ws://coms-309-tc-04.cs.iastate.edu:8080/notify/" + UserInformation.username), (Draft) drafts[0]) {
-
-
-                @Override
-                public void onOpen(ServerHandshake serverHandshake) {
-
-                }
-
-                @Override
-                public void onMessage(String s) {
-                    MainActivity.this.runOnUiThread(new Runnable() {
-                        @Override
-                        public void run() {
-                            Toast.makeText(getApplicationContext(), s, Toast.LENGTH_LONG).show();
-                        }
-                    });
-                    System.out.println(s);
-                }
-
-                @Override
-                public void onClose(int i, String s, boolean b) {
-
-                }
-
-                @Override
-                public void onError(Exception e) {
-                    System.out.println(e.getMessage());
-                }
-            };
-        } catch (Exception e){
-            System.out.println(e.getMessage());
-        }
-
-        ws.connect();
 
 
         final String username = UserInformation.username;
@@ -91,6 +48,7 @@ public class MainActivity extends AppCompatActivity {
         logout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                UserInformation.ws.close();
                 UserInformation.role = "";
                 UserInformation.password = "";
                 UserInformation.username = "";
