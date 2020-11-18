@@ -33,20 +33,20 @@ public class FriendRequestsLogic {
     }
 
     public void AcceptRequest() {
-        String url = "http://10.24.227.38:8080/user/Accept";
+        String url = "http://10.24.227.38:8080/user/accept";
         url += "/" + UserInformation.username;
         url+= "?userOne="+ TargetUserInformation.username;
         model.contactServer(url);
     }
 
     public void DenyRequest() {
-        String url = "http://10.24.227.38:8080/user/Deny";
+        String url = "http://10.24.227.38:8080/user/deny";
         url += "/" + UserInformation.username;
         url+= "?userOne="+ TargetUserInformation.username;
         model.contactServer(url);
     }
     public void Allrequests() {
-        String url = "http://10.24.227.38:8080/user/friends/requests";
+        String url = "http://10.24.227.38:8080/user/requests";
         url += "/" + UserInformation.username;
         // url+= "?username="+ TargetUserInformation.username;
         model.contactServerArray(url);

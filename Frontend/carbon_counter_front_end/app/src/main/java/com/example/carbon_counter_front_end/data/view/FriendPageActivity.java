@@ -30,7 +30,6 @@ public class FriendPageActivity extends AppCompatActivity {
         final TextView username = (TextView) findViewById(R.id.editTextTextPersonName);
         Button AddFriend = (Button) findViewById(R.id.btn_addfriend);
         Button Back = (Button) findViewById(R.id.button4);
-        Button FriendsList = (Button) findViewById(R.id.button3);
 
         final FriendPageLogic friendpageLogic= new FriendPageLogic( FriendPageActivity.this, getApplicationContext());
 
