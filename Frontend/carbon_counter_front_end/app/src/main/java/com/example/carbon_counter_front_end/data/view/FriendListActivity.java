@@ -25,25 +25,26 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class FriendListActivity extends AppCompatActivity {
 
 
-
-    private ListView listview;
-    private String[] list;
-    int i;
     JSONArray Friends = new JSONArray();
+
+    List<String> Friendlist = new ArrayList<>();
+
     @Override
     protected void onCreate(Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_friend_list);
 
-        Button Back = (Button) findViewById(R.id.backbutton);
+       // Button Back = (Button) findViewById(R.id.backbutton);
+        Button AddFriend = (Button) findViewById(R.id.button5);
+        Button requests = (Button) findViewById(R.id.requestsbutton);
 
-        listview=(ListView)findViewById(R.id.lv);
         final FriendListLogic FLLogic= new FriendListLogic( FriendListActivity.this, getApplicationContext());
         FLLogic.setModel(new RequestServerForService(getApplicationContext(), new IVolleyListener() {
             @Override
@@ -53,7 +54,19 @@ public class FriendListActivity extends AppCompatActivity {
 
             @Override
             public void onSuccessJSONArray(JSONArray response) {
-                Friends = response;
+
+                List<String> list = new ArrayList<>();
+
+
+                for(int i =0; i<response.length(); i++)
+                {
+                    try {
+                        list.add(response.getJSONObject(i).toString());
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                }
+                Friendlist= list;
             }
 
             @Override
@@ -73,27 +86,33 @@ public class FriendListActivity extends AppCompatActivity {
         }));
         FLLogic.friends();
 
-        ArrayAdapter<String> adapter = new ArrayAdapter<String>(this,android.R.layout.activity_list_item, (List<String>) Friends);
-        listview.setAdapter(adapter);
-        listview.setOnItemClickListener(new OnItemClickListener()
-        {
+
+        ArrayAdapter adapter = new ArrayAdapter<String>(this,R.layout.activity_listview,Friendlist);
+
+        ListView listView = (ListView) findViewById(R.id.window_List);
+        listView.setAdapter(adapter);
+
+        AddFriend.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l)
-            {
-//                Intent intent = new Intent(FriendListActivity.this, Main2Activity.class);
-//                intent.putExtra("Friends",listview.getItemAtPosition(i).toString());
-//                startActivity(intent);
+            public void onClick(View view) {
+                Intent i = new Intent(FriendListActivity.this, FriendPageActivity.class );
+                startActivity(i);
+
             }
         });
 
-        Back.setOnClickListener(new View.OnClickListener()
-        {
+        requests.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent i = new Intent(FriendListActivity.this, MainActivity.class);
+                Intent i = new Intent(FriendListActivity.this, FreindRequestsActivity.class );
                 startActivity(i);
+
             }
         });
+
+
+
+
     }
 
 }

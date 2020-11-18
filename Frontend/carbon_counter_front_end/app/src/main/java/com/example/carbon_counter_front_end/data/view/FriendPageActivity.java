@@ -75,6 +75,8 @@ public class FriendPageActivity extends AppCompatActivity {
                 startActivity(i);
             }
         });
+
+
         }
 
 

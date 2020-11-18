@@ -37,7 +37,7 @@ public class FriendListLogic {
 
 
     public void friends() {
-        String url = "http://10.24.227.38:8080/user/frinendlist";
+        String url = "http://10.24.227.38:8080/user/friend_list";
       //  url += "/" + UserInformation.username;
        // url+= "?username="+ TargetUserInformation.username;
         model.contactServerArray(url);
