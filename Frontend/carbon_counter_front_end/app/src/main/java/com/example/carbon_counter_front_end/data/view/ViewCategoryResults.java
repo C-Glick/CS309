@@ -30,6 +30,8 @@ public class ViewCategoryResults extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_view_category_results);
 
+
+
         Intent temp = getIntent();
         category = temp.getStringExtra("category");
 

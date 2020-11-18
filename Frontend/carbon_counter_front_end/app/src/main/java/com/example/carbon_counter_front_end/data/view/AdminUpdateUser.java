@@ -31,6 +31,8 @@ public class AdminUpdateUser extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_admin_update_user);
 
+
+
         final TextView username = (TextView) findViewById(R.id.inputUsername);
         final TextView UpdatedUsername = (TextView) findViewById(R.id.updatedUsername);
         final TextView UpdatedEmail = (TextView) findViewById(R.id.UpdatedEmail);

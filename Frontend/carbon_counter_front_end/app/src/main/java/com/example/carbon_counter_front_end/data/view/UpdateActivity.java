@@ -42,11 +42,16 @@ public class UpdateActivity extends AppCompatActivity {
     private String meat;
     private String waste;
     final JSONObject userUpdate = new JSONObject();
+
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_update);
+
+
 /*
         UserRepository mUserRepository = new UserRepository(getApplication());
         myUser = mUserRepository.getAllUsers();

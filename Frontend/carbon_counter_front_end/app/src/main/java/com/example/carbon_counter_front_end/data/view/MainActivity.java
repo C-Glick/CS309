@@ -26,7 +26,6 @@ import org.json.JSONObject;
  * @author Zachary Current
  */
 public class MainActivity extends AppCompatActivity {
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -50,6 +49,7 @@ public class MainActivity extends AppCompatActivity {
         logout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                UserInformation.ws.close();
                 UserInformation.role = "";
                 UserInformation.password = "";
                 UserInformation.username = "";

@@ -24,6 +24,7 @@ public class TipApprovalActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_tip_approval);
 
+
         final TextView subject = (TextView) findViewById(R.id.textViewSubjectApprove);
         final TextView description = (TextView) findViewById(R.id.textViewDescriptionApprove);
         Button next = (Button) findViewById(R.id.buttonNextApprove);

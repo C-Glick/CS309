@@ -34,10 +34,14 @@ public class TipCategoryActivity extends AppCompatActivity {
     private final String waste = "GARBAGE";
     private final String energy = "ENERGY";
 
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_tip_category);
+
+
 
         final TextView recommended = (TextView) findViewById(R.id.textViewRecommended);
         final TextView all = (TextView) findViewById(R.id.textViewAll);
