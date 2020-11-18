@@ -65,6 +65,8 @@ public class MainActivity extends AppCompatActivity {
             System.out.println(e.getMessage());
         }
 
+        ws.connect();
+
 
         final String username = UserInformation.username;
         final String password = UserInformation.password;

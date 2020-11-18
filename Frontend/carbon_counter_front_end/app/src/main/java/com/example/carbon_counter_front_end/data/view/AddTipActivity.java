@@ -63,6 +63,8 @@ public class AddTipActivity extends AppCompatActivity {
                     System.out.println(e.getMessage());
                 }
             };
+
+            ws.connect();
         } catch (Exception e){
             System.out.println(e.getMessage());
         }
@@ -95,7 +97,7 @@ public class AddTipActivity extends AppCompatActivity {
 
             @Override
             public void onSuccess(JSONObject response) throws JSONException {
-                ws.send(subject.getText().toString() + "has been added for approval");
+                ws.send(subject.getText().toString() + "has been added for approval!");
                 Intent i = new Intent(AddTipActivity.this, MainActivity.class);
                 startActivity(i);
             }
