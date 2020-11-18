@@ -43,4 +43,6 @@
     <string name="ChangeUsername">Change Username</string>
     <string name="InputUsername">Username</string>
     <string name="usernameHolder">"Username: "</string>
+    <string-array name="Friends_List">
+    </string-array>
 </resources>

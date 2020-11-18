@@ -2,6 +2,7 @@ package com.example.carbon_counter_front_end.data.view;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.view.View;
@@ -33,7 +34,6 @@ public class FriendPageActivity extends AppCompatActivity {
 
         final FriendPageLogic friendpageLogic= new FriendPageLogic( FriendPageActivity.this, getApplicationContext());
 
-
         AddFriend.setOnClickListener(new View.OnClickListener()
         {
             @Override
@@ -53,6 +53,12 @@ public class FriendPageActivity extends AppCompatActivity {
                     public void onSuccess(JSONObject response) {
 
                     }
+
+                    @Override
+                    public void onSuccess(String response) {
+
+                    }
+
                     @Override
                     public void onError() {
                     }
@@ -60,6 +66,18 @@ public class FriendPageActivity extends AppCompatActivity {
                 friendpageLogic.friendRequest();
             }
         });
-    }
+
+        Back.setOnClickListener(new View.OnClickListener()
+        {
+            @Override
+            public void onClick(View view) {
+                Intent i = new Intent(FriendPageActivity.this, FriendListActivity.class);
+                startActivity(i);
+            }
+        });
+        }
+
 
 }
+
+

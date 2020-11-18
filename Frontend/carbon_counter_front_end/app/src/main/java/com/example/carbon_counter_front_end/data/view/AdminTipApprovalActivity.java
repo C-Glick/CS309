@@ -1,4 +1,6 @@
 package com.example.carbon_counter_front_end.data.view;
 
-public class AdminTipApprovalActivity {
+import android.app.Activity;
+
+public class AdminTipApprovalActivity extends Activity {
 }

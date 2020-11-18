@@ -25,7 +25,8 @@ public class FriendPageLogic {
     //localhost:8080/user/accept/test6?userOne=andrew
     //http:// 10.24.227.38:8080/user/friend_request/andrew?username=test6
     /**
-     * FriendPage  Constructor - To take care of logic for the loginActivity
+     * FriendPage  Constructor - To take care of logic for the FriendPageActivity
+     *
      *
      * @param view    view of AdminUpdateUser
      * @param context context of AdminUpdateUser
@@ -47,5 +48,7 @@ public class FriendPageLogic {
         url+= "?username="+TargetUserInformation.username;
         model.contactServer(url);
     }
+
+
 
 }

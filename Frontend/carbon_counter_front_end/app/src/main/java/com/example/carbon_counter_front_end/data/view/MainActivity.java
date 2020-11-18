@@ -45,6 +45,7 @@ public class MainActivity extends AppCompatActivity {
         Button addTip = (Button) findViewById(R.id.buttonAddTip);
         Button Admin = (Button) findViewById(R.id.AdminLogin);
         Button logout = (Button) findViewById(R.id.buttonLogout);
+        Button Friends = (Button) findViewById(R.id.buttonfriendlist);
 
         logout.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -151,6 +152,14 @@ public class MainActivity extends AppCompatActivity {
                 startActivity(i);
             }
         });
+        Friends.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent i = new Intent(MainActivity.this, FriendListActivity.class);
+                startActivity(i);
+            }
+        });
+
 
         updateStats.setOnClickListener(new View.OnClickListener() {
             @Override
