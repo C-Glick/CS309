@@ -64,6 +64,10 @@ public class TipApprovalLogic {
      * Called when next is pressed, increments tipIndex
      */
     public void setNextTip(){
+        if(myTips.size() == 0){
+            return;
+        }
+
         if(tipsIndex == myTips.size() - 1){
             tipsIndex = 0;
         } else {
@@ -75,6 +79,10 @@ public class TipApprovalLogic {
      * Called when prev is pressed, decrements tipIndex
      */
     public void setPrevTip(){
+        if(myTips.size() == 0){
+            return;
+        }
+
         if(tipsIndex == 0){
             tipsIndex = myTips.size() - 1;
         } else {
@@ -92,6 +100,8 @@ public class TipApprovalLogic {
         try {
             if(myTips.size() > 0) {
                 subject = myTips.get(tipsIndex).getString("workingTitle");
+            } else {
+                subject = "No tips to approve";
             }
         } catch (JSONException e) {
             e.printStackTrace();
@@ -112,6 +122,7 @@ public class TipApprovalLogic {
             if(myTips.size() > 0) {
                 description = myTips.get(tipsIndex).getString("workingBody");
             }
+
         } catch (JSONException e) {
             e.printStackTrace();
         }
@@ -120,6 +131,10 @@ public class TipApprovalLogic {
     }
 
     public void approveTip(){
+        if(myTips.size() == 0){
+            return;
+        }
+
         String url = "http://10.24.227.38:8080/tip/setStatus/";
 
 
@@ -127,12 +142,15 @@ public class TipApprovalLogic {
         url +=  title + "?newStatus=APPROVED";
 
 
-        model.contactServer(url);
+        model.contactServerString(url);
 
 
     }
 
     public void deleteTip(){
+        if(myTips.size() == 0){
+            return;
+        }
         String url = "http://10.24.227.38:8080/tip/setStatus/";
 
 
@@ -140,6 +158,6 @@ public class TipApprovalLogic {
         url +=  title + "?newStatus=DENIED";
 
 
-        model.contactServer(url);
+        model.contactServerString(url);
     }
 }

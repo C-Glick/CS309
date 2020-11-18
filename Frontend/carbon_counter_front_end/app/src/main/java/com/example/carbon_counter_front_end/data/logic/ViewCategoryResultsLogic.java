@@ -70,6 +70,10 @@ public class ViewCategoryResultsLogic {
      * Called when next is pressed, increments tipIndex
      */
     public void setNextTip(){
+        if(myTips.size() == 0){
+            return;
+        }
+
         if(tipsIndex == myTips.size() - 1){
             tipsIndex = 0;
         } else {
@@ -81,6 +85,10 @@ public class ViewCategoryResultsLogic {
      * Called when prev is pressed, decrements tipIndex
      */
     public void setPrevTip(){
+        if(myTips.size() == 0){
+            return;
+        }
+
         if(tipsIndex == 0){
             tipsIndex = myTips.size() - 1;
         } else {
@@ -98,6 +106,8 @@ public class ViewCategoryResultsLogic {
         try {
             if(myTips.size() > 0) {
                 subject = myTips.get(tipsIndex).getString("title");
+            } else {
+                subject = "No tips to be displayed";
             }
         } catch (JSONException e) {
             e.printStackTrace();
@@ -126,13 +136,17 @@ public class ViewCategoryResultsLogic {
     }
 
     public void deleteTip(){
+        if(myTips.size() == 0){
+            return;
+        }
+
         String url = "http://10.24.227.38:8080/tip/delete/";
 
         try {
             String title = myTips.get(tipsIndex).getString("workingTitle");
             url += title;
 
-            model.contactServer(url);
+            model.contactServerString(url);
         } catch (JSONException e) {
             e.printStackTrace();
         }

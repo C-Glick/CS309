@@ -94,6 +94,7 @@
         android:layout_alignParentBottom="true"
         android:layout_marginEnd="60dp"
         android:layout_marginBottom="34dp"
+        android:background="@drawable/mybutton"
         android:text="Submit" />
 
     <Button
@@ -104,6 +105,7 @@
         android:layout_alignParentBottom="true"
         android:layout_marginStart="60dp"
         android:layout_marginBottom="34dp"
+        android:background="@drawable/mybutton"
         android:text="Back" />
 
 </RelativeLayout>

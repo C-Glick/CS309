@@ -44,6 +44,18 @@ public class MainActivity extends AppCompatActivity {
         Button viewTips = (Button) findViewById(R.id.buttonViewTip);
         Button addTip = (Button) findViewById(R.id.buttonAddTip);
         Button Admin = (Button) findViewById(R.id.AdminLogin);
+        Button logout = (Button) findViewById(R.id.buttonLogout);
+
+        logout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                UserInformation.role = "";
+                UserInformation.password = "";
+                UserInformation.username = "";
+                Intent i = new Intent(MainActivity.this, LoginActivity.class);
+                startActivity(i);
+            }
+        });
 
         if(!UserInformation.role.equals("ADMIN")){
             System.out.println(UserInformation.role);

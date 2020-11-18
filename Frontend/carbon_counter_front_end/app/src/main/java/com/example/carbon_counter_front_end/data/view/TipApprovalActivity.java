@@ -54,13 +54,13 @@ public class TipApprovalActivity extends AppCompatActivity {
 
             @Override
             public void onSuccess(JSONObject response) {
-                Intent i = new Intent(TipApprovalActivity.this, TipApprovalActivity.class);
-                startActivity(i);
+
             }
 
             @Override
             public void onSuccess(String response) {
-
+                Intent i = new Intent(TipApprovalActivity.this, TipApprovalActivity.class);
+                startActivity(i);
             }
 
             @Override

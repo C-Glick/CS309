@@ -64,14 +64,14 @@ public class ViewCategoryResults extends AppCompatActivity {
 
             @Override
             public void onSuccess(JSONObject response) {
-                Intent i = new Intent(ViewCategoryResults.this, ViewCategoryResults.class);
-                i.putExtra("category", category);
-                startActivity(i);
+
             }
 
             @Override
             public void onSuccess(String response) {
-
+                Intent i = new Intent(ViewCategoryResults.this, ViewCategoryResults.class);
+                i.putExtra("category", category);
+                startActivity(i);
             }
 
             @Override
