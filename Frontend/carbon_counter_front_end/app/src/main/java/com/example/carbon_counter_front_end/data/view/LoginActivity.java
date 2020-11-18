@@ -15,17 +15,17 @@ import com.example.carbon_counter_front_end.data.model.IVolleyListener;
 import com.example.carbon_counter_front_end.data.model.RequestServerForService;
 import com.example.carbon_counter_front_end.data.model.UserInformation;
 
-
 import org.json.JSONArray;
-
 import org.json.JSONException;
 import org.json.JSONObject;
+
 
 /**
  * Login Screen for Carbon Counter
  * @author Zachary Current
  */
 public class LoginActivity extends AppCompatActivity {
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -64,6 +64,10 @@ public class LoginActivity extends AppCompatActivity {
                     public void onSuccess(JSONObject response) {
                         try {
                             UserInformation.role = response.getString("role");
+                            UserInformation.username = response.getString("username");
+
+
+
                         } catch (JSONException e) {
                             e.printStackTrace();
                         }

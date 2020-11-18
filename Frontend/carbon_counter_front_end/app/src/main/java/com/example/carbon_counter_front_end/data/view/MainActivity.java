@@ -18,21 +18,52 @@ import com.example.carbon_counter_front_end.data.model.IVolleyListener;
 import com.example.carbon_counter_front_end.data.model.RequestServerForService;
 import com.example.carbon_counter_front_end.data.model.UserInformation;
 
+import org.java_websocket.client.WebSocketClient;
+import org.java_websocket.handshake.ServerHandshake;
 import org.json.JSONArray;
 import org.json.JSONObject;
+
+import java.net.URI;
 
 /**
  * Main menu for Carbon Counter
  * @author Zachary Current
  */
 public class MainActivity extends AppCompatActivity {
-
+    private WebSocketClient ws;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        try {
+            ws = new WebSocketClient(new URI("ws://coms-309-tc-04.cs.iastate.edu:8080/notify/" + UserInformation.username)) {
 
+
+                @Override
+                public void onOpen(ServerHandshake serverHandshake) {
+
+                }
+
+                @Override
+                public void onMessage(String s) {
+                    Toast.makeText(getApplicationContext(), s, Toast.LENGTH_LONG).show();
+
+                }
+
+                @Override
+                public void onClose(int i, String s, boolean b) {
+
+                }
+
+                @Override
+                public void onError(Exception e) {
+                    System.out.println(e.getMessage());
+                }
+            };
+        } catch (Exception e){
+            System.out.println(e.getMessage());
+        }
 
 
         final String username = UserInformation.username;
