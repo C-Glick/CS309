@@ -6,4 +6,45 @@
     android:layout_height="match_parent"
     tools:context=".data.view.FriendPageActivity">
 
+    <Button
+        android:id="@+id/btn_addfriend"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="94dp"
+        android:text="Add Friend"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.498"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <Button
+        android:id="@+id/button3"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="9dp"
+        android:text="Friends List"
+        app:layout_constraintBaseline_toBaselineOf="@+id/btn_addfriend"
+        app:layout_constraintEnd_toStartOf="@+id/btn_addfriend" />
+
+    <EditText
+        android:id="@+id/editTextTextPersonName"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="237dp"
+        android:ems="10"
+        android:inputType="textPersonName"
+        android:text="Username"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.497"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <Button
+        android:id="@+id/button4"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="6dp"
+        android:text="Back"
+        app:layout_constraintBaseline_toBaselineOf="@+id/btn_addfriend"
+        app:layout_constraintStart_toEndOf="@+id/btn_addfriend" />
 </androidx.constraintlayout.widget.ConstraintLayout>
