@@ -1,6 +1,7 @@
 package com.tc_4.carbon_counter.sockets;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Hashtable;
 import java.util.List;
 import java.util.Map;
@@ -20,6 +21,7 @@ import com.tc_4.carbon_counter.exceptions.UserNotFoundException;
 import com.tc_4.carbon_counter.models.Notification;
 import com.tc_4.carbon_counter.models.User;
 import com.tc_4.carbon_counter.models.User.Notifications;
+import com.tc_4.carbon_counter.models.User.Role;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -82,7 +84,10 @@ public class NotificationSocket {
 	}
 
     /**
-     * Preform these actions when the server receives a message a message from a user
+     * Preform these actions when the server receives a message a message from a user.
+     * Begin a message with "@username" to send the notification to username.
+     * Begin a message with "@ROLE" to send a notification to all users of that role.
+     * note all caps for the roll. USER, CREATOR, ADMIN, DEV
      * 
      * @param session websocket session, automatically provided
      * @param message the message that has been received
@@ -94,22 +99,28 @@ public class NotificationSocket {
 
         if (message.startsWith("@")) {
             toUsername = message.split(" ")[0].substring(1); 
-            message = message.substring(toUsername.length() + 1);
+            message = message.substring(toUsername.length() + 2);
         }
 
 		// Handle new messages
 		logger.info("Received Message: " + message);
-		String username = sessionUsernameMap.get(session);
 
         Notification n = new Notification();
 
-        if(toUsername != ""){
-            n.setUsername(username);
+        if(toUsername.equals(Role.USER.toString()) || toUsername.equals(Role.CREATOR.toString()) || toUsername.equals(Role.ADMIN.toString()) || toUsername.equals(Role.DEV.toString())){
+            n.setUsername(toUsername);
+            n.setIsRead(false);
+            n.setMessage(message);
+            sendNotificationToRole(n);
+        }
+        else if(toUsername != ""){
+            n.setUsername(toUsername);
             n.setIsRead(false);
             n.setMessage(message);
 
             sendNotificationToUser(n);
-        }else { // broadcast
+        }
+        else { // broadcast
             n.setMessage(message);
             n.setUsername("");
             n.setIsRead(false);
@@ -197,7 +208,34 @@ public class NotificationSocket {
                 e.printStackTrace();
             }
         }
-	}
+    }
+    
+    public void sendNotificationToRole(Notification notification){
+        List<User> listToSend = new ArrayList<User>();
+        switch(notification.getUsername()){
+            case "USER":
+                listToSend = userDatabase.findByRole(Role.USER);
+                break;
+            case "CREATOR":
+                listToSend = userDatabase.findByRole(Role.CREATOR);
+                break;
+            case "ADMIN":
+                listToSend = userDatabase.findByRole(Role.ADMIN);
+                break;
+            case "DEV":
+                listToSend = userDatabase.findByRole(Role.DEV);
+                break;
+        }
+
+        for(User u : listToSend){
+            Notification n = new Notification();
+            n.setIsRead(false);
+            n.setMessage(notification.getMessage());
+            n.setUsername(u.getUsername());
+            sendNotificationToUser(n);
+        }
+       
+    }
 
     /**
      * Send a notification to all currently connected users
