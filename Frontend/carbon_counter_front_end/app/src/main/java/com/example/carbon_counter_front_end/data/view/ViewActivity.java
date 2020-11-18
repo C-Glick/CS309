@@ -126,7 +126,7 @@ public class ViewActivity extends AppCompatActivity {
                     totalMiles *=.9061;
                     totalPower *=0.99;
                     TextView CO2 = findViewById(R.id.CO2);
-                    CO2.setText(totalMiles+totalPower+"lbs");
+                    CO2.setText(totalMiles+totalPower+" lbs");
 
                     ArrayList<ILineDataSet> lineDataSets = new ArrayList<>();
                     LineDataSet miles = new LineDataSet(milesEnt, "Miles Driven");
