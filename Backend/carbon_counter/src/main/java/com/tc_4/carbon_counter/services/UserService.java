@@ -128,6 +128,12 @@ public class UserService {
         temp.setUserOne(user);
         temp.setUserTwo(username);
         temp.setStatus(Status.REQUESTED);
+        if(friendsDatabase.findByUserOneAndUserTwo(user, username).isPresent()){
+            throw new RequestExistsException();
+        }else if(friendsDatabase.findByUserOneAndUserTwo(username, user).isPresent()){
+            throw new RequestExistsException();
+        }
+
         if (!friendsDatabase.findByUserOneAndUserTwo(user, username).isPresent()) {
             friendsDatabase.save(temp);
             notification.sendNotificationToUser(user + " has sent you a friend request!", username);
