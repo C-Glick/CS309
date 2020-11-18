@@ -163,6 +163,8 @@ public class FreindRequestsActivity extends AppCompatActivity {
                     }
                 }));
                 FRLogic.AcceptRequest();
+                Intent i = new Intent(FreindRequestsActivity.this, FreindRequestsActivity.class);
+                startActivity(i);
             }
         });
         Deny.setOnClickListener(new View.OnClickListener()
@@ -198,7 +200,10 @@ public class FreindRequestsActivity extends AppCompatActivity {
                     }
                 }));
                 FRLogic.DenyRequest();
+                Intent i = new Intent(FreindRequestsActivity.this, FreindRequestsActivity.class);
+                startActivity(i);
             }
+
         });
 
         Back.setOnClickListener(new View.OnClickListener()
