@@ -159,7 +159,7 @@ public class ViewActivity extends AppCompatActivity {
                      */
                     graph.getXAxis().setLabelCount(milesDriven.size(),true);
                     graph.getXAxis().setValueFormatter(new MyValueFormatter());
-                    graph.getXAxis().setLabelRotationAngle(45f);
+                    graph.getXAxis().setLabelRotationAngle(90f);
                     graph.getAxisRight().setDrawLabels(false);
                     graph.setData(new LineData(lineDataSets));
                 }
