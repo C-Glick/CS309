@@ -1,7 +1,7 @@
 package com.tc_4.carbon_counter.controllers;
 
-
 import java.util.List;
+import java.util.Set;
 
 import com.tc_4.carbon_counter.models.Friends;
 import com.tc_4.carbon_counter.models.User;
@@ -151,6 +151,17 @@ public class UserController {
     public boolean denyFriend(@PathVariable String username, @RequestParam String userOne) {
         // DONE
         return userService.denyFriend(username, userOne);
+    }
+
+    /**
+     * Get a set of all approved friends for the currently 
+     * authenticated user. No duplicates.
+     * 
+     * @return a json array of usernames that have approved friend requests.
+     */
+    @GetMapping("/user/friend_list")
+    public Set<String> friendList(){
+        return userService.getFriendList();
     }
  
     /**
