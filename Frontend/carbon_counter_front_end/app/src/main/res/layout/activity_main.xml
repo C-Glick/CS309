@@ -9,49 +9,49 @@
 
     <Button
         android:id="@+id/buttonfriendlist"
-        android:layout_width="127dp"
+        android:layout_width="130dp"
         android:layout_height="77dp"
         android:layout_alignParentStart="true"
         android:layout_alignParentTop="true"
         android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"
-        android:layout_marginStart="235dp"
-        android:layout_marginTop="615dp"
-        android:layout_marginBottom="30dp"
+        android:layout_marginStart="52dp"
+        android:layout_marginTop="523dp"
+        android:layout_marginBottom="115dp"
         android:background="@drawable/mybutton"
         android:text="Friends" />
 
     <Button
         android:id="@+id/AdminLogin"
-        android:layout_width="127dp"
-        android:layout_height="77dp"
+        android:layout_width="312dp"
+        android:layout_height="81dp"
         android:layout_alignParentStart="true"
         android:layout_alignParentTop="true"
         android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"
         android:layout_marginStart="51dp"
-        android:layout_marginTop="524dp"
+        android:layout_marginTop="619dp"
         android:layout_marginBottom="17dp"
         android:background="@drawable/mybutton"
         android:text="Admin Page" />
 
     <Button
         android:id="@+id/buttonLogout"
-        android:layout_width="127dp"
-        android:layout_height="77dp"
+        android:layout_width="130dp"
+        android:layout_height="78dp"
         android:layout_alignParentStart="true"
         android:layout_alignParentTop="true"
         android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"
         android:layout_marginStart="235dp"
         android:layout_marginTop="524dp"
-        android:layout_marginBottom="123dp"
+        android:layout_marginBottom="115dp"
         android:background="@drawable/mybutton"
         android:text="Logout" />
 
     <Button
         android:id="@+id/buttonView"
-        android:layout_width="127dp"
+        android:layout_width="130dp"
         android:layout_height="77dp"
         android:layout_alignParentStart="true"
         android:layout_alignParentTop="true"
@@ -62,7 +62,7 @@
 
     <Button
         android:id="@+id/buttonViewTip"
-        android:layout_width="127dp"
+        android:layout_width="130dp"
         android:layout_height="77dp"
         android:layout_alignParentStart="true"
         android:layout_alignParentTop="true"
@@ -73,7 +73,7 @@
 
     <Button
         android:id="@+id/buttonAddTip"
-        android:layout_width="127dp"
+        android:layout_width="130dp"
         android:layout_height="77dp"
         android:layout_alignParentStart="true"
         android:layout_alignParentTop="true"
@@ -89,7 +89,7 @@
         android:layout_alignParentTop="true"
         android:layout_alignParentEnd="true"
         android:layout_marginTop="345dp"
-        android:layout_marginEnd="51dp"
+        android:layout_marginEnd="46dp"
         android:background="@drawable/mybutton"
         android:text="@string/update_my_stats" />
 

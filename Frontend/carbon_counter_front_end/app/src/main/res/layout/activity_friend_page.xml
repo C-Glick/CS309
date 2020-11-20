@@ -15,6 +15,7 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.498"
+        android:background="@drawable/mybutton"
         app:layout_constraintStart_toStartOf="parent" />
 
     <EditText
@@ -36,6 +37,7 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="6dp"
         android:text="Back"
+        android:background="@drawable/mybutton"
         app:layout_constraintBaseline_toBaselineOf="@+id/btn_addfriend"
         app:layout_constraintStart_toEndOf="@+id/btn_addfriend" />
 </androidx.constraintlayout.widget.ConstraintLayout>
